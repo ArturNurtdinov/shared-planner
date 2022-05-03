@@ -488,6 +488,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout-land/calendar_day_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/res/layout-v23/participant_item_search.xml">
           <value>
             <set />
@@ -664,6 +669,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/ViewExtensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/ui/ProgressDialogFragment.kt">
           <value>
             <set />
           </value>

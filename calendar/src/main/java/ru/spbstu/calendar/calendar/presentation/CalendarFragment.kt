@@ -2,6 +2,7 @@ package ru.spbstu.calendar.calendar.presentation
 
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -218,6 +219,10 @@ class CalendarFragment : Fragment() {
             viewModel.openSettings()
         }
 
+        binding.fragmentCalendarFab.setDebounceClickListener {
+            viewModel.openCreateEventPage()
+        }
+
         return binding.root
     }
 
@@ -239,7 +244,7 @@ class CalendarFragment : Fragment() {
                             container.root.setBackgroundColor(
                                 ContextCompat.getColor(
                                     requireContext(),
-                                    R.color.primaryVariant
+                                    R.color.secondary
                                 )
                             )
                         }
@@ -255,6 +260,14 @@ class CalendarFragment : Fragment() {
                 }
 
                 container.dayText.text = day.date.dayOfMonth.toString()
+
+                container.circles.forEach {
+                    it.background = GradientDrawable().apply {
+                        shape = GradientDrawable.RECTANGLE
+                        setColor(Color.CYAN)
+                        cornerRadius = 4.dp.toFloat()
+                    }
+                }
             }
 
             override fun create(view: View): DayViewContainer = DayViewContainer(view)

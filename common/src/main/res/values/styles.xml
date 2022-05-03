@@ -26,6 +26,8 @@
         <item name="materialAlertDialogTitleTextStyle">@style/DayTheme.Alert.Title.Text</item>
         <item name="materialAlertDialogBodyTextStyle">@style/DayTheme.Alert.Message.Text</item>
         <item name="android:checkedTextViewStyle">@style/DayTheme.Alert.Title.CheckedTextView</item>
+
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="DayTheme.Alert.Title.CheckedTextView" parent="@style/Widget.MaterialComponents.CheckedTextView">

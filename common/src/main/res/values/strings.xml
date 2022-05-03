@@ -38,6 +38,8 @@
     <string name="every_year">Every year</string>
 
     <string name="repeat">Repeat</string>
+    <string name="please_wait">Please wait</string>
+    <string name="loading_is_in_progress">Loading is in progress</string>
 
     <string-array name="months_array">
         <item>January</item>

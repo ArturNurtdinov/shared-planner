@@ -9,4 +9,5 @@ class CalendarViewModel(private val router: CalendarRouter) : ViewModel() {
     fun openSettings() = router.openSettings()
     fun navigateToGroupSettings() = router.openSettingsFromCalendar()
     fun openDay(date: Long) = router.openDayPage(date)
+    fun openCreateEventPage() = router.openCreateEventFragment(null)
 }

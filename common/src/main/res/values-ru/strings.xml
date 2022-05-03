@@ -36,6 +36,8 @@
     <string name="every_year">Каждый год</string>
 
     <string name="repeat">Повторять</string>
+    <string name="please_wait">Пожалуйста подождите</string>
+    <string name="loading_is_in_progress">Идёт загрузка</string>
 
     <string-array name="months_array">
         <item>Январь</item>
