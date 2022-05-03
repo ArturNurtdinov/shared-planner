@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/fragment_create_event__toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/fragment_create_event__back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_button_background"
+                    android:cropToPadding="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/fragment_create_event__title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/event"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/fragment_create_event__confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/icon_button_background"
+                    android:cropToPadding="true"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_check_24"
+                    android:tint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+            android:id="@+id/fragment_create_event__divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__toolbar" />
+
+        <com.skydoves.powerspinner.PowerSpinnerView
+            android:id="@+id/fragment_create_event__spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:theme="@style/ThemeOverlay.AppCompat.Light"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider1"
+            app:spinner_arrow_padding="8dp"
+            app:spinner_arrow_tint="@color/black"
+            app:spinner_debounce_duration="300"
+            app:spinner_popup_width="200dp"
+            tools:text="Event" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_create_event__input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:paddingHorizontal="16dp"
+            android:textColorHint="@color/rippleColor"
+            app:boxStrokeColor="@color/primary"
+            app:boxStrokeErrorColor="@color/destructive"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:counterEnabled="true"
+            app:counterMaxLength="64"
+            app:counterOverflowTextColor="@color/destructive"
+            app:counterTextColor="@color/primary"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__spinner">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_create_event__input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_name"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:textColorHint="@color/rippleColor"
+                android:textSize="18sp"
+                tools:text="Friends" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/fragment_create_event__divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__input_layout" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fragment_create_event__time_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__all_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="@string/all_day"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_create_event__time_icon"
+            app:layout_constraintStart_toEndOf="@id/fragment_create_event__time_icon"
+            app:layout_constraintTop_toTopOf="@id/fragment_create_event__time_icon" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/fragment_create_event__all_day_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:theme="@style/SharedPlannerSwitch"
+            app:layout_constraintBottom_toBottomOf="@id/fragment_create_event__all_day"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fragment_create_event__all_day" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__first_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__time_icon"
+            tools:text="Сб, 23 апр. 2022" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__first_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__time_icon"
+            tools:text="13:00" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__second_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__first_date"
+            tools:text="Сб, 23 апр. 2022" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__second_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__first_time"
+            tools:text="13:00" />
+
+        <View
+            android:id="@+id/fragment_create_event__divider3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__second_date" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fragment_create_event__repeat_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_event_repeat_24"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider3" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__repeat_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="16dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/fragment_create_event__divider4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_create_event__repeat_icon"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider3"
+            tools:text="Не повторяется" />
+
+        <View
+            android:id="@+id/fragment_create_event__divider4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__repeat_icon" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fragment_create_event__notif_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_notification_important_24"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider4" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_create_event__notifications"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_create_event__notif_icon"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider4"
+            tools:listitem="@layout/notification_item" />
+
+        <View
+            android:id="@+id/fragment_create_event__divider5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__notifications" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fragment_create_event__pick_group"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:background="@drawable/background_selectable_item_list"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:paddingHorizontal="16dp"
+            android:text="@string/pick_group"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider5" />
+
+        <View
+            android:id="@+id/fragment_create_event__divider6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__pick_group" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fragment_create_event__description_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:textColorHint="@color/rippleColor"
+            app:boxStrokeColor="@color/primary"
+            app:boxStrokeErrorColor="@color/destructive"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:counterEnabled="false"
+            app:counterOverflowTextColor="@color/destructive"
+            app:counterTextColor="@color/primary"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider6">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/fragment_create_event__description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_description"
+                android:maxLines="3"
+                android:textColor="@color/black"
+                android:textColorHint="@color/rippleColor"
+                android:textSize="18sp"
+                tools:text="Friends" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <View
+            android:id="@+id/fragment_create_event__divider7"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/rippleColor"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__description_layout" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/fragment_create_event__files_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_baseline_attach_file_24"
+            android:tint="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider7" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_create_event__files"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fragment_create_event__notif_icon"
+            app:layout_constraintTop_toBottomOf="@id/fragment_create_event__divider7"
+            tools:listitem="@layout/file_item" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

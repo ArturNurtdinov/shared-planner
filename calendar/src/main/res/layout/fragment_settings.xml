@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/fragment_settings__toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/fragment_settings__back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_button_background"
+                android:cropToPadding="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_arrow_back_24"
+                android:tint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/fragment_settings__title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/fragment_settings__divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor" />
+
+    <TextView
+        android:id="@+id/fragment_calendar__profile"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/background_selectable_item_list"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/profile"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/black" />
+
+    <View
+        android:id="@+id/fragment_settings__divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor" />
+
+    <TextView
+        android:id="@+id/fragment_calendar__notifications"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/background_selectable_item_list"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/notifications"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/black" />
+
+    <View
+        android:id="@+id/fragment_settings__divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor" />
+
+    <TextView
+        android:id="@+id/fragment_calendar__groups"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/background_selectable_item_list"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/groups"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:drawableEndCompat="@drawable/ic_baseline_arrow_forward_ios_24"
+        app:drawableTint="@color/black" />
+
+    <View
+        android:id="@+id/fragment_settings__divider4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

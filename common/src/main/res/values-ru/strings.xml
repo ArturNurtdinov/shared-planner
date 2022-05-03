@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_with">Войти с помощью:</string>
+    <string name="auth_failed">Ошибка входа</string>
+    <string name="settings">Настройки</string>
+    <string name="profile">Профиль</string>
+    <string name="notifications">Уведомления</string>
+    <string name="groups">Группы</string>
+    <string name="send_notifications_label">Присылать уведомления для групп:</string>
+    <string name="you_have_no_groups">У вас пока нет групп</string>
+    <string name="email">Почта</string>
+    <string name="phone">Телефон</string>
+    <string name="create_group">Создать группу</string>
+    <string name="show_groups">Отображать группы</string>
+    <string name="cancel">Отменить</string>
+    <string name="done">Готово</string>
+    <string name="configure">Настроить</string>
+    <string name="group_settings">Настройки группы</string>
+    <string name="enter_name">Введите название</string>
+    <string name="add_participant">Добавить пользователя</string>
+    <string name="add_people">Добавьте людей</string>
+    <string name="added_users">Добавленные пользователи</string>
+    <string name="event">Событие</string>
+    <string name="attached_files">Прикреплённые файлы</string>
+    <string name="add_file">Прикрепить файл</string>
+    <string name="all_day">Весь день</string>
+    <string name="pick_group">Выберите группу</string>
+    <string name="enter_description">Введите описание</string>
+    <string name="add_notification">Добавить уведомление</string>
+
+    <string name="doesnt_repeat">Не повторяется</string>
+    <string name="every_day">Каждый день</string>
+    <string name="every_3_days">Каждые 3 дня</string>
+    <string name="every_week">Каждую неделю</string>
+    <string name="every_month">Каждый месяц</string>
+    <string name="every_year">Каждый год</string>
+
+    <string name="repeat">Повторять</string>
+
+    <string-array name="months_array">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+
+    <string-array name="events">
+        <item>Напоминание</item>
+        <item>Мероприятие</item>
+    </string-array>
+
+    <plurals name="participants">
+        <item quantity="one">%d участник</item>
+        <item quantity="few">%d участника</item>
+        <item quantity="many">%d участников</item>
+        <item quantity="other">%d участников</item>
+    </plurals>
+</resources>

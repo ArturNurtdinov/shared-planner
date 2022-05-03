@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#0000A1</color>
+    <color name="primaryVariant">#1F6ED4</color>
+    <color name="secondary">#39BAE8</color>
+    <color name="secondaryVariant">#B9EDF8</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="rippleColor">#696969</color>
+    <color name="secondaryBackground">#E5E5E5</color>
+    <color name="destructive">#ff0000</color>
+    <color name="colorAccent">#ff0000</color>
+</resources>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="44dp">
+
+    <include
+        android:id="@+id/participant_item__avatar_layout"
+        layout="@layout/avatar_layout"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/participant_item__title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingHorizontal="16dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/participant_item__avatar_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Artur nurtdinov" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/participant_item__subtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textColor="@color/rippleColor"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@id/participant_item__title"
+        app:layout_constraintEnd_toStartOf="@id/participant_item__remove"
+        app:layout_constraintStart_toEndOf="@id/participant_item__title"
+        tools:text="Creator" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/participant_item__remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/icon_button_background"
+        android:backgroundTint="@color/white"
+        android:padding="8dp"
+        android:src="@drawable/ic_baseline_close_24"
+        android:tint="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/participant_item__divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="issues">
+    <option name="index">
+      <map>
+        <entry key="/Dummy.txt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="/fragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/navigation/Navigator.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/MainActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/MainActivityViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/di/RootActivityModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/main/MainFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/main/MainViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/main/di/MainFragmentModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/navigation/main_nav_graph.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/AuthRouter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/auth/presentation/AuthFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/auth/presentation/AuthViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/webview/WebViewFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/res/layout/fragment_auth.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/res/layout/fragment_web_view.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/buildSrc/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/buildSrc/src/main/java/Deps.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/buildSrc/src/main/java/Versions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/calendar/di/CalendarSubModule.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/di/CalendarComponent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/domain/model/Group.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/CalendarRouter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/day/di/DaySubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/day/di/DaySubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/day/presentation/DayFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/day/presentation/DayViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/day/presentation/EventsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/di/CalendarSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/di/CalendarSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/di/EventSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/di/EventSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/di/EditEventSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/di/EditEventSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/presentation/CreateEventFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/presentation/CreateEventViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/presentation/NotificationUi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/edit/presentation/NotificationsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/presentation/EventFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/presentation/EventViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/presentation/FileUi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/event/presentation/FilesAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/CalendarFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/CalendarViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/DayViewContainer.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/ShowGroupsDialogFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/dialog/GroupsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/dialog/ShowGroupsDialogFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/calendar/presentation/dialog/model/GroupSelected.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/di/CalendarComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Event.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/File.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Group.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Notification.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Profile.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/di/SettingsSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/di/SettingsSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/di/GroupsSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/di/GroupsSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/SearchViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/di/CreateGroupSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/di/CreateGroupSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/presentation/CreateGroupFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/presentation/CreateGroupViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/presentation/adapter/ParticipantUi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/presentation/adapter/ParticipantsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/search/ParticipantSearchAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/search/SearchFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/search/SearchViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/search/di/SearchSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/edit/search/di/SearchSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/presentation/GroupsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/presentation/GroupsFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/presentation/GroupsViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/groups/presentation/model/GroupUI.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/di/NotificationsSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/di/NotificationsSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/presentation/NotificationsFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/presentation/NotificationsGroupsAdapter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/presentation/NotificationsViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/presentation/CalendarFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/presentation/CalendarViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/presentation/SettingsFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/presentation/SettingsViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/profile/di/ProfileSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/profile/di/ProfileSubModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/profile/presentation/ProfileFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/profile/presentation/ProfileViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout-v23/participant_item_search.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/add_file_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/add_participant_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/avatar_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/calendar_day_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/calendar_day_legend.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/calendar_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/create_event_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/create_group_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/create_group_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/day_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/dialog_group_item.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/dialog_groups.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/event_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/event_item.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/file_item.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/fragment_settings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/group_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/groups_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/item_spinner.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/layout_add_participant.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/layout_participant.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/notification_item.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/notification_layout.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/notifications_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/participant_item.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/participant_item_search.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/profile_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/res/layout/search_fragment.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/build.gradle.kts">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/CommonApi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/modules/NetworkModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/CalendarExtensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/ContextExtensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/Extensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/ViewExtensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/avatar_background.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/background_selectable_item_list.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/button_background.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/button_focus.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/button_press.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/group_color_background.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_app_icon_24_black.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_google_logo_24.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_google_logo_68.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_logo_vk.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_logo_vk_24.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_odkl_logo.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/ic_odkl_logo_24.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/icon_button_background.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/selectable_item_list_stroke_background.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/drawable/switch_color.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/values-ru/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/values/colors.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/res/values/styles.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/settings.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$USER_HOME$/StudioProjects/CalendarView/sample/src/main/res/layout/example_5_calendar_day.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/anurt/.gradle/caches/transforms-3/f78ac6076d94ac8e49447418506c828f/transformed/appcompat-1.3.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/app/src/main/res/drawable/splash_background.xml" value="0.1655" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/app/src/main/res/layout/fragment_main.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.114" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.114" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/auth/src/main/res/layout/auth_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/auth/src/main/res/layout/fragment_auth.xml" value="0.2" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/auth/src/main/res/layout/fragment_web_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout-v23/notification_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout-v23/participant_item_search.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/add_file_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/avatar_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/calendar_day_layout.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/calendar_day_legend.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/calendar_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/create_event_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/create_group_fragment.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/create_group_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/day_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/dialog_group_item.xml" value="0.536" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/dialog_groups.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/event_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/event_item.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/file_item.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/fragment_settings.xml" value="0.36936936936936937" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/group_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/groups_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/item_spinner.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/layout_add_participant.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/layout_participant.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/notification_item.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/notification_layout.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/notifications_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/participant_item.xml" value="0.264" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/participant_item_search.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/profile_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/calendar/src/main/res/layout/search_fragment.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/avatar_background.xml" value="0.1665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/background_selectable_item_list.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/button_background.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/button_drawable.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/button_focus.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/button_press.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/group_color_background.xml" value="0.1665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_app_icon_24.xml" value="0.114" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_app_icon_24_black.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24.xml" value="0.1665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_baseline_arrow_forward_ios_24.xml" value="0.169" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_check_24.xml" value="0.169" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_google_logo_24.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_google_logo_68.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_group_24.xml" value="0.169" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_logo_vk_24.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_logo_vk_68.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_odkl_logo.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_odkl_logo_24.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/ic_settings_24.xml" value="0.169" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/icon_button_background.xml" value="0.1695" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/selectable_item_list_stroke_background.xml" value="0.1665" />
+        <entry key="..\:/Users/anurt/AndroidStudioProjects/SharedPlanner/common/src/main/res/drawable/switch_color.xml" value="0.1665" />
+        <entry key="..\:/Users/anurt/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_spinner_item.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
