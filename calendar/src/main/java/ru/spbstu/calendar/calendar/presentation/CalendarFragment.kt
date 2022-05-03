@@ -12,6 +12,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
+import androidx.core.view.isVisible
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -53,9 +54,6 @@ class CalendarFragment : Fragment() {
     private val today = LocalDate.now()
 
     private lateinit var years: List<Int>
-
-    private var isManuallySelectedYear = false
-    private var isManuallySelectedMonth = false
 
     private var dialog: ShowGroupsDialogFragment? = null
 
@@ -113,11 +111,11 @@ class CalendarFragment : Fragment() {
             }
             monthScrollListener = object : MonthScrollListener {
                 override fun invoke(p1: CalendarMonth) {
-                    isManuallySelectedMonth = true
+                    viewModel.isManuallySelectedMonth = true
                     binding.fragmentCalendarMonth.selectItemByIndex(p1.month - 1)
                     val selectedYear = years[binding.fragmentCalendarYear.selectedIndex]
-                    if (selectedYear != p1.year) {
-                        isManuallySelectedYear = true
+                    if (selectedYear != p1.year && !viewModel.isManuallySelectedYear) {
+                        viewModel.isManuallySelectedYear = true
                         binding.fragmentCalendarYear.selectItemByIndex(years.indexOf(p1.year))
                     }
                 }
@@ -137,8 +135,8 @@ class CalendarFragment : Fragment() {
             spinnerOutsideTouchListener =
                 OnSpinnerOutsideTouchListener { _, _ -> this.dismiss() }
             setOnSpinnerItemSelectedListener { oldIndex, oldItem: String?, newIndex, newItem: String ->
-                if (isManuallySelectedMonth) {
-                    isManuallySelectedMonth = false
+                if (viewModel.isManuallySelectedMonth) {
+                    viewModel.isManuallySelectedMonth = false
                     return@setOnSpinnerItemSelectedListener
                 }
                 val selectedYear = years[binding.fragmentCalendarYear.selectedIndex]
@@ -181,8 +179,8 @@ class CalendarFragment : Fragment() {
             spinnerOutsideTouchListener =
                 OnSpinnerOutsideTouchListener { _, _ -> this.dismiss() }
             setOnSpinnerItemSelectedListener { oldIndex, oldItem: String?, newIndex, newItem: String ->
-                if (isManuallySelectedYear) {
-                    isManuallySelectedYear = false
+                if (viewModel.isManuallySelectedYear) {
+                    viewModel.isManuallySelectedYear = false
                     return@setOnSpinnerItemSelectedListener
                 }
                 val selectedMonth = binding.fragmentCalendarMonth.selectedIndex + 1
