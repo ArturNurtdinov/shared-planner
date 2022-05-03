@@ -65,7 +65,7 @@ class DayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter.submitList(
-            listOf(Event(1, Date().time, null, "Start work", Group(0, "Work", true, 25)))
+            listOf(Event(1, Date().time, Date().time, "Start work", Group(0, "Work", true, 25)))
         )
     }
 

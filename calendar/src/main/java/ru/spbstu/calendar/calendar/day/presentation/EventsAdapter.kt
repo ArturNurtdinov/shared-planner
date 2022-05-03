@@ -11,6 +11,8 @@ import ru.spbstu.calendar.databinding.EventItemBinding
 import ru.spbstu.calendar.domain.model.Event
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EventsAdapter(private val clickListener: (Event) -> Unit) :
     ListAdapter<Event, EventsAdapter.EventViewHolder>(EventDiffUtil) {
@@ -33,8 +35,14 @@ class EventsAdapter(private val clickListener: (Event) -> Unit) :
     }
 
     class EventViewHolder(val binding: EventItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val dateFormat = SimpleDateFormat("EE, dd MMMM HH:mm", Locale.getDefault())
         fun bind(event: Event) {
-            binding.eventItemTime.text = event.startTime.toString()
+            if (event.endTime != null && event.endTime != 0L) {
+                binding.eventItemTime.text =
+                    "${dateFormat.format(event.startTime)} - ${dateFormat.format(event.endTime)}"
+            } else {
+                binding.eventItemTime.text = dateFormat.format(event.startTime)
+            }
             binding.eventItemGroup.text = event.group.title
             binding.eventItemTitle.text = event.title
             binding.eventItemColor.background = GradientDrawable().apply {

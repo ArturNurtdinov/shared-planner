@@ -16,6 +16,8 @@ import ru.spbstu.calendar.domain.model.File
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 class EventFragment : Fragment() {
@@ -25,6 +27,7 @@ class EventFragment : Fragment() {
 
     private var _binding: EventFragmentBinding? = null
     private val binding get() = _binding!!
+    private val dateFormat = SimpleDateFormat("EE, dd MMMM HH:mm", Locale.getDefault())
 
     private val adapter = FilesAdapter {
         when (it) {
@@ -90,6 +93,12 @@ class EventFragment : Fragment() {
             }
             binding.fragmentEventTitle.text = it.title
             binding.fragmentEventGroup.text = it.group.title
+            if (it.endTime != null && it.endTime != 0L) {
+                binding.fragmentEventTime.text =
+                    "${dateFormat.format(it.startTime)} - ${dateFormat.format(it.endTime)}"
+            } else {
+                binding.fragmentEventTime.text = dateFormat.format(it.startTime)
+            }
             binding.fragmentEventDescription.isVisible = false
             binding.fragmentEventRepeat.isVisible = false
         }
