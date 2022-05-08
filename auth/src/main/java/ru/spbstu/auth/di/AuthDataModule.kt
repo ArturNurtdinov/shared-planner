@@ -1,11 +1,19 @@
 package ru.spbstu.auth.di
 
 import dagger.Module
+import dagger.Provides
+import ru.spbstu.auth.AuthRepository
+import ru.spbstu.common.di.prefs.PreferencesRepository
+import ru.spbstu.common.di.scope.FeatureScope
+import ru.spbstu.common.network.Api
 
 @Module
 class AuthDataModule {
-    /*@Provides
+    @Provides
     @FeatureScope
-    fun provideAuthRepository(api: Api, tokensRepository: TokensRepository): AuthRepository =
-        AuthRepository(api, tokensRepository)*/
+    fun provideAuthRepository(
+        api: Api,
+        preferencesRepository: PreferencesRepository
+    ): AuthRepository =
+        AuthRepository(api, preferencesRepository)
 }

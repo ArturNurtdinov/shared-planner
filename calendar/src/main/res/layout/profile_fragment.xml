@@ -169,4 +169,30 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <View
+        android:id="@+id/fragment_profile__divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/rippleColor"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile__phone_label" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_profile__logout"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/background_selectable_item_list"
+        android:gravity="center"
+        android:text="@string/logout"
+        android:textColor="@color/destructive"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile__divider2" />
+
+    <View
+        android:id="@+id/fragment_profile__divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/rippleColor"
+        app:layout_constraintTop_toBottomOf="@id/fragment_profile__logout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

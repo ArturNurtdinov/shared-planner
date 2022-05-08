@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import ru.ok.android.sdk.OkAuthActivity
 import ru.ok.android.sdk.Shared
 import ru.spbstu.auth.auth.presentation.AuthFragment
 import ru.spbstu.common.di.FeatureUtils
+import ru.spbstu.common.events.AuthEvent
 import ru.spbstu.sharedplanner.R
 import ru.spbstu.sharedplanner.databinding.ActivityMainBinding
 import ru.spbstu.sharedplanner.navigation.Navigator
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        EventBus.getDefault().register(this)
+        EventBus.getDefault().register(this)
         inject()
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
@@ -57,11 +59,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         navigator.detach()
-//        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+    }
+
+    @Subscribe()
+    fun onEvent(event: AuthEvent) {
+
     }
 
     private fun inject() {

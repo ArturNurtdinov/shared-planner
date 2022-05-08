@@ -38,6 +38,9 @@
     <string name="repeat">Повторять</string>
     <string name="please_wait">Пожалуйста подождите</string>
     <string name="loading_is_in_progress">Идёт загрузка</string>
+    <string name="auth_error">Ошибка входа</string>
+    <string name="logout">Выйти</string>
+    <string name="data_error">Ошибка при загрузке данных</string>
 
     <string-array name="months_array">
         <item>Январь</item>

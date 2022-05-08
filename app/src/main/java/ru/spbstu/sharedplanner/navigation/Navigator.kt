@@ -106,4 +106,10 @@ class Navigator : RootRouter, CalendarRouter, AuthRouter {
             )
         }
     }
+
+    override fun goToLogin() {
+        while (navController?.popBackStack() == true) {
+        }
+        navController?.navigate(R.id.authFragment)
+    }
 }

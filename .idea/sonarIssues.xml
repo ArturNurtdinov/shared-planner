@@ -83,7 +83,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/auth/build/generated/source/kapt/debug/ru/spbstu/auth/di/DaggerAuthComponent.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/AuthRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/AuthRouter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/auth/di/AuthSubModule.kt">
           <value>
             <set />
           </value>
@@ -94,6 +109,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/auth/presentation/AuthViewModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/auth/src/main/java/ru/spbstu/auth/di/AuthDataModule.kt">
           <value>
             <set />
           </value>
@@ -154,6 +174,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/domain/model/Group.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/settings/profile/di/ProfileSubModule.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/build/tmp/kapt3/stubs/debug/ru/spbstu/calendar/settings/profile/presentation/ProfileViewModel.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/CalendarRepository.kt">
           <value>
             <set />
           </value>
@@ -294,6 +329,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/di/CalendarComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/di/CalendarDataModule.kt">
           <value>
             <set />
           </value>
@@ -488,6 +528,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/profile/presentation/domain/model/User.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/res/layout-land/calendar_day_layout.xml">
           <value>
             <set />
@@ -648,7 +693,32 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/modules/CommonModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/modules/NetworkModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/prefs/PreferencesRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/prefs/PreferencesRepositoryImpl.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/errors/ErrorStringsProvider.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/events/AuthEvent.kt">
           <value>
             <set />
           </value>
@@ -669,6 +739,46 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/extensions/ViewExtensions.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/Api.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/RefreshTokenBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/SharedPlannerResult.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/TokensResponseBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/GoogleAuthCodeBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/RefreshTokenBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/TokensResponseBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/UserResponse.kt">
           <value>
             <set />
           </value>

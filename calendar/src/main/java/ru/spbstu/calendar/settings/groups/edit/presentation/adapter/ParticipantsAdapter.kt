@@ -50,13 +50,13 @@ class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(participantUi: ParticipantUi.ParticipantUiItem) {
             binding.participantItemAvatarLayout.root.isVisible =
-                participantUi.profile.avatarUrl.isNotEmpty()
+                !participantUi.profile.avatarUrl.isNullOrEmpty()
             binding.participantItemTitle.text = participantUi.profile.name
             binding.participantItemSubtitle.text = "Creator"
             binding.participantItemRemove.setDebounceClickListener {
                 clickListener.invoke(participantUi)
             }
-            if (participantUi.profile.avatarUrl.isNotEmpty()) {
+            if (!participantUi.profile.avatarUrl.isNullOrEmpty()) {
                 Glide.with(itemView)
                     .load(participantUi.profile.avatarUrl)
                     .centerCrop()

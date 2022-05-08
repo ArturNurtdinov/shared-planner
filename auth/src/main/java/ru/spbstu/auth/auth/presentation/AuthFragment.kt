@@ -12,16 +12,16 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.view.isVisible
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAccessToken
 import com.vk.api.sdk.auth.VKAuthCallback
 import com.vk.api.sdk.auth.VKScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.ok.android.sdk.Odnoklassniki
 import ru.ok.android.sdk.util.OkAuthType
 import ru.ok.android.sdk.util.OkScope
@@ -46,7 +46,7 @@ class AuthFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.server_client_id))
+            .requestServerAuthCode(getString(R.string.server_client_id))
             .requestEmail()
             .build()
         val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
@@ -101,6 +101,16 @@ class AuthFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.errorMessage
+            .onEach {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                hideProgress()
+            }
+            .launchIn(lifecycleScope)
+    }
+
     private fun showProgress() {
         binding.frgMainProgressBar.isVisible = true
         binding.frgAuthShadow.isVisible = true
@@ -121,7 +131,8 @@ class AuthFragment : Fragment() {
 
             override fun onLoginFailed(errorCode: Int) {
                 Timber.e(TAG, "vk login failed with errorCode=$errorCode")
-                Toast.makeText(requireContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG)
+                    .show()
                 hideProgress()
             }
         }
@@ -133,12 +144,15 @@ class AuthFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val idToken = account!!.idToken
-            viewModel.openMainPage()
-            Timber.tag(TAG).w("Sign In: $idToken")
+            val authCode = account!!.serverAuthCode ?: return
+            viewModel.authGoogle(authCode)
+            Timber.tag(TAG).w("Sign In: $authCode")
         } catch (e: ApiException) {
             Timber.tag(TAG).e(e, "Sign In: failed, code=${e.statusCode}")
-            Toast.makeText(requireContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show()
+            if (e.statusCode != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+                Toast.makeText(requireContext(), getString(R.string.auth_failed), Toast.LENGTH_LONG)
+                    .show()
+            }
             hideProgress()
         }
     }
@@ -161,7 +175,7 @@ class AuthFragment : Fragment() {
             return client.signInIntent
         }
 
-        override fun parseResult(resultCode: Int, intent: Intent?): Task<GoogleSignInAccount>? {
+        override fun parseResult(resultCode: Int, intent: Intent?): Task<GoogleSignInAccount> {
             return GoogleSignIn.getSignedInAccountFromIntent(intent)
         }
 

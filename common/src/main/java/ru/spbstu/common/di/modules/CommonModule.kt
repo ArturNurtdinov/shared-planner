@@ -6,7 +6,10 @@ import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.Module
 import dagger.Provides
+import ru.spbstu.common.di.prefs.PreferencesRepository
+import ru.spbstu.common.di.prefs.PreferencesRepositoryImpl
 import ru.spbstu.common.di.scope.ApplicationScope
+import ru.spbstu.common.errors.ErrorStringsProvider
 import javax.inject.Named
 
 const val SHARED_PREFERENCES_FILE = "ru.spbstu.sharedplanner.preferences"
@@ -22,14 +25,11 @@ class CommonModule {
 
     @Provides
     @ApplicationScope
-    @Named("encrypted")
-    fun provideEncryptedPreferences(context: Context): SharedPreferences {
-        return EncryptedSharedPreferences.create(
-            context,
-            ENCRYPTED_SHARED_PREFERENCES_FILE,
-            MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build(),
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    }
+    fun providePreferencesRepository(sharedPreferences: SharedPreferences): PreferencesRepository =
+        PreferencesRepositoryImpl(sharedPreferences)
+
+    @Provides
+    @ApplicationScope
+    fun provideErrorStringsProvider(appContext: Context): ErrorStringsProvider =
+        ErrorStringsProvider(appContext)
 }

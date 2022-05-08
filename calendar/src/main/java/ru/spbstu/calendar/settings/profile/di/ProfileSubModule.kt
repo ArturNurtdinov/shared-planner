@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.settings.profile.presentation.ProfileViewModel
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
+import ru.spbstu.common.errors.ErrorStringsProvider
 
 @Module(
     includes = [
@@ -20,8 +22,12 @@ class ProfileSubModule {
     @Provides
     @IntoMap
     @ViewModelKey(ProfileViewModel::class)
-    fun provideViewModel(router: CalendarRouter): ViewModel {
-        return ProfileViewModel(router)
+    fun provideViewModel(
+        router: CalendarRouter,
+        calendarRepository: CalendarRepository,
+        errorStringsProvider: ErrorStringsProvider,
+    ): ViewModel {
+        return ProfileViewModel(router, calendarRepository, errorStringsProvider)
     }
 
     @Provides

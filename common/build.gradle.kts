@@ -17,12 +17,12 @@ android {
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
-            buildConfigField("String", "ENDPOINT", "\"https://blogin.ru.com/\"")
-            buildConfigField("String", "REFRESH_ENDPOINT", "\"https://blogin.ru.com/api/v1/auth/refresh\"")
+            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru/\"")
+            buildConfigField("String", "REFRESH_ENDPOINT", "\"https://shared-planner.ru/auth/refresh\"")
         }
         getByName("release") {
-            buildConfigField("String", "ENDPOINT", "\"https://blogin.ru.com/\"")
-            buildConfigField("String", "REFRESH_ENDPOINT", "\"https://blogin.ru.com/api/v1/auth//refresh\"")
+            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru/\"")
+            buildConfigField("String", "REFRESH_ENDPOINT", "\"https://shared-planner.ru/auth/refresh\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

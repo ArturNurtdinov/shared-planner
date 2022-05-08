@@ -6,10 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.ProfileFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
@@ -27,15 +32,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: ProfileFragmentBinding? = null
     private val binding get() = _binding!!
-
-    private val profile = Profile(
-        0,
-        "Artur Nurtdinov",
-//        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg"
-        "",
-        "a.nurtdinow@yandex.ru",
-        "+79173863997",
-    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,53 +55,70 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.fragmentProfileLogout.setDebounceClickListener {
+            viewModel.logout()
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fragmentProfileName.text = profile.name
-        if (profile.avatarUrl.isNotEmpty()) {
-            binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
-            binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
-            Glide.with(this)
-                .load(profile.avatarUrl)
-                .centerCrop()
-                .into(binding.fragmentProfileAvatar.layoutAvatarAvatar)
-        } else {
-            val initials = profile.name.getInitials()
-            if (initials == null) {
-                binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
-                binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
-                binding.fragmentProfileAvatar.layoutAvatarAvatar.setImageDrawable(
-                    ColorDrawable(
-                        ContextCompat.getColor(requireContext(), R.color.primaryVariant)
-                    )
-                )
-            } else {
-                binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = false
-                binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = true
-                binding.fragmentProfileAvatar.layoutAvatarInitials.text = profile.name.getInitials()
+        viewModel.errorMessage
+            .onEach {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
-        }
+            .launchIn(lifecycleScope)
 
-        if (profile.email.isNullOrEmpty()) {
-            binding.fragmentProfileEmailLabel.isVisible = false
-            binding.fragmentProfileEmailCard.isVisible = false
-        } else {
-            binding.fragmentProfileEmailLabel.isVisible = true
-            binding.fragmentProfileEmailCard.isVisible = true
-            binding.fragmentProfileEmail.text = profile.email
-        }
+        viewModel.state
+            .filterNotNull()
+            .onEach {
+                val profile = it.profile
+                binding.fragmentProfileName.text = profile.name
+                if (!profile.avatarUrl.isNullOrEmpty()) {
+                    binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
+                    binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
+                    Glide.with(this)
+                        .load(profile.avatarUrl)
+                        .centerCrop()
+                        .into(binding.fragmentProfileAvatar.layoutAvatarAvatar)
+                } else {
+                    val initials = profile.name.getInitials()
+                    if (initials == null) {
+                        binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
+                        binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
+                        binding.fragmentProfileAvatar.layoutAvatarAvatar.setImageDrawable(
+                            ColorDrawable(
+                                ContextCompat.getColor(requireContext(), R.color.primaryVariant)
+                            )
+                        )
+                    } else {
+                        binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = false
+                        binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = true
+                        binding.fragmentProfileAvatar.layoutAvatarInitials.text =
+                            profile.name.getInitials()
+                    }
+                }
 
-        if (profile.phone.isNullOrEmpty()) {
-            binding.fragmentProfilePhoneLabel.isVisible = false
-            binding.fragmentProfilePhoneCard.isVisible = false
-        } else {
-            binding.fragmentProfilePhoneLabel.isVisible = true
-            binding.fragmentProfilePhoneCard.isVisible = true
-            binding.fragmentProfilePhone.text = profile.phone
-        }
+                if (profile.email.isNullOrEmpty()) {
+                    binding.fragmentProfileEmailLabel.isVisible = false
+                    binding.fragmentProfileEmailCard.isVisible = false
+                } else {
+                    binding.fragmentProfileEmailLabel.isVisible = true
+                    binding.fragmentProfileEmailCard.isVisible = true
+                    binding.fragmentProfileEmail.text = profile.email
+                }
+
+                if (profile.phone.isNullOrEmpty()) {
+                    binding.fragmentProfilePhoneLabel.isVisible = false
+                    binding.fragmentProfilePhoneCard.isVisible = false
+                } else {
+                    binding.fragmentProfilePhoneLabel.isVisible = true
+                    binding.fragmentProfilePhoneCard.isVisible = true
+                    binding.fragmentProfilePhone.text = profile.phone
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroy() {

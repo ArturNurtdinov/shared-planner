@@ -4,12 +4,21 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.spbstu.common.BuildConfig
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.scope.ApplicationScope
+import ru.spbstu.common.events.AuthEvent
 import ru.spbstu.common.network.Api
+import ru.spbstu.common.network.model.RefreshTokenBody
+import ru.spbstu.common.network.model.TokensResponseBody
+import timber.log.Timber
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 @Module
@@ -25,17 +34,17 @@ class NetworkModule {
     @ApplicationScope
     fun provideGson(): Gson = GsonBuilder().create()
 
-    /*@Provides
+    @Provides
     @ApplicationScope
     internal fun provideRestInterceptor(
         gson: Gson,
-        tokenRepository: TokensRepository
+        preferencesRepository: PreferencesRepository,
     ): Interceptor =
         Interceptor { chain ->
             val original = chain.request()
-            val accessToken = tokenRepository.getToken()
+            val accessToken = preferencesRepository.token
             val requestBuilder = original.newBuilder()
-            if (!accessToken.isNullOrEmpty() && !original.url.toString().contains("auth")) {
+            if (accessToken.isNotEmpty() && !original.url.toString().contains("auth")) {
                 requestBuilder.addHeader(AUTHORIZATION, BEARER + accessToken)
             }
             val request = requestBuilder.build()
@@ -43,25 +52,30 @@ class NetworkModule {
                 throw IOException("Couldn't procees request. Probably no Internet connection")
             }
             Timber.tag(TAG).i("Processed request(no tokens)=$original, response=$response")
-            if ((response.code == 401 || response.code == 403) && !original.url.toString().contains("auth")) {
-                val refreshToken: RefreshToken? = tokenRepository.getRefresh()
+            val code = response.code
+            if ((code == 401 || code == 403) && !original.url.toString().contains("auth")) {
+                val refreshToken = RefreshTokenBody(preferencesRepository.refresh)
                 val authRequest = request.newBuilder()
                     .post(gson.toJson(refreshToken).toRequestBody())
                     .url(BuildConfig.REFRESH_ENDPOINT)
                     .build()
 
+                if (refreshToken.refresh.isEmpty()) {
+                    return@Interceptor response
+                }
                 response.close()
                 val refreshTokenResponse = chain.proceed(authRequest)
                 if (refreshTokenResponse.code == 200) {
+                    val jsonBody = refreshTokenResponse.peekBody(2048).string()
                     val tokens =
                         gson.fromJson(
-                            refreshTokenResponse.body!!.string(),
-                            TokensResponse::class.java
+                            jsonBody,
+                            TokensResponseBody::class.java
                         )
-                    tokenRepository.saveRefresh(tokens.refreshToken)
-                    tokenRepository.saveToken(tokens.accessToken)
+                    preferencesRepository.setRefresh(tokens.refresh)
+                    preferencesRepository.setToken(tokens.access)
                     val currentRequest = original.newBuilder()
-                        .addHeader(AUTHORIZATION, BEARER + tokens.accessToken)
+                        .addHeader(AUTHORIZATION, BEARER + tokens.access)
                         .build()
                     Timber.tag(TAG)
                         .d("NetworkModule: Tokens refreshed for $authRequest response=$refreshTokenResponse new_tokens=$tokens")
@@ -74,18 +88,18 @@ class NetworkModule {
                 }
             }
             response
-        }*/
+        }
 
     @Provides
     @ApplicationScope
     fun provideOkHttpClient(
-//        restInterceptor: Interceptor,
+        restInterceptor: Interceptor,
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .readTimeout(10, TimeUnit.SECONDS)
             .connectTimeout(10, TimeUnit.SECONDS)
             .callTimeout(10, TimeUnit.SECONDS)
-//            .addInterceptor(restInterceptor)
+            .addInterceptor(restInterceptor)
         return builder.build()
     }
 

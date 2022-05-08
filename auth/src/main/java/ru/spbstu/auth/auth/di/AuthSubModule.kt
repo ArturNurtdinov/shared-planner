@@ -6,10 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.auth.AuthRepository
 import ru.spbstu.auth.AuthRouter
 import ru.spbstu.auth.auth.presentation.AuthViewModel
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
+import ru.spbstu.common.errors.ErrorStringsProvider
 
 @Module(
     includes = [
@@ -20,8 +22,12 @@ class AuthSubModule {
     @Provides
     @IntoMap
     @ViewModelKey(AuthViewModel::class)
-    fun provideViewModel(authRouter: AuthRouter): ViewModel {
-        return AuthViewModel(authRouter)
+    fun provideViewModel(
+        authRouter: AuthRouter,
+        authRepository: AuthRepository,
+        errorStringsProvider: ErrorStringsProvider
+    ): ViewModel {
+        return AuthViewModel(authRouter, authRepository, errorStringsProvider)
     }
 
     @Provides

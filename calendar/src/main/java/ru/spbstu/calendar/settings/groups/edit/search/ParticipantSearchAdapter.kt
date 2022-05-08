@@ -36,9 +36,9 @@ class ParticipantSearchAdapter(private val clickListener: (Profile) -> Unit) :
                 clickListener.invoke(profile)
             }
             binding.participantItemAvatarLayout.root.isVisible =
-                profile.avatarUrl.isNotEmpty()
+                !profile.avatarUrl.isNullOrEmpty()
             binding.participantItemTitle.text = profile.name
-            if (profile.avatarUrl.isNotEmpty()) {
+            if (!profile.avatarUrl.isNullOrEmpty()) {
                 Glide.with(itemView)
                     .load(profile.avatarUrl)
                     .centerCrop()
