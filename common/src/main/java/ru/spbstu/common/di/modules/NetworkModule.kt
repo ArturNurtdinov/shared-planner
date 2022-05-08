@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
@@ -20,6 +21,7 @@ import ru.spbstu.common.network.model.TokensResponseBody
 import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 
 @Module
 class NetworkModule {
@@ -39,6 +41,7 @@ class NetworkModule {
     internal fun provideRestInterceptor(
         gson: Gson,
         preferencesRepository: PreferencesRepository,
+        @Named("refresh") refreshOkhttpClient: OkHttpClient,
     ): Interceptor =
         Interceptor { chain ->
             val original = chain.request()
@@ -63,8 +66,14 @@ class NetworkModule {
                 if (refreshToken.refresh.isEmpty()) {
                     return@Interceptor response
                 }
-                response.close()
-                val refreshTokenResponse = chain.proceed(authRequest)
+//                response.close()
+                val refreshTokenResponse = refreshOkhttpClient.newCall(
+                    Request.Builder()
+                        .post(gson.toJson(refreshToken).toRequestBody())
+                        .url(BuildConfig.REFRESH_ENDPOINT)
+                        .build()
+                ).execute()
+//                val refreshTokenResponse = chain.proceed(authRequest)
                 if (refreshTokenResponse.code == 200) {
                     val jsonBody = refreshTokenResponse.peekBody(2048).string()
                     val tokens =
@@ -82,13 +91,26 @@ class NetworkModule {
                     refreshTokenResponse.close()
                     response = chain.proceed(currentRequest)
                 } else if (refreshTokenResponse.code == 401) {
+                    refreshTokenResponse.close()
                     Timber.tag(TAG)
                         .d("NetworkModule: Refresh token died response=$refreshTokenResponse")
+                    preferencesRepository.clearTokens()
                     EventBus.getDefault().post(AuthEvent())
                 }
             }
             response
         }
+
+    @Provides
+    @ApplicationScope
+    @Named("refresh")
+    fun provideOkHttpClientForRefresh(): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
+        return builder.build()
+    }
 
     @Provides
     @ApplicationScope
@@ -102,7 +124,6 @@ class NetworkModule {
             .addInterceptor(restInterceptor)
         return builder.build()
     }
-
 
     @Provides
     @ApplicationScope

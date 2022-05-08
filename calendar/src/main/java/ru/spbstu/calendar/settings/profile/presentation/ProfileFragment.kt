@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -19,16 +21,19 @@ import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.ProfileFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.getInitials
 import ru.spbstu.common.extensions.setDebounceClickListener
+import ru.spbstu.common.network.PictureUrlHelper
 import javax.inject.Inject
 
 class ProfileFragment : Fragment() {
 
     @Inject
     lateinit var viewModel: ProfileViewModel
+
+    @Inject
+    lateinit var pictureUrlHelper: PictureUrlHelper
 
     private var _binding: ProfileFragmentBinding? = null
     private val binding get() = _binding!!
@@ -71,54 +76,82 @@ class ProfileFragment : Fragment() {
             .launchIn(lifecycleScope)
 
         viewModel.state
-            .filterNotNull()
             .onEach {
-                val profile = it.profile
-                binding.fragmentProfileName.text = profile.name
-                if (!profile.avatarUrl.isNullOrEmpty()) {
-                    binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
-                    binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
-                    Glide.with(this)
-                        .load(profile.avatarUrl)
-                        .centerCrop()
-                        .into(binding.fragmentProfileAvatar.layoutAvatarAvatar)
+                if (it == null) {
+                    hideProgress()
                 } else {
-                    val initials = profile.name.getInitials()
-                    if (initials == null) {
-                        binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
-                        binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
-                        binding.fragmentProfileAvatar.layoutAvatarAvatar.setImageDrawable(
-                            ColorDrawable(
-                                ContextCompat.getColor(requireContext(), R.color.primaryVariant)
-                            )
-                        )
-                    } else {
-                        binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = false
-                        binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = true
-                        binding.fragmentProfileAvatar.layoutAvatarInitials.text =
-                            profile.name.getInitials()
+                    when (it) {
+                        is ProfileViewModel.State.Data -> {
+                            hideProgress()
+                            val profile = it.profile
+                            binding.fragmentProfileName.text = profile.name
+                            if (!profile.avatarUrl.isNullOrEmpty()) {
+                                binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible = true
+                                binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible = false
+                                Glide.with(this)
+                                    .load(pictureUrlHelper.getPictureUrl(profile.avatarUrl))
+                                    .centerCrop()
+                                    .into(binding.fragmentProfileAvatar.layoutAvatarAvatar)
+                            } else {
+                                val initials = profile.name.getInitials()
+                                if (initials == null) {
+                                    binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible =
+                                        true
+                                    binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible =
+                                        false
+                                    binding.fragmentProfileAvatar.layoutAvatarAvatar.setImageDrawable(
+                                        ColorDrawable(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.primaryVariant
+                                            )
+                                        )
+                                    )
+                                } else {
+                                    binding.fragmentProfileAvatar.layoutAvatarAvatar.isVisible =
+                                        false
+                                    binding.fragmentProfileAvatar.layoutAvatarInitials.isVisible =
+                                        true
+                                    binding.fragmentProfileAvatar.layoutAvatarInitials.text =
+                                        profile.name.getInitials()
+                                }
+                            }
+
+                            if (profile.email.isNullOrEmpty()) {
+                                binding.fragmentProfileEmailLabel.isVisible = false
+                                binding.fragmentProfileEmailCard.isVisible = false
+                            } else {
+                                binding.fragmentProfileEmailLabel.isVisible = true
+                                binding.fragmentProfileEmailCard.isVisible = true
+                                binding.fragmentProfileEmail.text = profile.email
+                            }
+
+                            if (profile.phone.isNullOrEmpty()) {
+                                binding.fragmentProfilePhoneLabel.isVisible = false
+                                binding.fragmentProfilePhoneCard.isVisible = false
+                            } else {
+                                binding.fragmentProfilePhoneLabel.isVisible = true
+                                binding.fragmentProfilePhoneCard.isVisible = true
+                                binding.fragmentProfilePhone.text = profile.phone
+                            }
+                        }
+                        ProfileViewModel.State.Loading -> {
+                            showProgress()
+                        }
                     }
-                }
-
-                if (profile.email.isNullOrEmpty()) {
-                    binding.fragmentProfileEmailLabel.isVisible = false
-                    binding.fragmentProfileEmailCard.isVisible = false
-                } else {
-                    binding.fragmentProfileEmailLabel.isVisible = true
-                    binding.fragmentProfileEmailCard.isVisible = true
-                    binding.fragmentProfileEmail.text = profile.email
-                }
-
-                if (profile.phone.isNullOrEmpty()) {
-                    binding.fragmentProfilePhoneLabel.isVisible = false
-                    binding.fragmentProfilePhoneCard.isVisible = false
-                } else {
-                    binding.fragmentProfilePhoneLabel.isVisible = true
-                    binding.fragmentProfilePhoneCard.isVisible = true
-                    binding.fragmentProfilePhone.text = profile.phone
                 }
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun showProgress() {
+        binding.frgAuthShadow.isVisible = true
+        binding.frgMainProgressBar.isVisible = true
+    }
+
+    private fun hideProgress() {
+        binding.frgAuthShadow.isVisible = false
+        binding.frgMainProgressBar.isVisible = false
     }
 
     override fun onDestroy() {

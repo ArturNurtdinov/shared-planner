@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.settings.profile.presentation.ProfileViewModel
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 import ru.spbstu.common.errors.ErrorStringsProvider
@@ -26,8 +27,9 @@ class ProfileSubModule {
         router: CalendarRouter,
         calendarRepository: CalendarRepository,
         errorStringsProvider: ErrorStringsProvider,
+        preferencesRepository: PreferencesRepository,
     ): ViewModel {
-        return ProfileViewModel(router, calendarRepository, errorStringsProvider)
+        return ProfileViewModel(router, calendarRepository, errorStringsProvider, preferencesRepository)
     }
 
     @Provides

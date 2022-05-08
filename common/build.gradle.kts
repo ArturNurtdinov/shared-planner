@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     kotlin("android")
     kotlin("kapt")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -17,11 +18,11 @@ android {
     buildTypes {
         getByName("debug") {
             isMinifyEnabled = false
-            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru/\"")
+            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru\"")
             buildConfigField("String", "REFRESH_ENDPOINT", "\"https://shared-planner.ru/auth/refresh\"")
         }
         getByName("release") {
-            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru/\"")
+            buildConfigField("String", "ENDPOINT", "\"https://shared-planner.ru\"")
             buildConfigField("String", "REFRESH_ENDPOINT", "\"https://shared-planner.ru/auth/refresh\"")
             isMinifyEnabled = false
             proguardFiles(

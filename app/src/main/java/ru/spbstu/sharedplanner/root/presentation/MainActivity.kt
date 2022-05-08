@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import ru.ok.android.sdk.OkAuthActivity
@@ -68,7 +70,9 @@ class MainActivity : AppCompatActivity() {
 
     @Subscribe()
     fun onEvent(event: AuthEvent) {
-
+        lifecycleScope.launch(Dispatchers.Main) {
+            navigator.goToLogin()
+        }
     }
 
     private fun inject() {

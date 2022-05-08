@@ -15,7 +15,6 @@ class MainActivityViewModel(rootRouter: RootRouter, private val api: Api): ViewM
     val sendTokenResult = _sendTokenResult.receiveAsFlow()
 
     fun sendToken() {
-        // дернуть апи
 
         viewModelScope.launch(Dispatchers.Default) {
             delay(2000)

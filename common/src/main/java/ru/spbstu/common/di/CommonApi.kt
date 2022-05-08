@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.errors.ErrorStringsProvider
 import ru.spbstu.common.network.Api
+import ru.spbstu.common.network.PictureUrlHelper
 
 interface CommonApi {
     fun context(): Context
@@ -17,4 +18,6 @@ interface CommonApi {
     fun provideApi(): Api
 
     fun errorStringsProvider(): ErrorStringsProvider
+
+    fun pictureUrlHelper(): PictureUrlHelper
 }

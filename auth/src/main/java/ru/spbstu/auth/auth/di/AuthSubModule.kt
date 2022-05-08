@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.spbstu.auth.AuthRepository
 import ru.spbstu.auth.AuthRouter
 import ru.spbstu.auth.auth.presentation.AuthViewModel
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 import ru.spbstu.common.errors.ErrorStringsProvider
@@ -25,9 +26,10 @@ class AuthSubModule {
     fun provideViewModel(
         authRouter: AuthRouter,
         authRepository: AuthRepository,
-        errorStringsProvider: ErrorStringsProvider
+        errorStringsProvider: ErrorStringsProvider,
+        preferencesRepository: PreferencesRepository,
     ): ViewModel {
-        return AuthViewModel(authRouter, authRepository, errorStringsProvider)
+        return AuthViewModel(authRouter, authRepository, errorStringsProvider, preferencesRepository)
     }
 
     @Provides

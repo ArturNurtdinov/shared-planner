@@ -10,10 +10,10 @@ import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.prefs.PreferencesRepositoryImpl
 import ru.spbstu.common.di.scope.ApplicationScope
 import ru.spbstu.common.errors.ErrorStringsProvider
+import ru.spbstu.common.network.PictureUrlHelper
 import javax.inject.Named
 
 const val SHARED_PREFERENCES_FILE = "ru.spbstu.sharedplanner.preferences"
-const val ENCRYPTED_SHARED_PREFERENCES_FILE = "ru.spbstu.sharedplanner.encrypted"
 
 @Module
 class CommonModule {
@@ -32,4 +32,9 @@ class CommonModule {
     @ApplicationScope
     fun provideErrorStringsProvider(appContext: Context): ErrorStringsProvider =
         ErrorStringsProvider(appContext)
+
+    @Provides
+    @ApplicationScope
+    fun providePictureUrlHelper(preferencesRepository: PreferencesRepository) =
+        PictureUrlHelper(preferencesRepository)
 }

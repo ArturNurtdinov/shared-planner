@@ -30,6 +30,7 @@ import ru.spbstu.auth.databinding.FragmentAuthBinding
 import ru.spbstu.auth.di.AuthApi
 import ru.spbstu.auth.di.AuthComponent
 import ru.spbstu.common.di.FeatureUtils
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.extensions.setDebounceClickListener
 import timber.log.Timber
 import javax.inject.Inject
@@ -105,10 +106,28 @@ class AuthFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.errorMessage
             .onEach {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                if (it.isNotEmpty()) {
+                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                }
                 hideProgress()
             }
             .launchIn(lifecycleScope)
+
+        viewModel.getLastSignedType()?.let {
+            when (it) {
+                PreferencesRepository.LastSignedType.GOOGLE -> {
+                    showProgress()
+                    val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+                    handleGoogleAccount(account, true)
+                }
+                PreferencesRepository.LastSignedType.VK -> {
+
+                }
+                PreferencesRepository.LastSignedType.OK -> {
+
+                }
+            }
+        }
     }
 
     private fun showProgress() {
@@ -144,9 +163,7 @@ class AuthFragment : Fragment() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val authCode = account!!.serverAuthCode ?: return
-            viewModel.authGoogle(authCode)
-            Timber.tag(TAG).w("Sign In: $authCode")
+            handleGoogleAccount(account, false)
         } catch (e: ApiException) {
             Timber.tag(TAG).e(e, "Sign In: failed, code=${e.statusCode}")
             if (e.statusCode != GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
@@ -155,6 +172,20 @@ class AuthFragment : Fragment() {
             }
             hideProgress()
         }
+    }
+
+    private fun handleGoogleAccount(account: GoogleSignInAccount?, isAutoAuth: Boolean) {
+        if (account == null) {
+            hideProgress()
+            return
+        }
+        val authCode = account.serverAuthCode
+        if (authCode == null) {
+            hideProgress()
+            return
+        }
+        viewModel.authGoogle(authCode, isAutoAuth)
+        Timber.tag(TAG).w("Sign In: $authCode")
     }
 
     override fun onDestroyView() {

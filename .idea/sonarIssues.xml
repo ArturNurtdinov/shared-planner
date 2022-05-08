@@ -688,6 +688,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/build/generated/source/buildConfig/debug/ru/spbstu/common/BuildConfig.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/build/tmp/kapt3/stubs/debug/ru/spbstu/common/di/modules/NetworkModule.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/di/CommonApi.kt">
           <value>
             <set />
@@ -744,6 +754,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/Api.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/PictureUrlHelper.kt">
           <value>
             <set />
           </value>
