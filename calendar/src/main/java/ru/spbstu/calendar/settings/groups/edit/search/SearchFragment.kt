@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import ru.spbstu.calendar.databinding.SearchFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
@@ -49,10 +51,11 @@ class SearchFragment : Fragment() {
                 }
             })
 
-        binding.fragmentSearchParticipantsFound.adapter = foundUsersAdapter
-        binding.fragmentSearchParticipantsAdded.adapter = addedUsersAdapter
+        val merged = ConcatAdapter(foundUsersAdapter, addedUsersAdapter)
+        binding.fragmentSearchParticipantsFound.adapter = merged
+//        binding.fragmentSearchParticipantsAdded.adapter = addedUsersAdapter
 
-        binding.fragmentSearchParticipantsLabel.isVisible = false
+//        binding.fragmentSearchParticipantsLabel.isVisible = false
 
 //        findNavController().previousBackStackEntry?.savedStateHandle?.set("key", bundleOf())
 
@@ -65,10 +68,16 @@ class SearchFragment : Fragment() {
         viewModel.state
             .onEach {
                 addedUsersAdapter.submitList(it.added)
-                foundUsersAdapter.submitList(it.found)
-                binding.fragmentSearchParticipantsLabel.isVisible = it.added.isNotEmpty()
+//                foundUsersAdapter.submitList(it.found)
+//                binding.fragmentSearchParticipantsLabel.isVisible = it.added.isNotEmpty()
             }
             .launchIn(lifecycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.searchFlow.collectLatest { pagingData ->
+                foundUsersAdapter.submitData(pagingData)
+            }
+        }
     }
 
     override fun onDestroy() {

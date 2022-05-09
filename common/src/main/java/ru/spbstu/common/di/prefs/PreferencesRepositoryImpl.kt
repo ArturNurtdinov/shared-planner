@@ -15,7 +15,7 @@ internal class PreferencesRepositoryImpl(private val sharedPreferences: SharedPr
         get() = sharedPreferences.getString(REFRESH_TOKEN_KEY, "") ?: ""
 
     override fun setRefresh(refresh: String) {
-        sharedPreferences.edit().putString(REFRESH_TOKEN_KEY, token).apply()
+        sharedPreferences.edit().putString(REFRESH_TOKEN_KEY, refresh).apply()
     }
 
     override val lastSignedType: PreferencesRepository.LastSignedType?

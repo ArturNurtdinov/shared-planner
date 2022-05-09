@@ -27,4 +27,6 @@ object Versions {
     const val google = "20.1.0"
     const val spinner = "1.1.9"
     const val colorPicker = "0.2.2"
+    const val paging3 = "3.1.1"
+    const val recycler = "1.2.1"
 }

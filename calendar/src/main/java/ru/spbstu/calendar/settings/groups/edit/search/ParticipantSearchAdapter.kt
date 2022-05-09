@@ -3,6 +3,7 @@ package ru.spbstu.calendar.settings.groups.edit.search
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,7 @@ import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.common.extensions.setDebounceClickListener
 
 class ParticipantSearchAdapter(private val clickListener: (Profile) -> Unit) :
-    ListAdapter<Profile, ParticipantSearchAdapter.ParticipantViewHolder>(ParticipantUiDiffUtil) {
+    PagingDataAdapter<Profile, ParticipantSearchAdapter.ParticipantViewHolder>(ParticipantUiDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantViewHolder {
         return ParticipantViewHolder(
@@ -23,7 +24,7 @@ class ParticipantSearchAdapter(private val clickListener: (Profile) -> Unit) :
     }
 
     override fun onBindViewHolder(holder: ParticipantViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(getItem(position) ?: return)
     }
 
     class ParticipantViewHolder(

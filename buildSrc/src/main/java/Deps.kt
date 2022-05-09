@@ -39,6 +39,8 @@ object Deps {
     val googleAuth by lazy { "com.google.android.gms:play-services-auth:${Versions.google}" }
     private val spinner by lazy { "com.github.skydoves:powerspinner:${Versions.spinner}" }
     private val colorPicker by lazy { "me.jfenn.ColorPickerDialog:base:${Versions.colorPicker}" }
+    private val paging by lazy { "androidx.paging:paging-runtime:${Versions.paging3}" }
+    private val recycler by lazy { "androidx.recyclerview:recyclerview:${Versions.recycler}" }
 
     val appLibraries = arrayListOf<String>().apply {
         add(kotlinStdLib)
@@ -63,6 +65,8 @@ object Deps {
         add(calendarView)
         add(spinner)
         add(colorPicker)
+        add(paging)
+        add(recycler)
     }
 
     val network = arrayListOf<String>().apply {

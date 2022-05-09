@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="default_notification_channel_id" translatable="false">32109</string>
     <integer name="com_vk_sdk_AppId">8139048</integer>
     <string name="app_name">Shared Planner</string>
     <string name="auth_with">Sign in with:</string>

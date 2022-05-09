@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKAccessToken
@@ -49,6 +50,7 @@ class AuthFragment : Fragment() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestServerAuthCode(getString(R.string.server_client_id))
             .requestEmail()
+            .requestScopes(Scope("https://www.googleapis.com/auth/user.phonenumbers.read"))
             .build()
         val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
         val contract = GoogleSignInContractResult(googleSignInClient)

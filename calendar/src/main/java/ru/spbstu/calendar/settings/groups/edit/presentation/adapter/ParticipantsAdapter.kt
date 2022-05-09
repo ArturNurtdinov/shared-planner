@@ -35,7 +35,7 @@ class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val currentItem = currentList[position]) {
             is ParticipantUi.ParticipantUiItem -> {
-                (holder as? ParticipantViewHolder)?.bind(currentItem)
+                (holder as? ParticipantViewHolder)?.bind(currentItem, position)
             }
             is ParticipantUi.AddParticipant -> {
                 (holder as? AddParticipantViewHolder)?.bind()
@@ -48,7 +48,8 @@ class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
         private val clickListener: (ParticipantUi) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(participantUi: ParticipantUi.ParticipantUiItem) {
+        fun bind(participantUi: ParticipantUi.ParticipantUiItem, position: Int) {
+            binding.participantItemLabel.isVisible = position == 0
             binding.participantItemAvatarLayout.root.isVisible =
                 !participantUi.profile.avatarUrl.isNullOrEmpty()
             binding.participantItemTitle.text = participantUi.profile.name

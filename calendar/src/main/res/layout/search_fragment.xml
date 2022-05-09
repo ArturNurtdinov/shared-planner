@@ -65,53 +65,54 @@
         android:background="@color/rippleColor"
         app:layout_constraintTop_toBottomOf="@id/fragment_search__toolbar" />
 
-    <androidx.core.widget.NestedScrollView
+    <!--<ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
         android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:nestedScrollingEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_search__divider1">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_search__participants_found"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/participant_item" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_search__participants_found"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fragment_search__divider1"
+        tools:listitem="@layout/participant_item" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/fragment_search__participants_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingHorizontal="8dp"
-                android:text="@string/added_users"
-                android:textColor="@color/rippleColor"
-                android:textSize="12sp"
-                app:layout_constraintTop_toBottomOf="@id/fragment_search__participants_found" />
+    <!--<androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_search__participants_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:paddingHorizontal="8dp"
+        android:text="@string/added_users"
+        android:textColor="@color/rippleColor"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/fragment_search__participants_found" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_search__participants_added"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:nestedScrollingEnabled="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/fragment_search__participants_label"
-                tools:listitem="@layout/participant_item" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_search__participants_added"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/fragment_search__participants_label"
+        tools:listitem="@layout/participant_item" />-->
 
 
-    </androidx.core.widget.NestedScrollView>
+    <!-- </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+ </ScrollView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

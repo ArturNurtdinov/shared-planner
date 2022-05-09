@@ -28,6 +28,26 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/notifications/NotificationsService.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/notifications/di/NotificationsComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/notifications/di/NotificationsSubComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/di/RootComponent.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/root/presentation/MainActivity.kt">
           <value>
             <set />
@@ -359,6 +379,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Profile.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/notifications/NotificationsService.kt">
           <value>
             <set />
           </value>
