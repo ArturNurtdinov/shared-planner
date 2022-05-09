@@ -1,5 +1,6 @@
 package ru.spbstu.calendar.calendar.day.presentation
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -65,7 +66,7 @@ class DayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter.submitList(
-            listOf(Event(1, Date().time, Date().time, "Start work", Group(0, "Work", true, 25)))
+            listOf(Event(1, Date().time, Date().time, "Start work", Group(0, "Work", Color.WHITE,true, 25)))
         )
     }
 

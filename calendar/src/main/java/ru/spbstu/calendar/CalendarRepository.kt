@@ -29,4 +29,22 @@ class CalendarRepository(
             SharedPlannerResult.Error(UnknownError)
         }
     }
+
+    suspend fun searchUsers(
+        query: String,
+        page: Int
+    ): SharedPlannerResult<Pair<List<Profile>, Int>> {
+        val response = api.searchUsers(query, SEARCH_PAGE_SIZE, page)
+        return if (response.isSuccessful) {
+            val body = response.body()!!
+            SharedPlannerResult.Success(body.users
+                .map { Profile.fromNetworkModule(it) } to body.page)
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    companion object {
+        const val SEARCH_PAGE_SIZE = 20
+    }
 }

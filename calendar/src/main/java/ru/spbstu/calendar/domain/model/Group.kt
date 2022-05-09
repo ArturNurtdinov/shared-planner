@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Group(
     val id: Long,
     val title: String,
+    val color: Int,
     val notificationsEnabled: Boolean,
     val participants: Int,
 ): Parcelable

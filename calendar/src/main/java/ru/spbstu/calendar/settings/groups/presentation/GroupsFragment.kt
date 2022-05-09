@@ -1,5 +1,6 @@
 package ru.spbstu.calendar.settings.groups.presentation
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -65,9 +66,9 @@ class GroupsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter.submitList(
             listOf(
-                GroupUi.GroupUiItem(Group(1, "Friends", true, 0)),
-                GroupUi.GroupUiItem(Group(1, "Family", true, 1)),
-                GroupUi.GroupUiItem(Group(1, "Work", false, 25)),
+                GroupUi.GroupUiItem(Group(1, "Friends", Color.WHITE,true, 0)),
+                GroupUi.GroupUiItem(Group(1, "Family", Color.WHITE,true, 1)),
+                GroupUi.GroupUiItem(Group(1, "Work", Color.WHITE,false, 25)),
                 GroupUi.CreateGroupItem,
             )
         )

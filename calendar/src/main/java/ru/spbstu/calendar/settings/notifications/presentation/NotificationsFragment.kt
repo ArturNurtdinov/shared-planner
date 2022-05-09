@@ -1,5 +1,6 @@
 package ru.spbstu.calendar.settings.notifications.presentation
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -64,9 +65,9 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter.submitList(
             listOf(
-                Group(1, "Friends", true, 0),
-                Group(1, "Family", true, 1),
-                Group(1, "Work", false, 25),
+                Group(1, "Friends", Color.WHITE, true, 0),
+                Group(1, "Family", Color.WHITE, true, 1),
+                Group(1, "Work", Color.WHITE, false, 25),
             )
         ) {
             binding.fragmentNotificationsEmptyTitle.isVisible = false

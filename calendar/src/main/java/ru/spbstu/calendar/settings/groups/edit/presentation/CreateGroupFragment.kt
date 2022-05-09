@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog
 import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.CreateGroupFragmentBinding
@@ -17,6 +21,7 @@ import ru.spbstu.calendar.di.CalendarComponent
 import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantUi
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantsAdapter
+import ru.spbstu.calendar.settings.groups.edit.search.SearchFragment
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.hideKeyboard
@@ -38,7 +43,7 @@ class CreateGroupFragment : Fragment() {
                 viewModel.openSearch()
             }
             is ParticipantUi.ParticipantUiItem -> {
-
+                viewModel.deleteUser(it.profile)
             }
         }
 
@@ -84,6 +89,7 @@ class CreateGroupFragment : Fragment() {
         }
 
         binding.fragmentCreateGroupParticipants.adapter = adapter
+        binding.fragmentCreateGroupParticipants.itemAnimator = null
         binding.fragmentCreateGroupParticipants.setHasFixedSize(false)
 
         binding.fragmentCreateGroupColorPicker.background = GradientDrawable().apply {
@@ -107,10 +113,16 @@ class CreateGroupFragment : Fragment() {
                 .show(childFragmentManager, "colorPicker")
         }
 
-//        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle?>("key")
-//            ?.observe(viewLifecycleOwner) { result ->
-//                Log.d("WWWW", "Search result")
-//            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle?>(
+            SearchFragment.RESULT_KEY
+        )
+            ?.observe(viewLifecycleOwner) { result ->
+                val added = result.getParcelableArray(SearchFragment.RESULT_DATA_KEY)?.toList()
+                    ?: return@observe
+
+                viewModel.onSearchAddedResult(added = added as List<Profile>)
+                result.clear()
+            }
 
         return binding.root
     }
@@ -140,31 +152,15 @@ class CreateGroupFragment : Fragment() {
         binding.fragmentCreateGroupParticipantsLabel.text =
             resources.getQuantityString(R.plurals.participants, 25, 25)
 
-        adapter.submitList(
-            listOf(
-                ParticipantUi.ParticipantUiItem(
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-//                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
-                    )
-                ),
-                ParticipantUi.ParticipantUiItem(
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-//                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
-                    )
-                ),
-                ParticipantUi.AddParticipant,
-            )
-        )
+
+        viewModel.state
+            .onEach {
+                adapter.submitList(mutableListOf<ParticipantUi?>().apply {
+                    addAll(it.users.map { ParticipantUi.ParticipantUiItem(it) })
+                    add(ParticipantUi.AddParticipant)
+                })
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroy() {

@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ConcatAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -15,8 +20,10 @@ import kotlinx.coroutines.launch
 import ru.spbstu.calendar.databinding.SearchFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
+import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantUi
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantsAdapter
 import ru.spbstu.common.di.FeatureUtils
+import ru.spbstu.common.extensions.setDebounceClickListener
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -27,11 +34,17 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val addedUsersAdapter = ParticipantsAdapter {
-
+        viewModel.deleteUser((it as ParticipantUi.ParticipantUiItem).profile)
+        refreshFound()
     }
 
     private val foundUsersAdapter = ParticipantSearchAdapter {
+        viewModel.addUser(it)
+        refreshFound()
+    }
 
+    private fun refreshFound() {
+        foundUsersAdapter.refresh()
     }
 
     override fun onCreateView(
@@ -58,6 +71,27 @@ class SearchFragment : Fragment() {
 //        binding.fragmentSearchParticipantsLabel.isVisible = false
 
 //        findNavController().previousBackStackEntry?.savedStateHandle?.set("key", bundleOf())
+
+        binding.fragmentSearchClear.setDebounceClickListener {
+            binding.fragmentSearchInput.setText("", TextView.BufferType.EDITABLE)
+        }
+
+        binding.fragmentSearchInput.addTextChangedListener {
+            binding.fragmentSearchClear.isVisible = !it.isNullOrEmpty()
+            val query = it?.toString() ?: return@addTextChangedListener
+            viewModel.query = query
+            foundUsersAdapter.refresh()
+        }
+
+        binding.fragmentSearchDone.setDebounceClickListener {
+            val added = viewModel.getAdded().toTypedArray()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                RESULT_KEY, bundleOf(
+                    RESULT_DATA_KEY to added
+                )
+            )
+            viewModel.onBackPressed()
+        }
 
         return binding.root
     }
@@ -90,6 +124,11 @@ class SearchFragment : Fragment() {
             .searchComponentFactory()
             .create(this)
             .inject(this)
+    }
+
+    companion object {
+        const val RESULT_KEY = "ru.spbstu.sharedplanned.search.RESULT_KEY"
+        const val RESULT_DATA_KEY = "ru.spbstu.sharedplanned.search.RESULT_DATA_KEY"
     }
 
 }

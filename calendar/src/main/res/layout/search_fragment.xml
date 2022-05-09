@@ -34,11 +34,24 @@
                 android:gravity="center_vertical"
                 android:hint="@string/enter_name"
                 android:paddingStart="24dp"
-                android:paddingEnd="40dp"
+                android:paddingEnd="80dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/rippleColor"
                 android:textSize="16sp"
                 app:backgroundTint="@android:color/transparent" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/fragment_search__clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/icon_button_background"
+                android:cropToPadding="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_close_24"
+                android:tint="@color/black"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fragment_search__done"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/fragment_search__done"

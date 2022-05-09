@@ -107,9 +107,9 @@ class NetworkModule {
     @Named("refresh")
     fun provideOkHttpClientForRefresh(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .callTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.DAYS)
+            .connectTimeout(10, TimeUnit.DAYS)
+            .callTimeout(10, TimeUnit.DAYS)
         return builder.build()
     }
 
@@ -119,9 +119,9 @@ class NetworkModule {
         restInterceptor: Interceptor,
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.SECONDS)
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .callTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.DAYS)
+            .connectTimeout(10, TimeUnit.DAYS)
+            .callTimeout(10, TimeUnit.DAYS)
             .addInterceptor(restInterceptor)
         return builder.build()
     }

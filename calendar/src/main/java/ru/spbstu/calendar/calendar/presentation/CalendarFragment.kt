@@ -88,9 +88,9 @@ class CalendarFragment : Fragment() {
             if (dialog?.isVisible == true) return@setDebounceClickListener
             dialog = ShowGroupsDialogFragment.newInstance(
                 arrayListOf(
-                    GroupSelected(Group(1, "Friends", true, 0), true),
-                    GroupSelected(Group(2, "Family", true, 1), true),
-                    GroupSelected(Group(3, "Work", false, 25), true),
+                    GroupSelected(Group(1, "Friends", Color.WHITE,true, 0), true),
+                    GroupSelected(Group(2, "Family", Color.WHITE,true, 1), true),
+                    GroupSelected(Group(3, "Work", Color.WHITE,false, 25), true),
                 )
             )
             dialog?.show(childFragmentManager, ShowGroupsDialogFragment::class.java.simpleName)

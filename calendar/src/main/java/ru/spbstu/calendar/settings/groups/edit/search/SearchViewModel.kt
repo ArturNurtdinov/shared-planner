@@ -1,6 +1,5 @@
 package ru.spbstu.calendar.settings.groups.edit.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
@@ -10,75 +9,54 @@ import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantUi
+import ru.spbstu.common.network.SharedPlannerResult
 
 class SearchViewModel(
     private val router: CalendarRouter,
     private val calendarRepository: CalendarRepository,
 ) : ViewModel() {
 
-    private val _state: MutableStateFlow<State> = MutableStateFlow(State(emptyList(), emptyList()))
+    private val _state: MutableStateFlow<State> = MutableStateFlow(State(emptyList()))
     val state = _state.asStateFlow()
     var query: String = ""
 
-    val searchFlow = Pager(config = PagingConfig(pageSize = 20),
+    val searchFlow = Pager(config = PagingConfig(pageSize = CalendarRepository.SEARCH_PAGE_SIZE),
         pagingSourceFactory = { SearchPagingSource(calendarRepository, query) })
         .flow
         .cachedIn(viewModelScope)
 
-    init {
+    fun onBackPressed(): Boolean = router.pop()
+
+    fun addUser(profile: Profile) {
         val current = _state.value
         _state.value = current.copy(
-            added = listOf(
-                ParticipantUi.ParticipantUiItem(
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-//                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
-                    )
-                ),
-                ParticipantUi.ParticipantUiItem(
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-//                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
-                    )
-                ),
-            ),
-            found = listOf(
-                Profile(
-                    0,
-                    "Artur Nurtdinov",
-//                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-                    "",
-                    "a.nurtdinow@yandex.ru",
-                    "+79173863997",
-                ),
-                Profile(
-                    1,
-                    "Artur Nurtdinov",
-                    "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-//                    "",
-                    "a.nurtdinow@yandex.ru",
-                    "+79173863997",
-                )
-            )
+            added = mutableListOf<ParticipantUi>().apply {
+                addAll(current.added)
+                add(ParticipantUi.ParticipantUiItem(profile))
+            }
         )
     }
 
-    fun onBackPressed(): Boolean = router.pop()
+    fun deleteUser(profile: Profile) {
+        val current = _state.value
+        _state.value = current.copy(
+            added = mutableListOf<ParticipantUi>().apply {
+                addAll(current.added)
+                remove(ParticipantUi.ParticipantUiItem(profile))
+            }
+        )
+    }
+
+    fun getAdded(): List<Profile> {
+        val current = _state.value
+        return current.added.map { (it as ParticipantUi.ParticipantUiItem).profile }
+    }
 
     data class State(
         val added: List<ParticipantUi>,
-        val found: List<Profile>,
     )
 
-    private class SearchPagingSource(
+    private inner class SearchPagingSource(
         private val calendarRepository: CalendarRepository,
         private val query: String,
     ) : PagingSource<Int, Profile>() {
@@ -98,37 +76,39 @@ class SearchViewModel(
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Profile> {
             val nextPageNumber = params.key ?: 1
-            /*val response = backend.searchUsers(query, nextPageNumber) */
-            Log.d("WWWW", "nextPage = $nextPageNumber")
-            if (nextPageNumber > 40) {
+            if (query.isEmpty()) {
                 return LoadResult.Page(
                     data = emptyList(),
-                    prevKey = null, // Only paging forward.
-                    nextKey = null
+                    prevKey = null,
+                    nextKey = null,
                 )
             }
-            return LoadResult.Page(
-                data = listOf(
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-//                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
-                    ),
-                    Profile(
-                        0,
-                        "Artur Nurtdinov",
-//                        "https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg",
-                        "",
-                        "a.nurtdinow@yandex.ru",
-                        "+79173863997",
+            return when (val response = calendarRepository.searchUsers(query, nextPageNumber)) {
+                is SharedPlannerResult.Success -> {
+                    if (response.data.first.isEmpty()) {
+                        LoadResult.Page(
+                            data = emptyList(),
+                            prevKey = null, // Only paging forward.
+                            nextKey = null
+                        )
+                    } else {
+                        val added =
+                            _state.value.added.mapNotNull { if (it is ParticipantUi.ParticipantUiItem) it.profile else null }
+                        LoadResult.Page(
+                            data = response.data.first.filter { found -> added.none { it.id == found.id } },
+                            prevKey = null, // Only paging forward.
+                            nextKey = response.data.second + 1
+                        )
+                    }
+                }
+                is SharedPlannerResult.Error -> {
+                    LoadResult.Page(
+                        data = emptyList(),
+                        prevKey = null, // Only paging forward.
+                        nextKey = null,
                     )
-                ),
-                prevKey = null, // Only paging forward.
-                nextKey = nextPageNumber + 1
-            )
+                }
+            }
         }
 
     }
