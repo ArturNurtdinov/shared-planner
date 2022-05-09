@@ -8,10 +8,15 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.Api
 import timber.log.Timber
 
-class MainActivityViewModel(rootRouter: RootRouter, private val api: Api) : ViewModel() {
+class MainActivityViewModel(
+    rootRouter: RootRouter,
+    private val api: Api,
+    preferencesRepository: PreferencesRepository
+) : ViewModel() {
 
     init {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
@@ -24,6 +29,14 @@ class MainActivityViewModel(rootRouter: RootRouter, private val api: Api) : View
             val token = task.result
             Timber.tag(TAG).d("newToken on start: $token")
 
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentUserResponse = api.getUser()
+            if (currentUserResponse.isSuccessful) {
+                val id = currentUserResponse.body()?.id ?: return@launch
+                preferencesRepository.setSelfId(id)
+            }
         }
     }
 

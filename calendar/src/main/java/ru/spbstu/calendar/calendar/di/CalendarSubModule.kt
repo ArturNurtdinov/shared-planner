@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.presentation.CalendarViewModel
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 
@@ -20,8 +22,12 @@ class CalendarSubModule {
     @Provides
     @IntoMap
     @ViewModelKey(CalendarViewModel::class)
-    fun provideViewModel(router: CalendarRouter): ViewModel {
-        return CalendarViewModel(router)
+    fun provideViewModel(
+        router: CalendarRouter,
+        calendarRepository: CalendarRepository,
+        preferencesRepository: PreferencesRepository,
+    ): ViewModel {
+        return CalendarViewModel(router, calendarRepository, preferencesRepository)
     }
 
     @Provides

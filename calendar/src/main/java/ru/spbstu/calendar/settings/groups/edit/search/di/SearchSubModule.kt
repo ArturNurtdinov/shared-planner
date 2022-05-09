@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.settings.groups.edit.search.SearchViewModel
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 
@@ -23,9 +24,10 @@ class SearchSubModule {
     @ViewModelKey(SearchViewModel::class)
     fun provideViewModel(
         router: CalendarRouter,
-        calendarRepository: CalendarRepository
+        calendarRepository: CalendarRepository,
+        preferencesRepository: PreferencesRepository,
     ): ViewModel {
-        return SearchViewModel(router, calendarRepository)
+        return SearchViewModel(router, calendarRepository, preferencesRepository)
     }
 
     @Provides

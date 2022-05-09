@@ -32,6 +32,13 @@ internal class PreferencesRepositoryImpl(private val sharedPreferences: SharedPr
         sharedPreferences.edit().putString(LAST_SIGNED_TYPE, type.name).apply()
     }
 
+    override val selfId: Long?
+        get() = sharedPreferences.getLong(SELF_ID_KEY, 0L)
+
+    override fun setSelfId(selfId: Long) {
+        sharedPreferences.edit().putLong(SELF_ID_KEY, selfId).apply()
+    }
+
     override fun clearTokens() {
         setRefresh("")
         setToken("")
@@ -41,6 +48,6 @@ internal class PreferencesRepositoryImpl(private val sharedPreferences: SharedPr
         private const val ACCESS_TOKEN_KEY = "ru.spbstu.sharedplanner.prefs.ACCESS_TOKEN_KEY"
         private const val REFRESH_TOKEN_KEY = "ru.spbstu.sharedplanner.prefs.REFRESH_TOKEN_KEY"
         private const val LAST_SIGNED_TYPE = "ru.spbstu.sharedplanner.prefs.LAST_SIGNED_TYPE"
-        private const val AUTH_CODE_KEY = "ru.spbstu.sharedplanner.prefs.AUTH_CODE_KEY"
+        private const val SELF_ID_KEY = "ru.spbstu.sharedplanner.prefs.SELF_ID_KEY"
     }
 }

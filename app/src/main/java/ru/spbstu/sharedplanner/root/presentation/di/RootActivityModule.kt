@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 import ru.spbstu.common.network.Api
@@ -28,10 +29,11 @@ class RootActivityModule {
     @ViewModelKey(MainActivityViewModel::class)
     fun provideViewModel(
         rootRouter: RootRouter,
-        api: Api
+        api: Api,
+        preferencesRepository: PreferencesRepository,
     ): ViewModel {
         return MainActivityViewModel(
-            rootRouter, api
+            rootRouter, api, preferencesRepository
         )
     }
 

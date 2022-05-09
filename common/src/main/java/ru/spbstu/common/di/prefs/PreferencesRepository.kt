@@ -13,6 +13,9 @@ interface PreferencesRepository {
     val lastSignedType: LastSignedType?
     fun setLastSignedType(type: LastSignedType)
 
+    val selfId: Long?
+    fun setSelfId(selfId: Long)
+
     fun clearTokens()
 
     @Parcelize

@@ -9,11 +9,13 @@ import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantUi
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.SharedPlannerResult
 
 class SearchViewModel(
     private val router: CalendarRouter,
     private val calendarRepository: CalendarRepository,
+    private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
     private val _state: MutableStateFlow<State> = MutableStateFlow(State(emptyList()))
@@ -95,7 +97,7 @@ class SearchViewModel(
                         val added =
                             _state.value.added.mapNotNull { if (it is ParticipantUi.ParticipantUiItem) it.profile else null }
                         LoadResult.Page(
-                            data = response.data.first.filter { found -> added.none { it.id == found.id } },
+                            data = response.data.first.filter { found -> added.none { it.id == found.id } && found.id != preferencesRepository.selfId },
                             prevKey = null, // Only paging forward.
                             nextKey = response.data.second + 1
                         )
