@@ -1,6 +1,5 @@
 package ru.spbstu.calendar.settings.notifications.presentation
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.NotificationsFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.setDebounceClickListener
 import javax.inject.Inject
