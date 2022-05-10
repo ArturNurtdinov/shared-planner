@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -92,23 +93,14 @@ class CreateGroupFragment : Fragment() {
         binding.fragmentCreateGroupParticipants.itemAnimator = null
         binding.fragmentCreateGroupParticipants.setHasFixedSize(false)
 
-        binding.fragmentCreateGroupColorPicker.background = GradientDrawable().apply {
-            shape = GradientDrawable.RECTANGLE
-            cornerRadius = 4.dp.toFloat()
-            setColor(Color.CYAN)
-        }
-
         binding.fragmentCreateGroupColorPicker.setDebounceClickListener {
+            val color = viewModel.state.value.color ?: Color.BLUE
             ColorPickerDialog()
-                .withColor(Color.CYAN) // the default / initial color
+                .withColor(color) // the default / initial color
                 .withAlphaEnabled(false)
-                .withListener { dialog, color ->
+                .withListener { dialog, colorNew ->
                     // a color has been picked; use it
-                    binding.fragmentCreateGroupColorPicker.background = GradientDrawable().apply {
-                        shape = GradientDrawable.RECTANGLE
-                        cornerRadius = 4.dp.toFloat()
-                        setColor(color)
-                    }
+                    viewModel.selectNewColor(colorNew)
                 }
                 .show(childFragmentManager, "colorPicker")
         }
@@ -123,6 +115,29 @@ class CreateGroupFragment : Fragment() {
                 viewModel.onSearchAddedResult(added = added as List<Profile>)
                 result.clear()
             }
+
+        binding.fragmentCreateGroupDone.setDebounceClickListener {
+            val mode = viewModel.mode ?: return@setDebounceClickListener
+            when (mode) {
+                CreateGroupViewModel.Mode.CreateGroup -> {
+                    val name = binding.fragmentCreateGroupInput.text?.toString()
+                        ?: return@setDebounceClickListener
+                    if (name.isEmpty() || name.length > binding.fragmentCreateGroupInputLayout.counterMaxLength) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.invalid_group_name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setDebounceClickListener
+                    }
+                    val color = viewModel.state.value.color ?: return@setDebounceClickListener
+                    viewModel.createGroup(name, color)
+                }
+                is CreateGroupViewModel.Mode.EditGroup -> {
+
+                }
+            }
+        }
 
         return binding.root
     }
@@ -144,7 +159,7 @@ class CreateGroupFragment : Fragment() {
                 binding.fragmentCreateGroupDone.isVisible = false
                 binding.fragmentCreateGroupEditName.isVisible = true
                 binding.fragmentCreateGroupInputLayout.isCounterEnabled = false
-                binding.fragmentCreateGroupInput.setText(mode.group.title)
+                binding.fragmentCreateGroupInput.setText(mode.group.name)
             }
         }
 
@@ -155,6 +170,15 @@ class CreateGroupFragment : Fragment() {
 
         viewModel.state
             .onEach {
+                val color = it.color
+                binding.fragmentCreateGroupColorPicker.isVisible = color != null
+                if (color != null) {
+                    binding.fragmentCreateGroupColorPicker.background = GradientDrawable().apply {
+                        shape = GradientDrawable.RECTANGLE
+                        cornerRadius = 4.dp.toFloat()
+                        setColor(color)
+                    }
+                }
                 adapter.submitList(mutableListOf<ParticipantUi?>().apply {
                     addAll(it.users.map { ParticipantUi.ParticipantUiItem(it) })
                     add(ParticipantUi.AddParticipant)

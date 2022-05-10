@@ -27,6 +27,8 @@
     <string name="pick_group">Выберите группу</string>
     <string name="enter_description">Введите описание</string>
     <string name="add_notification">Добавить уведомление</string>
+    <string name="no_groups">У вас пока нет групп</string>
+    <string name="invalid_group_name">Неверно введено имя группы</string>
 
     <string name="doesnt_repeat">Не повторяется</string>
     <string name="every_day">Каждый день</string>

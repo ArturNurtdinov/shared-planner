@@ -1,16 +1,17 @@
 package ru.spbstu.calendar.settings.groups.presentation
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.databinding.GroupsFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.settings.groups.presentation.model.GroupUi
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.setDebounceClickListener
@@ -59,19 +60,20 @@ class GroupsFragment : Fragment() {
 
         binding.fragmentGroupsGroups.adapter = adapter
 
+        viewModel.loadData()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.submitList(
-            listOf(
-                GroupUi.GroupUiItem(Group(1, "Friends", Color.WHITE,true, 0)),
-                GroupUi.GroupUiItem(Group(1, "Family", Color.WHITE,true, 1)),
-                GroupUi.GroupUiItem(Group(1, "Work", Color.WHITE,false, 25)),
-                GroupUi.CreateGroupItem,
-            )
-        )
+
+        viewModel.state
+            .onEach {
+                adapter.submitList(it.groups)
+            }
+            .launchIn(lifecycleScope)
+
     }
 
     override fun onDestroy() {

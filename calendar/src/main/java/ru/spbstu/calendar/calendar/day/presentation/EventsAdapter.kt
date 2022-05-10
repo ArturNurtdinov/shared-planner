@@ -43,7 +43,7 @@ class EventsAdapter(private val clickListener: (Event) -> Unit) :
             } else {
                 binding.eventItemTime.text = dateFormat.format(event.startTime)
             }
-            binding.eventItemGroup.text = event.group.title
+            binding.eventItemGroup.text = event.group.name
             binding.eventItemTitle.text = event.title
             binding.eventItemColor.background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE

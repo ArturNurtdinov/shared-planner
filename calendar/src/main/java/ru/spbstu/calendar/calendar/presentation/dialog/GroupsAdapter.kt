@@ -1,5 +1,6 @@
 package ru.spbstu.calendar.calendar.presentation.dialog
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -30,12 +31,15 @@ class GroupsAdapter(private val onCheckedChanged: (GroupSelected, Boolean) -> Un
         RecyclerView.ViewHolder(binding.root) {
         fun bind(group: GroupSelected) {
             binding.root.setDebounceClickListener {
-                binding.dialogGroupsItemCheckbox.isChecked = !binding.dialogGroupsItemCheckbox.isChecked
+                binding.dialogGroupsItemCheckbox.isChecked =
+                    !binding.dialogGroupsItemCheckbox.isChecked
             }
+            binding.dialogGroupsItemCheckbox.buttonTintList =
+                ColorStateList.valueOf(group.group.color)
             binding.dialogGroupsItemCheckbox.setOnCheckedChangeListener { compoundButton, b ->
                 onCheckedChanged.invoke(group, b)
             }
-            binding.dialogGroupsItemTitle.text = group.group.title
+            binding.dialogGroupsItemTitle.text = group.group.name
             binding.dialogGroupsItemCheckbox.isChecked = group.isSelected
         }
     }

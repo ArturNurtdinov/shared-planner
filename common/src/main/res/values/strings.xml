@@ -30,6 +30,8 @@
     <string name="pick_group">Select group</string>
     <string name="enter_description">Enter description</string>
     <string name="add_notification">Add notification</string>
+    <string name="no_groups">You have no groups</string>
+    <string name="invalid_group_name">Invalid group name</string>
 
     <string name="doesnt_repeat">Doesn\'t repeat</string>
     <string name="every_day">Every day</string>

@@ -92,6 +92,7 @@
             android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/group_color_background"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/fragment_create_group__divider2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fragment_create_group__divider1" />

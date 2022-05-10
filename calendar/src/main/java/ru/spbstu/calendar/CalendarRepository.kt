@@ -1,11 +1,15 @@
 package ru.spbstu.calendar
 
+import android.graphics.Color
+import okhttp3.internal.toHexString
+import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.Api
 import ru.spbstu.common.network.EmptyResult
 import ru.spbstu.common.network.SharedPlannerResult
 import ru.spbstu.common.network.UnknownError
+import ru.spbstu.common.network.model.GroupBody
 import ru.spbstu.common.network.model.RefreshTokenBody
 
 class CalendarRepository(
@@ -16,6 +20,39 @@ class CalendarRepository(
         val response = api.getUser()
         return if (response.isSuccessful) {
             SharedPlannerResult.Success(Profile.fromNetworkModule(response.body()!!))
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun getGroups(): SharedPlannerResult<List<Group>> {
+        val response = api.getGroups()
+        return if (response.isSuccessful) {
+            val body = response.body()!!
+            SharedPlannerResult.Success(body.map {
+                Group(
+                    it.id,
+                    it.name,
+                    Color.parseColor(it.color),
+                    true,
+                    it.userCount
+                )
+            })
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun createGroup(
+        name: String,
+        color: Int,
+        userIds: List<Long>
+    ): SharedPlannerResult<Any> {
+        val processedColor = color.toHexString().uppercase()
+        val response =
+            api.createGroup(GroupBody(name, "#${processedColor.substring(2, processedColor.length)}", userIds))
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(Any())
         } else {
             SharedPlannerResult.Error(UnknownError)
         }

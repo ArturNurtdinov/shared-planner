@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.settings.notifications.presentation.NotificationsViewModel
 import ru.spbstu.common.di.viewmodel.ViewModelKey
@@ -20,8 +21,11 @@ class NotificationsSubModule {
     @Provides
     @IntoMap
     @ViewModelKey(NotificationsViewModel::class)
-    fun provideViewModel(router: CalendarRouter): ViewModel {
-        return NotificationsViewModel(router)
+    fun provideViewModel(
+        router: CalendarRouter,
+        calendarRepository: CalendarRepository
+    ): ViewModel {
+        return NotificationsViewModel(router, calendarRepository)
     }
 
     @Provides

@@ -8,11 +8,13 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.CalendarMonth
 import com.kizitonwose.calendarview.model.DayOwner
@@ -20,6 +22,8 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.ui.MonthScrollListener
 import com.kizitonwose.calendarview.utils.Size
 import com.skydoves.powerspinner.OnSpinnerOutsideTouchListener
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.R
 import ru.spbstu.calendar.calendar.presentation.dialog.ShowGroupsDialogFragment
 import ru.spbstu.calendar.calendar.presentation.dialog.ShowGroupsDialogFragment.Companion.CONFIGURE_ACTION
@@ -80,19 +84,22 @@ class CalendarFragment : Fragment() {
             if (result.getString(CONFIGURE_KEY) == CONFIGURE_ACTION) {
                 viewModel.navigateToGroupSettings()
             } else if (result.containsKey(GROUPS_RESULT_KEY)) {
-                Log.d("WWWW", "groups = ${result.getParcelableArray(GROUPS_RESULT_KEY)}")
+                val newGroups = result.getParcelableArray(GROUPS_RESULT_KEY) as Array<GroupSelected>
+                viewModel.onSelectedChange(newGroups.toList())
             }
         }
 
         binding.fragmentCalendarGroups.setDebounceClickListener {
             if (dialog?.isVisible == true) return@setDebounceClickListener
-            dialog = ShowGroupsDialogFragment.newInstance(
-                arrayListOf(
-                    GroupSelected(Group(1, "Friends", Color.WHITE,true, 0), true),
-                    GroupSelected(Group(2, "Family", Color.WHITE,true, 1), true),
-                    GroupSelected(Group(3, "Work", Color.WHITE,false, 25), true),
-                )
-            )
+            val groups = arrayListOf<GroupSelected>().apply {
+                addAll(viewModel.state.value.groups)
+            }
+            if (groups.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.no_groups), Toast.LENGTH_SHORT)
+                    .show()
+                return@setDebounceClickListener
+            }
+            dialog = ShowGroupsDialogFragment.newInstance(groups)
             dialog?.show(childFragmentManager, ShowGroupsDialogFragment::class.java.simpleName)
         }
         val currentMonth = YearMonth.now()
@@ -226,6 +233,11 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.state
+            .onEach {
+
+            }
+            .launchIn(lifecycleScope)
         binding.fragmentCalendarCalendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.root.setDebounceClickListener {

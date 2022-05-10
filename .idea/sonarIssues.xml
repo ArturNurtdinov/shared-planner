@@ -513,6 +513,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/notifications/presentation/model/GroupNotificationsUi.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/settings/presentation/CalendarFragment.kt">
           <value>
             <set />

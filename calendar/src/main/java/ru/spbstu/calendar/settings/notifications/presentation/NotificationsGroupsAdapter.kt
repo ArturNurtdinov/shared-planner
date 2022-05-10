@@ -9,12 +9,13 @@ import ru.spbstu.calendar.databinding.NotificationLayoutBinding
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.common.extensions.setDebounceClickListener
 
-class NotificationsGroupsAdapter :
+class NotificationsGroupsAdapter(private val onNewCheckboxValueListener: (Boolean, Group) -> Unit) :
     ListAdapter<Group, NotificationsGroupsAdapter.GroupViewHolder>(GroupDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         return GroupViewHolder(
-            NotificationLayoutBinding.inflate(LayoutInflater.from(parent.context))
+            NotificationLayoutBinding.inflate(LayoutInflater.from(parent.context)),
+            onNewCheckboxValueListener
         )
     }
 
@@ -22,14 +23,18 @@ class NotificationsGroupsAdapter :
         holder.bind(currentList[position])
     }
 
-    class GroupViewHolder(private val binding: NotificationLayoutBinding) :
+    class GroupViewHolder(
+        private val binding: NotificationLayoutBinding,
+        private val onNewCheckboxValueListener: (Boolean, Group) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(group: Group) {
-            binding.layoutNotificationTitle.text = group.title
+            binding.layoutNotificationTitle.text = group.name
             binding.layoutNotificationSwitch.isChecked = group.notificationsEnabled
             binding.root.setDebounceClickListener {
-                binding.layoutNotificationSwitch.isChecked =
-                    !binding.layoutNotificationSwitch.isChecked
+                val newValue = !binding.layoutNotificationSwitch.isChecked
+                binding.layoutNotificationSwitch.isChecked = newValue
+                onNewCheckboxValueListener.invoke(newValue, group)
             }
         }
     }

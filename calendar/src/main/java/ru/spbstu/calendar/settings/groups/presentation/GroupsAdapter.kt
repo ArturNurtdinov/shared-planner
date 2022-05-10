@@ -49,7 +49,7 @@ class GroupsAdapter(private val clickListener: (GroupUi) -> Unit) :
     class GroupViewHolder(val binding: GroupLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(groupUiItem: GroupUi.GroupUiItem) {
-            binding.createGroupLayoutTitle.text = groupUiItem.group.title
+            binding.createGroupLayoutTitle.text = groupUiItem.group.name
             binding.createGroupLayoutSubtitle.text =
                 binding.root.context.resources.getQuantityString(
                     R.plurals.participants,

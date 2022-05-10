@@ -92,7 +92,7 @@ class EventFragment : Fragment() {
                 setColor(Color.CYAN)
             }
             binding.fragmentEventTitle.text = it.title
-            binding.fragmentEventGroup.text = it.group.title
+            binding.fragmentEventGroup.text = it.group.name
             if (it.endTime != null && it.endTime != 0L) {
                 binding.fragmentEventTime.text =
                     "${dateFormat.format(it.startTime)} - ${dateFormat.format(it.endTime)}"

@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.NotificationsFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
@@ -24,7 +27,9 @@ class NotificationsFragment : Fragment() {
     private var _binding: NotificationsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = NotificationsGroupsAdapter()
+    private val adapter = NotificationsGroupsAdapter { newValue, group ->
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,8 +57,10 @@ class NotificationsFragment : Fragment() {
             getString(R.string.notifications)
 
         binding.fragmentNotificationsNotifications.root.setDebounceClickListener {
-            binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked =
+            val newValue =
                 !binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked
+            binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked = newValue
+            viewModel.onNotificationsStateChanged(newValue)
         }
 
         binding.fragmentNotificationsGroups.adapter = adapter
@@ -63,15 +70,14 @@ class NotificationsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.submitList(
-            listOf(
-                Group(1, "Friends", Color.WHITE, true, 0),
-                Group(1, "Family", Color.WHITE, true, 1),
-                Group(1, "Work", Color.WHITE, false, 25),
-            )
-        ) {
-            binding.fragmentNotificationsEmptyTitle.isVisible = false
-        }
+
+        viewModel.state
+            .onEach {
+                adapter.submitList(it.groups) {
+                    binding.fragmentNotificationsEmptyTitle.isVisible = it.groups.isEmpty()
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroy() {
