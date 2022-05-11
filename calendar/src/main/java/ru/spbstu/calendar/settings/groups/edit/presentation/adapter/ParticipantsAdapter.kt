@@ -15,6 +15,7 @@ import ru.spbstu.common.network.PictureUrlHelper
 
 class ParticipantsAdapter(
     private val urlHelper: PictureUrlHelper,
+    private val selfId: Long,
     private val clickListener: (ParticipantUi) -> Unit
 ) :
     ListAdapter<ParticipantUi, RecyclerView.ViewHolder>(ParticipantUiDiffUtil) {
@@ -27,7 +28,7 @@ class ParticipantsAdapter(
             ParticipantUi.PARTICIPANT_UI_ITEM_VIEW_TYPE -> ParticipantViewHolder(
                 ParticipantItemBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                ), clickListener
+                ), urlHelper, selfId, clickListener
             )
             ParticipantUi.ADD_PARTICIPANT_VIEW_TYPE -> AddParticipantViewHolder(
                 AddParticipantLayoutBinding.inflate(
@@ -57,7 +58,9 @@ class ParticipantsAdapter(
     }
 
     class ParticipantViewHolder(
-        val binding: ParticipantItemBinding,
+        private val binding: ParticipantItemBinding,
+        private val urlHelper: PictureUrlHelper,
+        private val selfId: Long,
         private val clickListener: (ParticipantUi) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
@@ -68,19 +71,20 @@ class ParticipantsAdapter(
             isForSearch: Boolean
         ) {
             val isCreator = participantUi.profile.id == creatorId
+            val isSelfCreator = creatorId == selfId
             binding.participantItemLabel.isVisible = position == 0
             binding.participantItemAvatarLayout.root.isVisible =
                 !participantUi.profile.avatarUrl.isNullOrEmpty()
             binding.participantItemTitle.text = participantUi.profile.name
             binding.participantItemSubtitle.isVisible = isCreator && !isForSearch
             binding.participantItemSubtitle.text = itemView.context.getString(R.string.creator)
-            binding.participantItemRemove.isVisible = !isCreator || isForSearch
+            binding.participantItemRemove.isVisible = (!isCreator && isSelfCreator) || isForSearch
             binding.participantItemRemove.setDebounceClickListener {
                 clickListener.invoke(participantUi)
             }
             if (!participantUi.profile.avatarUrl.isNullOrEmpty()) {
                 Glide.with(itemView)
-                    .load(participantUi.profile.avatarUrl)
+                    .load(urlHelper.getPictureUrl(participantUi.profile.avatarUrl))
                     .centerCrop()
                     .into(binding.participantItemAvatarLayout.layoutAvatarAvatar)
             }

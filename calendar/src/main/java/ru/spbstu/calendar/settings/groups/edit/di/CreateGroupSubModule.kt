@@ -9,6 +9,7 @@ import dagger.multibindings.IntoMap
 import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.settings.groups.edit.presentation.CreateGroupViewModel
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
 
@@ -23,9 +24,10 @@ class CreateGroupSubModule {
     @ViewModelKey(CreateGroupViewModel::class)
     fun provideViewModel(
         router: CalendarRouter,
-        calendarRepository: CalendarRepository
+        calendarRepository: CalendarRepository,
+        preferencesRepository: PreferencesRepository,
     ): ViewModel {
-        return CreateGroupViewModel(router, calendarRepository)
+        return CreateGroupViewModel(router, calendarRepository, preferencesRepository)
     }
 
     @Provides

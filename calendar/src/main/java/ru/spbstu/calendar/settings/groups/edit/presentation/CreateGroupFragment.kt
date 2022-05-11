@@ -24,6 +24,7 @@ import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantU
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantsAdapter
 import ru.spbstu.calendar.settings.groups.edit.search.SearchFragment
 import ru.spbstu.common.di.FeatureUtils
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.hideKeyboard
 import ru.spbstu.common.extensions.setDebounceClickListener
@@ -51,7 +52,7 @@ class CreateGroupFragment : Fragment() {
         _binding = CreateGroupFragmentBinding.inflate(layoutInflater, container, false)
         inject()
 
-        adapter = ParticipantsAdapter(urlHelper) {
+        adapter = ParticipantsAdapter(urlHelper, viewModel.selfId) {
             when (it) {
                 is ParticipantUi.AddParticipant -> {
                     viewModel.openSearch()

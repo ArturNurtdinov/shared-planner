@@ -13,11 +13,13 @@ import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.domain.model.Profile
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.SharedPlannerResult
 
 class CreateGroupViewModel(
     private val router: CalendarRouter,
     private val calendarRepository: CalendarRepository,
+    private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
     var mode: Mode? = null
@@ -31,6 +33,9 @@ class CreateGroupViewModel(
                 }
             }
         }
+
+    val selfId: Long
+        get() = preferencesRepository.selfId ?: 0L
 
     private val _state = MutableStateFlow(State(emptyList(), null, 0))
     val state = _state.asStateFlow()

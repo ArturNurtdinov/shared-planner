@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
         inject()
 
-        addedUsersAdapter = ParticipantsAdapter(urlHelper) {
+        addedUsersAdapter = ParticipantsAdapter(urlHelper, viewModel.selfId) {
             viewModel.deleteUser((it as ParticipantUi.ParticipantUiItem).profile)
             refreshFound()
         }

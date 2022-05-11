@@ -22,6 +22,9 @@ class SearchViewModel(
     val state = _state.asStateFlow()
     var query: String = ""
 
+    val selfId: Long
+        get() = preferencesRepository.selfId ?: 0L
+
     val searchFlow = Pager(config = PagingConfig(pageSize = CalendarRepository.SEARCH_PAGE_SIZE),
         pagingSourceFactory = { SearchPagingSource(calendarRepository, query) })
         .flow
