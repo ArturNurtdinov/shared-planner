@@ -55,8 +55,6 @@ class CalendarFragment : Fragment() {
     private var _binding: CalendarFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val today = LocalDate.now()
-
     private lateinit var years: List<Int>
 
     private var dialog: ShowGroupsDialogFragment? = null
@@ -138,7 +136,7 @@ class CalendarFragment : Fragment() {
                 ResourcesCompat.getColor(resources, R.color.rippleColor, requireActivity().theme)
             lifecycleOwner = this@CalendarFragment.viewLifecycleOwner
             setItems(months.toList())
-            selectItemByIndex(today.monthValue - 1)
+            selectItemByIndex(viewModel.today.monthValue - 1)
             spinnerOutsideTouchListener =
                 OnSpinnerOutsideTouchListener { _, _ -> this.dismiss() }
             setOnSpinnerItemSelectedListener { oldIndex, oldItem: String?, newIndex, newItem: String ->
@@ -149,26 +147,26 @@ class CalendarFragment : Fragment() {
                 val selectedYear = years[binding.fragmentCalendarYear.selectedIndex]
                 val newMonth = months.indexOf(newItem) + 1
                 try {
-                    binding.fragmentCalendarCalendar.scrollToDate(
-                        LocalDate.of(
-                            selectedYear,
-                            newMonth,
-                            today.dayOfMonth
-                        )
+                    val date = LocalDate.of(
+                        selectedYear,
+                        newMonth,
+                        viewModel.today.dayOfMonth
                     )
+                    binding.fragmentCalendarCalendar.scrollToDate(date)
+                    viewModel.onScolledToNewDate(date)
                 } catch (e: DateTimeException) {
-                    binding.fragmentCalendarCalendar.scrollToDate(
-                        LocalDate.of(
-                            selectedYear,
-                            newMonth,
-                            1
-                        )
+                    val date = LocalDate.of(
+                        selectedYear,
+                        newMonth,
+                        1
                     )
+                    binding.fragmentCalendarCalendar.scrollToDate(date)
+                    viewModel.onScolledToNewDate(date)
                 }
             }
         }
 
-        val currentYear = today.year
+        val currentYear = viewModel.today.year
         years = mutableListOf<Int>().apply {
             for (i in -10..10) {
                 add(currentYear + i)
@@ -192,21 +190,21 @@ class CalendarFragment : Fragment() {
                 }
                 val selectedMonth = binding.fragmentCalendarMonth.selectedIndex + 1
                 try {
-                    binding.fragmentCalendarCalendar.scrollToDate(
-                        LocalDate.of(
-                            newItem.toInt(),
-                            selectedMonth,
-                            today.dayOfMonth
-                        )
+                    val date = LocalDate.of(
+                        newItem.toInt(),
+                        selectedMonth,
+                        viewModel.today.dayOfMonth
                     )
+                    binding.fragmentCalendarCalendar.scrollToDate(date)
+                    viewModel.onScolledToNewDate(date)
                 } catch (e: DateTimeException) {
-                    binding.fragmentCalendarCalendar.scrollToDate(
-                        LocalDate.of(
-                            newItem.toInt(),
-                            selectedMonth,
-                            1
-                        )
+                    val date = LocalDate.of(
+                        newItem.toInt(),
+                        selectedMonth,
+                        1
                     )
+                    binding.fragmentCalendarCalendar.scrollToDate(date)
+                    viewModel.onScolledToNewDate(date)
                 }
             }
         }
@@ -235,7 +233,7 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state
             .onEach {
-
+                Log.d("WWWW", "$it")
             }
             .launchIn(lifecycleScope)
         binding.fragmentCalendarCalendar.dayBinder = object : DayBinder<DayViewContainer> {
@@ -249,7 +247,7 @@ class CalendarFragment : Fragment() {
                 if (day.owner == DayOwner.THIS_MONTH) {
                     container.root.alpha = 1f
                     when (day.date) {
-                        today -> {
+                        viewModel.today -> {
                             container.dayText.setTextColor(Color.BLACK)
                             container.root.setBackgroundColor(
                                 ContextCompat.getColor(

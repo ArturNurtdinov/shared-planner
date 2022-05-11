@@ -24,14 +24,12 @@ import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantU
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantsAdapter
 import ru.spbstu.calendar.settings.groups.edit.search.SearchFragment
 import ru.spbstu.common.di.FeatureUtils
-import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.hideKeyboard
 import ru.spbstu.common.extensions.setDebounceClickListener
 import ru.spbstu.common.extensions.showKeyboard
 import ru.spbstu.common.network.PictureUrlHelper
 import javax.inject.Inject
-
 
 class CreateGroupFragment : Fragment() {
     @Inject

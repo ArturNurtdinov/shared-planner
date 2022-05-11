@@ -12,6 +12,8 @@ import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.presentation.dialog.model.GroupSelected
 import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.SharedPlannerResult
+import java.time.LocalDate
+import java.time.ZoneId
 
 class CalendarViewModel(
     private val router: CalendarRouter,
@@ -19,7 +21,22 @@ class CalendarViewModel(
     private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(State(emptyList()))
+    val today = LocalDate.now()
+    private val _state = MutableStateFlow(
+        State(
+            emptyList(),
+            today.minusMonths(3).withDayOfMonth(1)
+                .atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli(),
+            today.plusMonths(3).withDayOfMonth(1)
+                .atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli()
+        )
+    )
     val state = _state.asStateFlow()
     var isManuallySelectedYear = false
     var isManuallySelectedMonth = false
@@ -65,6 +82,23 @@ class CalendarViewModel(
         }
     }
 
+    fun onScolledToNewDate(localDate: LocalDate) {
+        val start = localDate.minusMonths(3).withDayOfMonth(1)
+            .atStartOfDay()
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+        val end = localDate.plusMonths(3).withDayOfMonth(1)
+            .atStartOfDay()
+            .atZone(ZoneId.systemDefault())
+            .toInstant()
+            .toEpochMilli()
+        _state.value = _state.value.copy(
+            startTimestamp = start,
+            endTimestamp = end
+        )
+    }
+
     fun onSelectedChange(newGroups: List<GroupSelected>) {
         _state.value = _state.value.copy(
             groups = newGroups
@@ -72,6 +106,8 @@ class CalendarViewModel(
     }
 
     data class State(
-        val groups: List<GroupSelected>
+        val groups: List<GroupSelected>,
+        val startTimestamp: Long,
+        val endTimestamp: Long,
     )
 }
