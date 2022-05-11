@@ -7,12 +7,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import ru.spbstu.calendar.R
 import ru.spbstu.calendar.databinding.AddParticipantLayoutBinding
 import ru.spbstu.calendar.databinding.ParticipantItemBinding
 import ru.spbstu.common.extensions.setDebounceClickListener
+import ru.spbstu.common.network.PictureUrlHelper
 
-class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
+class ParticipantsAdapter(
+    private val urlHelper: PictureUrlHelper,
+    private val clickListener: (ParticipantUi) -> Unit
+) :
     ListAdapter<ParticipantUi, RecyclerView.ViewHolder>(ParticipantUiDiffUtil) {
+
+    var creatorId: Long = 0
+    var isForSearch: Boolean = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -35,7 +43,12 @@ class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val currentItem = currentList[position]) {
             is ParticipantUi.ParticipantUiItem -> {
-                (holder as? ParticipantViewHolder)?.bind(currentItem, position)
+                (holder as? ParticipantViewHolder)?.bind(
+                    currentItem,
+                    position,
+                    creatorId,
+                    isForSearch
+                )
             }
             is ParticipantUi.AddParticipant -> {
                 (holder as? AddParticipantViewHolder)?.bind()
@@ -48,12 +61,20 @@ class ParticipantsAdapter(private val clickListener: (ParticipantUi) -> Unit) :
         private val clickListener: (ParticipantUi) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(participantUi: ParticipantUi.ParticipantUiItem, position: Int) {
+        fun bind(
+            participantUi: ParticipantUi.ParticipantUiItem,
+            position: Int,
+            creatorId: Long,
+            isForSearch: Boolean
+        ) {
+            val isCreator = participantUi.profile.id == creatorId
             binding.participantItemLabel.isVisible = position == 0
             binding.participantItemAvatarLayout.root.isVisible =
                 !participantUi.profile.avatarUrl.isNullOrEmpty()
             binding.participantItemTitle.text = participantUi.profile.name
-            binding.participantItemSubtitle.text = "Creator"
+            binding.participantItemSubtitle.isVisible = isCreator && !isForSearch
+            binding.participantItemSubtitle.text = itemView.context.getString(R.string.creator)
+            binding.participantItemRemove.isVisible = !isCreator || isForSearch
             binding.participantItemRemove.setDebounceClickListener {
                 clickListener.invoke(participantUi)
             }

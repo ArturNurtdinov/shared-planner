@@ -818,6 +818,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/GroupByIdReponse.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/GroupByIdResponse.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/GroupResponse.kt">
           <value>
             <set />
@@ -834,6 +844,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/TokensResponseBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/UpdateGroupBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/UpdateGroupSettingsBody.kt">
           <value>
             <set />
           </value>

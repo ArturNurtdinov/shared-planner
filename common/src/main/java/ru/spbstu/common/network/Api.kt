@@ -1,10 +1,7 @@
 package ru.spbstu.common.network
 
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 import ru.spbstu.common.network.model.*
 
 public interface Api {
@@ -29,5 +26,20 @@ public interface Api {
 
     @GET("/groups")
     suspend fun getGroups(): Response<List<GroupResponse>>
+
+    @GET("/groups/{id}")
+    suspend fun getGroupById(@Path("id") id: Long): Response<GroupByIdResponse>
+
+    @PUT("/groups/{id}")
+    suspend fun updateGroupById(
+        @Path("id") id: Long,
+        @Body body: UpdateGroupBody
+    ): Response<Void>
+
+    @PUT("/groups/{id}/settings")
+    suspend fun updateGroupSettings(
+        @Path("id") id: Long,
+        @Body updateGroupSettingsBody: UpdateGroupSettingsBody
+    ): Response<Void>
 
 }

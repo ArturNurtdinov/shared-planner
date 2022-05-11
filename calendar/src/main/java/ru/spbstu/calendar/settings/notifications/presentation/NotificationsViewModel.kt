@@ -46,7 +46,10 @@ class NotificationsViewModel(
     }
 
     fun onNotificationsStateChanged(newValue: Boolean, group: Group) {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            calendarRepository.changeGroupNotificationsState(group.id, newValue, group.color)
+            loadData()
+        }
     }
 
     fun onBackClicked(): Boolean = router.pop()

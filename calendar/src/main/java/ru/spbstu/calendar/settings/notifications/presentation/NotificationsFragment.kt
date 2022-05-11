@@ -25,9 +25,7 @@ class NotificationsFragment : Fragment() {
     private var _binding: NotificationsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = NotificationsGroupsAdapter { newValue, group ->
-
-    }
+    private lateinit var adapter: NotificationsGroupsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +33,9 @@ class NotificationsFragment : Fragment() {
     ): View {
         _binding = NotificationsFragmentBinding.inflate(layoutInflater, container, false)
         inject()
+        adapter = NotificationsGroupsAdapter { newValue, group ->
+            viewModel.onNotificationsStateChanged(newValue, group)
+        }
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

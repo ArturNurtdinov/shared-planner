@@ -13,6 +13,7 @@ import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.domain.model.Profile
+import ru.spbstu.common.network.SharedPlannerResult
 
 class CreateGroupViewModel(
     private val router: CalendarRouter,
@@ -31,7 +32,7 @@ class CreateGroupViewModel(
             }
         }
 
-    private val _state = MutableStateFlow(State(emptyList(), null))
+    private val _state = MutableStateFlow(State(emptyList(), null, 0))
     val state = _state.asStateFlow()
 
     private var doneProcessing = false
@@ -45,11 +46,52 @@ class CreateGroupViewModel(
     private fun initEditMode() {
         val group = (mode as? Mode.EditGroup)?.group ?: return
         _state.value = _state.value.copy(color = group.color)
+        viewModelScope.launch(Dispatchers.IO) {
+            when (val groupData = calendarRepository.getGroupById(group.id)) {
+                is SharedPlannerResult.Error -> {
+                    withContext(Dispatchers.Main) {
+                        onBackPressed()
+                    }
+                }
+                is SharedPlannerResult.Success -> {
+                    val users = mutableListOf<Profile>().apply {
+                        addAll(_state.value.users)
+                        addAll(groupData.data.users.map {
+                            Profile.fromNetworkModel(it)
+                        })
+                    }
+                    _state.value = _state.value.copy(
+                        users = users.distinctBy { it.id },
+                        creatorId = groupData.data.creatorId,
+                    )
+                }
+            }
+        }
     }
 
     fun onBackPressed(): Boolean = router.pop()
 
     fun openSearch() = router.openSearch()
+
+    fun confirmGroupEdit(name: String, color: Int) {
+        val group = (mode as? Mode.EditGroup)?.group ?: return
+        if (doneProcessing) return
+        doneProcessing = true
+        viewModelScope.launch(Dispatchers.IO + NonCancellable) {
+            val addedIds = _state.value.users.map { it.id }
+            calendarRepository.updateGroup(
+                group.id,
+                name,
+                color,
+                addedIds,
+                group.notificationsEnabled
+            )
+            doneProcessing = false
+            withContext(Dispatchers.Main) {
+                onBackPressed()
+            }
+        }
+    }
 
     fun onSearchAddedResult(added: List<Profile>) {
         val current = _state.value
@@ -57,7 +99,7 @@ class CreateGroupViewModel(
             addAll(current.users)
             addAll(added)
         }
-        _state.value = State(newList.distinct(), current.color)
+        _state.value = State(newList.distinct(), current.color, current.creatorId)
     }
 
     fun selectNewColor(color: Int) {
@@ -70,7 +112,7 @@ class CreateGroupViewModel(
             addAll(current.users)
             remove(profile)
         }
-        _state.value = State(newList, current.color)
+        _state.value = State(newList, current.color, current.creatorId)
     }
 
     fun createGroup(name: String, color: Int) {
@@ -89,6 +131,7 @@ class CreateGroupViewModel(
     data class State(
         val users: List<Profile>,
         val color: Int?,
+        val creatorId: Long,
     )
 
     sealed class Mode {

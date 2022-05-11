@@ -24,6 +24,7 @@ import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantU
 import ru.spbstu.calendar.settings.groups.edit.presentation.adapter.ParticipantsAdapter
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.setDebounceClickListener
+import ru.spbstu.common.network.PictureUrlHelper
 import javax.inject.Inject
 
 class SearchFragment : Fragment() {
@@ -33,10 +34,10 @@ class SearchFragment : Fragment() {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val addedUsersAdapter = ParticipantsAdapter {
-        viewModel.deleteUser((it as ParticipantUi.ParticipantUiItem).profile)
-        refreshFound()
-    }
+    @Inject
+    lateinit var urlHelper: PictureUrlHelper
+
+    private lateinit var addedUsersAdapter: ParticipantsAdapter
 
     private val foundUsersAdapter = ParticipantSearchAdapter {
         viewModel.addUser(it)
@@ -53,6 +54,12 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = SearchFragmentBinding.inflate(layoutInflater, container, false)
         inject()
+
+        addedUsersAdapter = ParticipantsAdapter(urlHelper) {
+            viewModel.deleteUser((it as ParticipantUi.ParticipantUiItem).profile)
+            refreshFound()
+        }
+        addedUsersAdapter.isForSearch = true
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,

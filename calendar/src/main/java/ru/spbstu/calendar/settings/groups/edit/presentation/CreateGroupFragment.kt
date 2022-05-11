@@ -28,6 +28,7 @@ import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.hideKeyboard
 import ru.spbstu.common.extensions.setDebounceClickListener
 import ru.spbstu.common.extensions.showKeyboard
+import ru.spbstu.common.network.PictureUrlHelper
 import javax.inject.Inject
 
 
@@ -38,17 +39,10 @@ class CreateGroupFragment : Fragment() {
     private var _binding: CreateGroupFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = ParticipantsAdapter {
-        when (it) {
-            is ParticipantUi.AddParticipant -> {
-                viewModel.openSearch()
-            }
-            is ParticipantUi.ParticipantUiItem -> {
-                viewModel.deleteUser(it.profile)
-            }
-        }
+    @Inject
+    lateinit var urlHelper: PictureUrlHelper
 
-    }
+    private lateinit var adapter: ParticipantsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,6 +50,18 @@ class CreateGroupFragment : Fragment() {
     ): View {
         _binding = CreateGroupFragmentBinding.inflate(layoutInflater, container, false)
         inject()
+
+        adapter = ParticipantsAdapter(urlHelper) {
+            when (it) {
+                is ParticipantUi.AddParticipant -> {
+                    viewModel.openSearch()
+                }
+                is ParticipantUi.ParticipantUiItem -> {
+                    viewModel.deleteUser(it.profile)
+                }
+            }
+
+        }
 
         viewModel.mode = if (arguments?.containsKey(GROUP_KEY) == true) {
             CreateGroupViewModel.Mode.EditGroup(requireArguments().getParcelable(GROUP_KEY)!!)
@@ -134,7 +140,18 @@ class CreateGroupFragment : Fragment() {
                     viewModel.createGroup(name, color)
                 }
                 is CreateGroupViewModel.Mode.EditGroup -> {
-
+                    val name = binding.fragmentCreateGroupInput.text?.toString()
+                        ?: return@setDebounceClickListener
+                    if (name.isEmpty() || name.length > binding.fragmentCreateGroupInputLayout.counterMaxLength) {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.invalid_group_name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@setDebounceClickListener
+                    }
+                    val color = viewModel.state.value.color ?: return@setDebounceClickListener
+                    viewModel.confirmGroupEdit(name, color)
                 }
             }
         }
@@ -156,7 +173,7 @@ class CreateGroupFragment : Fragment() {
             }
             is CreateGroupViewModel.Mode.EditGroup -> {
                 binding.fragmentCreateGroupInput.isEnabled = false
-                binding.fragmentCreateGroupDone.isVisible = false
+                binding.fragmentCreateGroupDone.isVisible = true
                 binding.fragmentCreateGroupEditName.isVisible = true
                 binding.fragmentCreateGroupInputLayout.isCounterEnabled = false
                 binding.fragmentCreateGroupInput.setText(mode.group.name)
@@ -179,10 +196,12 @@ class CreateGroupFragment : Fragment() {
                         setColor(color)
                     }
                 }
-                adapter.submitList(mutableListOf<ParticipantUi?>().apply {
+                val list = mutableListOf<ParticipantUi?>().apply {
                     addAll(it.users.map { ParticipantUi.ParticipantUiItem(it) })
                     add(ParticipantUi.AddParticipant)
-                })
+                }
+                adapter.creatorId = it.creatorId
+                adapter.submitList(list)
             }
             .launchIn(lifecycleScope)
     }

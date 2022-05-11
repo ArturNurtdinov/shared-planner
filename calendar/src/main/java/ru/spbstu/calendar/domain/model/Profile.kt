@@ -14,7 +14,7 @@ data class Profile(
     val phone: String? = null,
 ) : Parcelable {
     companion object {
-        fun fromNetworkModule(userResponse: UserResponse): Profile {
+        fun fromNetworkModel(userResponse: UserResponse): Profile {
             return Profile(
                 userResponse.id,
                 userResponse.fullName,

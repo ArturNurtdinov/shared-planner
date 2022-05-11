@@ -9,8 +9,7 @@ import ru.spbstu.common.network.Api
 import ru.spbstu.common.network.EmptyResult
 import ru.spbstu.common.network.SharedPlannerResult
 import ru.spbstu.common.network.UnknownError
-import ru.spbstu.common.network.model.GroupBody
-import ru.spbstu.common.network.model.RefreshTokenBody
+import ru.spbstu.common.network.model.*
 
 class CalendarRepository(
     private val api: Api,
@@ -19,7 +18,7 @@ class CalendarRepository(
     suspend fun getUser(): SharedPlannerResult<Profile> {
         val response = api.getUser()
         return if (response.isSuccessful) {
-            SharedPlannerResult.Success(Profile.fromNetworkModule(response.body()!!))
+            SharedPlannerResult.Success(Profile.fromNetworkModel(response.body()!!))
         } else {
             SharedPlannerResult.Error(UnknownError)
         }
@@ -34,7 +33,7 @@ class CalendarRepository(
                     it.id,
                     it.name,
                     Color.parseColor(it.color),
-                    true,
+                    it.notify,
                     it.userCount
                 )
             })
@@ -50,12 +49,57 @@ class CalendarRepository(
     ): SharedPlannerResult<Any> {
         val processedColor = color.toHexString().uppercase()
         val response =
-            api.createGroup(GroupBody(name, "#${processedColor.substring(2, processedColor.length)}", userIds))
+            api.createGroup(
+                GroupBody(
+                    name,
+                    "#${processedColor.substring(2, processedColor.length)}",
+                    userIds
+                )
+            )
         return if (response.isSuccessful) {
             SharedPlannerResult.Success(Any())
         } else {
             SharedPlannerResult.Error(UnknownError)
         }
+    }
+
+    suspend fun getGroupById(id: Long): SharedPlannerResult<GroupByIdResponse> {
+        val response = api.getGroupById(id)
+        return if (response.isSuccessful) {
+            val groupData = response.body() ?: return SharedPlannerResult.Error(UnknownError)
+            SharedPlannerResult.Success(groupData)
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun changeGroupNotificationsState(id: Long, newNotify: Boolean, color: Int) {
+        val processedColor = color.toHexString().uppercase()
+        api.updateGroupSettings(
+            id,
+            UpdateGroupSettingsBody(
+                "#${processedColor.substring(2, processedColor.length)}",
+                newNotify,
+            )
+        )
+    }
+
+    suspend fun updateGroup(
+        id: Long,
+        name: String,
+        color: Int,
+        userIds: List<Long>,
+        notify: Boolean,
+    ) {
+        val processedColor = color.toHexString().uppercase()
+        api.updateGroupSettings(
+            id,
+            UpdateGroupSettingsBody(
+                "#${processedColor.substring(2, processedColor.length)}",
+                notify
+            )
+        )
+        api.updateGroupById(id, UpdateGroupBody(name, userIds))
     }
 
     suspend fun logout(): SharedPlannerResult<Any> {
@@ -75,7 +119,7 @@ class CalendarRepository(
         return if (response.isSuccessful) {
             val body = response.body()!!
             SharedPlannerResult.Success(body.users
-                .map { Profile.fromNetworkModule(it) } to body.page)
+                .map { Profile.fromNetworkModel(it) } to body.page)
         } else {
             SharedPlannerResult.Error(UnknownError)
         }
