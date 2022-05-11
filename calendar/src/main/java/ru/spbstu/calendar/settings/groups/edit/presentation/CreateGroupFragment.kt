@@ -175,16 +175,13 @@ class CreateGroupFragment : Fragment() {
             is CreateGroupViewModel.Mode.EditGroup -> {
                 binding.fragmentCreateGroupInput.isEnabled = false
                 binding.fragmentCreateGroupDone.isVisible = true
-                binding.fragmentCreateGroupEditName.isVisible = true
+                binding.fragmentCreateGroupEditName.isVisible = false
                 binding.fragmentCreateGroupInputLayout.isCounterEnabled = false
                 binding.fragmentCreateGroupInput.setText(mode.group.name)
             }
         }
 
         binding.fragmentCreateGroupParticipantsLabel.isVisible = true
-        binding.fragmentCreateGroupParticipantsLabel.text =
-            resources.getQuantityString(R.plurals.participants, 25, 25)
-
 
         viewModel.state
             .onEach {
@@ -203,6 +200,10 @@ class CreateGroupFragment : Fragment() {
                 }
                 adapter.creatorId = it.creatorId
                 adapter.submitList(list)
+                binding.fragmentCreateGroupEditName.isVisible = it.creatorId == viewModel.selfId
+                val count = it.users.size
+                binding.fragmentCreateGroupParticipantsLabel.text =
+                    resources.getQuantityString(R.plurals.participants, count, count)
             }
             .launchIn(lifecycleScope)
     }
