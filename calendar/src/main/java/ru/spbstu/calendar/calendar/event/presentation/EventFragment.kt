@@ -95,16 +95,17 @@ class EventFragment : Fragment() {
                 }
                 binding.fragmentEventTitle.text = it.title
                 binding.fragmentEventGroup.text = it.group.name
-                if (it.from.isBefore(it.to)) {
-                    binding.fragmentEventTime.text =
-                        "${
-                            dateFormat.format(
-                                it.from.toInstant().toEpochMilli()
-                            )
-                        } - ${dateFormat.format(it.to.toInstant().toEpochMilli())}"
+                if (it.allDay) {
+                    binding.fragmentEventTime.text = getString(R.string.all_day)
                 } else {
-                    binding.fragmentEventTime.text =
-                        dateFormat.format(it.to.toInstant().toEpochMilli())
+                    if (it.from.isBefore(it.to)) {
+                        binding.fragmentEventTime.text =
+                            "${dateFormat.format(it.from.toInstant().toEpochMilli())} - " +
+                                    "${dateFormat.format(it.to.toInstant().toEpochMilli())}"
+                    } else {
+                        binding.fragmentEventTime.text =
+                            dateFormat.format(it.to.toInstant().toEpochMilli())
+                    }
                 }
                 binding.fragmentEventDescription.isVisible = state.eventModel.eventType == EventTypes.EVENT
                 binding.fragmentEventRepeat.isVisible = true
@@ -119,29 +120,6 @@ class EventFragment : Fragment() {
             .launchIn(lifecycleScope)
     }
 
-    private fun getNotificationTextFromItem(repeatItem: NotificationsTypes): String {
-        return when (repeatItem) {
-            NotificationsTypes.MIN_5 -> getString(R.string.minutes_5)
-            NotificationsTypes.MIN_10 -> getString(R.string.minutes_10)
-            NotificationsTypes.MIN_15 -> getString(R.string.minutes_15)
-            NotificationsTypes.MIN_30 -> getString(R.string.minutes_30)
-            NotificationsTypes.HOUR -> getString(R.string.in_hour)
-            NotificationsTypes.DAY -> getString(R.string.in_day)
-        }
-    }
-
-
-    private fun getRepeatItems(): Array<String> {
-        return arrayOf(
-            getString(R.string.doesnt_repeat),
-            getString(R.string.every_day),
-            getString(R.string.every_3_days),
-            getString(R.string.every_week),
-            getString(R.string.every_month),
-            getString(R.string.every_year),
-        )
-    }
-
     private fun getRepeatTextFromItem(repeatItem: RepeatTypes): String {
         return when (repeatItem) {
             RepeatTypes.EVERY_THREE_DAYS -> getString(R.string.every_3_days)
@@ -152,18 +130,6 @@ class EventFragment : Fragment() {
             RepeatTypes.EVERY_YEAR -> getString(R.string.every_year)
         }
     }
-
-    private fun getNotificationsTypes(): Array<String> {
-        return arrayOf(
-            getString(R.string.minutes_5),
-            getString(R.string.minutes_10),
-            getString(R.string.minutes_15),
-            getString(R.string.minutes_30),
-            getString(R.string.in_hour),
-            getString(R.string.in_day),
-        )
-    }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

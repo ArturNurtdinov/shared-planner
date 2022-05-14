@@ -149,7 +149,7 @@ class CalendarRepository(
         val response = api.updateEvent(
             id,
             UpdateEventBody(
-                true,
+                false,
                 groupId,
                 eventTypes.ordinal,
                 title,
