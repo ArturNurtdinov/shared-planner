@@ -23,29 +23,42 @@ class NotificationsAdapter(private val clickListener: (NotificationUi) -> Unit) 
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            )
+            ),
+            clickListener
         )
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         holder.bind(currentList[position])
-        holder.itemView.setDebounceClickListener {
-            clickListener.invoke(currentList[position])
-        }
     }
 
-    class NotificationViewHolder(val binding: NotificationItemBinding) :
+    class NotificationViewHolder(
+        private val binding: NotificationItemBinding,
+        private val clickListener: (NotificationUi) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(notificationUi: NotificationUi) {
             when (notificationUi) {
                 is NotificationUi.NotificationUiItem -> {
                     binding.notificationItemRemove.isVisible = true
+                    itemView.setDebounceClickListener {}
+                    binding.notificationItemRemove.setDebounceClickListener {
+                        clickListener.invoke(notificationUi)
+                    }
                     binding.root.background = ColorDrawable(Color.WHITE)
                     binding.notificationItemTitle.text =
                         notificationUi.notification.name
-                    binding.notificationItemTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.black))
+                    binding.notificationItemTitle.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.black
+                        )
+                    )
                 }
                 is NotificationUi.AddNotification -> {
+                    itemView.setDebounceClickListener {
+                        clickListener.invoke(notificationUi)
+                    }
                     binding.notificationItemRemove.isVisible = false
                     binding.root.background = ContextCompat.getDrawable(
                         itemView.context,
@@ -53,7 +66,12 @@ class NotificationsAdapter(private val clickListener: (NotificationUi) -> Unit) 
                     )
                     binding.notificationItemTitle.text =
                         itemView.context.getString(R.string.add_notification)
-                    binding.notificationItemTitle.setTextColor(ContextCompat.getColor(itemView.context, R.color.primary))
+                    binding.notificationItemTitle.setTextColor(
+                        ContextCompat.getColor(
+                            itemView.context,
+                            R.color.primary
+                        )
+                    )
                 }
             }
         }
@@ -61,7 +79,7 @@ class NotificationsAdapter(private val clickListener: (NotificationUi) -> Unit) 
 
     private object NotificationDiffUtil : DiffUtil.ItemCallback<NotificationUi>() {
         override fun areItemsTheSame(oldItem: NotificationUi, newItem: NotificationUi): Boolean {
-            return (oldItem is NotificationUi.NotificationUiItem && newItem is NotificationUi.NotificationUiItem && oldItem.notification.id == newItem.notification.id)
+            return (oldItem is NotificationUi.NotificationUiItem && newItem is NotificationUi.NotificationUiItem && oldItem.notification.value == newItem.notification.value)
                     || (oldItem is NotificationUi.AddNotification && newItem is NotificationUi.AddNotification)
         }
 

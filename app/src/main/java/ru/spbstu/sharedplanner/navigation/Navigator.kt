@@ -9,6 +9,7 @@ import ru.spbstu.calendar.calendar.day.presentation.DayFragment
 import ru.spbstu.calendar.calendar.event.edit.presentation.CreateEventFragment
 import ru.spbstu.calendar.calendar.event.presentation.EventFragment
 import ru.spbstu.calendar.domain.model.Event
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.settings.groups.edit.presentation.CreateGroupFragment
 import ru.spbstu.sharedplanner.R
@@ -86,14 +87,14 @@ class Navigator : RootRouter, CalendarRouter, AuthRouter {
         )
     }
 
-    override fun openEventFragment(event: Event) {
+    override fun openEventFragment(event: EventModel) {
         navController?.navigate(
             R.id.action_dayFragment_to_eventFragment,
             bundleOf(EventFragment.EVENT_KEY to event)
         )
     }
 
-    override fun openCreateEventFragment(event: Event?) {
+    override fun openCreateEventFragment(event: EventModel?) {
         if (event != null) {
             navController?.navigate(
                 R.id.action_eventFragment_to_createEventFragment,

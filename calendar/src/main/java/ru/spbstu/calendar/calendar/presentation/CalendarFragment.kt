@@ -39,6 +39,7 @@ import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.daysOfWeekFromLocale
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
+import timber.log.Timber
 import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.YearMonth
@@ -116,6 +117,7 @@ class CalendarFragment : Fragment() {
             }
             monthScrollListener = object : MonthScrollListener {
                 override fun invoke(p1: CalendarMonth) {
+                    viewModel.onScolledToNewDate(p1.yearMonth.atDay(1))
                     viewModel.isManuallySelectedMonth = true
                     binding.fragmentCalendarMonth.selectItemByIndex(p1.month - 1)
                     val selectedYear = years[binding.fragmentCalendarYear.selectedIndex]
@@ -233,11 +235,18 @@ class CalendarFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.state
             .onEach {
-                Log.d("WWWW", "$it")
+                Timber.tag("calendar").d("new state: $it")
+                it.eventsByDay.keys.forEach { date ->
+                    binding.fragmentCalendarCalendar.notifyDateChanged(date, DayOwner.THIS_MONTH)
+                    binding.fragmentCalendarCalendar.notifyDateChanged(date, DayOwner.PREVIOUS_MONTH)
+                    binding.fragmentCalendarCalendar.notifyDateChanged(date, DayOwner.NEXT_MONTH)
+                }
             }
             .launchIn(lifecycleScope)
         binding.fragmentCalendarCalendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun bind(container: DayViewContainer, day: CalendarDay) {
+                val state = viewModel.state.value
+                val events = state.events
                 container.root.setDebounceClickListener {
                     viewModel.openDay(
                         day.date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()
@@ -269,11 +278,19 @@ class CalendarFragment : Fragment() {
 
                 container.dayText.text = day.date.dayOfMonth.toString()
 
-                container.circles.forEach {
-                    it.background = GradientDrawable().apply {
-                        shape = GradientDrawable.RECTANGLE
-                        setColor(Color.CYAN)
-                        cornerRadius = 4.dp.toFloat()
+                val eventsForThisDay = state.eventsByDay[day.date] ?: emptyList()
+                val size = eventsForThisDay.size
+                container.circles.forEachIndexed { index, view ->
+                    view.isVisible = false
+                    if (index < size) {
+                        view.isVisible = viewModel.state.value.groups.filter { it.isSelected }
+                            .any { it.id == eventsForThisDay[index].group.id }
+                        val color = eventsForThisDay[index].group.color
+                        view.background = GradientDrawable().apply {
+                            shape = GradientDrawable.RECTANGLE
+                            setColor(color)
+                            cornerRadius = 4.dp.toFloat()
+                        }
                     }
                 }
             }
@@ -281,6 +298,8 @@ class CalendarFragment : Fragment() {
             override fun create(view: View): DayViewContainer = DayViewContainer(view)
 
         }
+
+        viewModel.loadData()
     }
 
     override fun onDestroyView() {

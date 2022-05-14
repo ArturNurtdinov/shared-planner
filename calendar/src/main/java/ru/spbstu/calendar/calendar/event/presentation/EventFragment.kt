@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.databinding.EventFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.File
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
@@ -75,33 +78,41 @@ class EventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.submitList(
-            listOf(
-                FileUi.FileUiItem(File(0, "1.pdf")),
-                FileUi.FileUiItem(File(1, "2.pdf")),
-                FileUi.FileUiItem(File(2, "3.pdf")),
-                FileUi.FileUiItem(File(3, "4.pdf")),
-                FileUi.FileUiItem(File(4, "5.pdf"))
-            )
-        )
 
-        viewModel.event?.let {
-            binding.fragmentEventColor.background = GradientDrawable().apply {
-                shape = GradientDrawable.RECTANGLE
-                cornerRadius = 4.dp.toFloat()
-                setColor(Color.CYAN)
+
+        viewModel.state
+            .filterNotNull()
+            .onEach { state ->
+                val it = state.eventModel
+                binding.fragmentEventColor.background = GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = 4.dp.toFloat()
+                    setColor(it.group.color)
+                }
+                binding.fragmentEventTitle.text = it.title
+                binding.fragmentEventGroup.text = it.group.name
+                if (it.from.isBefore(it.to)) {
+                    binding.fragmentEventTime.text =
+                        "${
+                            dateFormat.format(
+                                it.from.toInstant().toEpochMilli()
+                            )
+                        } - ${dateFormat.format(it.to.toInstant().toEpochMilli())}"
+                } else {
+                    binding.fragmentEventTime.text =
+                        dateFormat.format(it.to.toInstant().toEpochMilli())
+                }
+                binding.fragmentEventDescription.isVisible = false
+                binding.fragmentEventRepeat.isVisible = false
+
+                binding.fragmentEventFilesLabel.isVisible = it.attaches.isNotEmpty()
+                adapter.submitList(it.attaches.mapNotNull {
+                    if (it.lastPathSegment != null) FileUi.FileUiItem(
+                        it.lastPathSegment!!
+                    ) else null
+                })
             }
-            binding.fragmentEventTitle.text = it.title
-            binding.fragmentEventGroup.text = it.group.name
-            if (it.endTime != null && it.endTime != 0L) {
-                binding.fragmentEventTime.text =
-                    "${dateFormat.format(it.startTime)} - ${dateFormat.format(it.endTime)}"
-            } else {
-                binding.fragmentEventTime.text = dateFormat.format(it.startTime)
-            }
-            binding.fragmentEventDescription.isVisible = false
-            binding.fragmentEventRepeat.isVisible = false
-        }
+            .launchIn(lifecycleScope)
     }
 
 

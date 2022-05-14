@@ -1,11 +1,9 @@
 package ru.spbstu.calendar.calendar.event.presentation
 
-import ru.spbstu.calendar.domain.model.File
-
 sealed class FileUi {
     abstract val viewType: Int
 
-    data class FileUiItem(val file: File) : FileUi() {
+    data class FileUiItem(val name: String) : FileUi() {
         override val viewType: Int = FILE_UI_ITEM_VIEW_TYPE
     }
 

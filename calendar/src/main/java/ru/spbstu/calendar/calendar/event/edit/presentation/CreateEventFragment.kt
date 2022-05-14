@@ -3,12 +3,16 @@ package ru.spbstu.calendar.calendar.event.edit.presentation
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -23,9 +27,11 @@ import ru.spbstu.calendar.databinding.CreateEventFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
 import ru.spbstu.calendar.domain.model.Event
-import ru.spbstu.calendar.domain.model.File
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Notification
 import ru.spbstu.common.di.FeatureUtils
+import ru.spbstu.common.domain.NotificationsTypes
+import ru.spbstu.common.domain.RepeatTypes
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.text.SimpleDateFormat
 import java.time.ZoneId
@@ -41,11 +47,34 @@ class CreateEventFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val notifsAdapter = NotificationsAdapter {
-
+        if (it == NotificationUi.AddNotification) {
+            val notifsItems = getNotificationsTypes()
+            MaterialAlertDialogBuilder(requireContext(), R.style.ShowGroupsDialogStyle)
+                .setTitle(getString(R.string.repeat))
+                .setItems(notifsItems) { dialog, which ->
+                    viewModel.onNotifItemSelected(which)
+                }
+                .setNeutralButton(R.string.cancel) { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else if (it is NotificationUi.NotificationUiItem) {
+            viewModel.removeNotif(it)
+        }
     }
 
-    private val filesAdapter = FilesAdapter {
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri == null) return@registerForActivityResult
+            viewModel.onNewFilePicked(uri)
+        }
 
+    private val filesAdapter = FilesAdapter {
+        if (it == FileUi.AddFileItem) {
+            getContent.launch("*/*")
+        } else if (it is FileUi.FileUiItem) {
+
+        }
     }
 
     private val dateFormat = SimpleDateFormat("EE, dd MMMM yyyy", Locale.getDefault())
@@ -73,7 +102,7 @@ class CreateEventFragment : Fragment() {
             }
         }
 
-        requireArguments().getParcelable<Event?>(EVENT_KEY).run {
+        requireArguments().getParcelable<EventModel?>(EVENT_KEY).run {
             if (this == null) {
                 viewModel.mode = CreateEventViewModel.Mode.CreateEvent
             } else {
@@ -91,7 +120,7 @@ class CreateEventFragment : Fragment() {
                     viewModel.onFirstDateSelected(year, month + 1, dayOfMonth)
                 },
                 currentSelected.year,
-                currentSelected.monthValue,
+                currentSelected.monthValue - 1,
                 currentSelected.dayOfMonth
             ).show()
         }
@@ -104,7 +133,7 @@ class CreateEventFragment : Fragment() {
                     viewModel.onSecondDateSelected(year, month + 1, dayOfMonth)
                 },
                 currentSelected.year,
-                currentSelected.monthValue,
+                currentSelected.monthValue - 1,
                 currentSelected.dayOfMonth
             ).show()
         }
@@ -129,6 +158,7 @@ class CreateEventFragment : Fragment() {
         }
 
         binding.fragmentCreateEventNotifications.adapter = notifsAdapter
+        binding.fragmentCreateEventNotifications.itemAnimator = null
 
         binding.fragmentCreateEventFiles.adapter = filesAdapter
 
@@ -171,29 +201,53 @@ class CreateEventFragment : Fragment() {
                 .show()
         }
 
+        binding.fragmentCreateEventPickGroup.setDebounceClickListener {
+            val state = viewModel.state.value
+            val groups = state.groups.map { it.name }.toTypedArray()
+            MaterialAlertDialogBuilder(requireContext(), R.style.ShowGroupsDialogStyle)
+                .setTitle(getString(R.string.pick_group))
+                .setItems(groups) { dialog, which ->
+                    viewModel.onGroupSelected(which)
+                }
+                .setNeutralButton(R.string.cancel) { dialog, which ->
+                    dialog.dismiss()
+                }
+                .show()
+        }
+
+        binding.fragmentCreateEventInput.setText(
+            if (viewModel.mode == CreateEventViewModel.Mode.CreateEvent) ""
+            else (viewModel.mode as CreateEventViewModel.Mode.EditEvent).event!!.title,
+            TextView.BufferType.EDITABLE
+        )
+
+        binding.fragmentCreateEventDescription.setText(
+            if (viewModel.mode == CreateEventViewModel.Mode.CreateEvent) ""
+            else (viewModel.mode as CreateEventViewModel.Mode.EditEvent).event!!.description,
+            TextView.BufferType.EDITABLE
+        )
+
+        binding.fragmentCreateEventConfirm.setDebounceClickListener {
+            val title =
+                binding.fragmentCreateEventInput.text?.toString() ?: return@setDebounceClickListener
+            if (title.length > binding.fragmentCreateEventInputLayout.counterMaxLength) {
+                return@setDebounceClickListener
+            }
+
+            val description = binding.fragmentCreateEventDescription.text?.toString() ?: ""
+            viewModel.createEvent(title, description)
+        }
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        notifsAdapter.submitList(
-            listOf(
-                NotificationUi.NotificationUiItem(
-                    Notification(
-                        0,
-                        "За 15 минут"
-                    )
-                ), NotificationUi.AddNotification
-            )
-        )
-
-        filesAdapter.submitList(
-            listOf(
-                FileUi.FileUiItem(File(0, "kek.pdf")),
-                FileUi.AddFileItem
-            )
-        )
+        viewModel.errorMessage
+            .onEach {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }.launchIn(lifecycleScope)
 
         viewModel.state
             .onEach {
@@ -236,8 +290,62 @@ class CreateEventFragment : Fragment() {
                 binding.fragmentCreateEventFilesIcon.isVisible = !it.isReminder
                 binding.fragmentCreateEventDivider7.isVisible = !it.isReminder
                 binding.fragmentCreateEventDescriptionLayout.isVisible = !it.isReminder
+
+                val notifs = it.notificationsTypes.map {
+                    NotificationUi.NotificationUiItem(
+                        Notification(
+                            it.value,
+                            getNotificationTextFromItem(it)
+                        )
+                    )
+                }
+                notifsAdapter.submitList(
+                    mutableListOf<NotificationUi?>().apply {
+                        addAll(notifs)
+                        add(NotificationUi.AddNotification)
+                    }
+                )
+
+                binding.fragmentCreateEventPickGroup.text =
+                    if (it.selectedGroup != null) it.selectedGroup.name else getString(R.string.pick_group)
+
+                val files = it.files.map {
+                    FileUi.FileUiItem(it)
+                }.toMutableList()
+
+                filesAdapter.submitList(
+                    mutableListOf<FileUi?>().apply {
+                        addAll(files)
+                        if (files.size < 3) {
+                            add(FileUi.AddFileItem)
+                        }
+                    }
+                )
+
             }
             .launchIn(lifecycleScope)
+    }
+
+    private fun getNotificationsTypes(): Array<String> {
+        return arrayOf(
+            getString(R.string.minutes_5),
+            getString(R.string.minutes_10),
+            getString(R.string.minutes_15),
+            getString(R.string.minutes_30),
+            getString(R.string.in_hour),
+            getString(R.string.in_day),
+        )
+    }
+
+    private fun getNotificationTextFromItem(repeatItem: NotificationsTypes): String {
+        return when (repeatItem) {
+            NotificationsTypes.MIN_5 -> getString(R.string.minutes_5)
+            NotificationsTypes.MIN_10 -> getString(R.string.minutes_10)
+            NotificationsTypes.MIN_15 -> getString(R.string.minutes_15)
+            NotificationsTypes.MIN_30 -> getString(R.string.minutes_30)
+            NotificationsTypes.HOUR -> getString(R.string.in_hour)
+            NotificationsTypes.DAY -> getString(R.string.in_day)
+        }
     }
 
     private fun getRepeatItems(): Array<String> {
@@ -251,14 +359,14 @@ class CreateEventFragment : Fragment() {
         )
     }
 
-    private fun getRepeatTextFromItem(repeatItem: CreateEventViewModel.RepeatItem): String {
+    private fun getRepeatTextFromItem(repeatItem: RepeatTypes): String {
         return when (repeatItem) {
-            CreateEventViewModel.RepeatItem.Every3Days -> getString(R.string.every_3_days)
-            CreateEventViewModel.RepeatItem.EveryDay -> getString(R.string.every_day)
-            CreateEventViewModel.RepeatItem.EveryMonth -> getString(R.string.every_month)
-            CreateEventViewModel.RepeatItem.EveryWeek -> getString(R.string.every_week)
-            CreateEventViewModel.RepeatItem.EveryYear -> getString(R.string.every_year)
-            CreateEventViewModel.RepeatItem.None -> getString(R.string.doesnt_repeat)
+            RepeatTypes.EVERY_THREE_DAYS -> getString(R.string.every_3_days)
+            RepeatTypes.NONE -> getString(R.string.doesnt_repeat)
+            RepeatTypes.EVERY_DAY -> getString(R.string.every_day)
+            RepeatTypes.EVERY_WEEK -> getString(R.string.every_week)
+            RepeatTypes.EVERY_MONTH -> getString(R.string.every_month)
+            RepeatTypes.EVERY_YEAR -> getString(R.string.every_year)
         }
     }
 

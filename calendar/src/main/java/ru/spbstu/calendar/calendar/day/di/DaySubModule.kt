@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
+import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.day.presentation.DayViewModel
 import ru.spbstu.calendar.settings.presentation.SettingsViewModel
@@ -21,8 +22,11 @@ class DaySubModule {
     @Provides
     @IntoMap
     @ViewModelKey(DayViewModel::class)
-    fun provideViewModel(router: CalendarRouter): ViewModel {
-        return DayViewModel(router)
+    fun provideViewModel(
+        router: CalendarRouter,
+        calendarRepository: CalendarRepository
+    ): ViewModel {
+        return DayViewModel(router, calendarRepository)
     }
 
     @Provides

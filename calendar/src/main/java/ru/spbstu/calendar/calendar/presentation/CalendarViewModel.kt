@@ -10,10 +10,11 @@ import kotlinx.coroutines.withContext
 import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.presentation.dialog.model.GroupSelected
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.common.di.prefs.PreferencesRepository
+import ru.spbstu.common.domain.EventTypes
 import ru.spbstu.common.network.SharedPlannerResult
-import java.time.LocalDate
-import java.time.ZoneId
+import java.time.*
 
 class CalendarViewModel(
     private val router: CalendarRouter,
@@ -34,7 +35,9 @@ class CalendarViewModel(
                 .atStartOfDay()
                 .atZone(ZoneId.systemDefault())
                 .toInstant()
-                .toEpochMilli()
+                .toEpochMilli(),
+            emptyList(),
+            emptyMap()
         )
     )
     val state = _state.asStateFlow()
@@ -70,12 +73,63 @@ class CalendarViewModel(
                 is SharedPlannerResult.Success -> {
                     val selected = currentState.groups
                     val groups = groupsResult.data
-                    withContext(Dispatchers.Main) {
-                        _state.value = _state.value.copy(
-                            groups = groups.map { group ->
-                                selected.find { it.id == group.id } ?: GroupSelected(group, true)
+                    val eventsResult = calendarRepository.getEvents(
+                        ZonedDateTime.ofInstant(
+                            Instant.ofEpochMilli(currentState.startTimestamp),
+                            ZoneId.systemDefault()
+                        ),
+                        ZonedDateTime.ofInstant(
+                            Instant.ofEpochMilli(currentState.endTimestamp),
+                            ZoneId.systemDefault()
+                        ),
+                        groups,
+                    )
+
+                    when (eventsResult) {
+                        is SharedPlannerResult.Error -> {
+
+                        }
+                        is SharedPlannerResult.Success -> {
+                            withContext(Dispatchers.Main) {
+                                val eventsByDay =
+                                    mutableMapOf<LocalDate, MutableList<EventModel>>()
+                                eventsResult.data.forEach {
+                                    val listFrom =
+                                        eventsByDay[it.from.toLocalDate()] ?: mutableListOf()
+                                    listFrom.add(it)
+                                    eventsByDay[it.from.toLocalDate()] =
+                                        listFrom.distinctBy { it.id }.toMutableList()
+
+                                    val listTo =
+                                        eventsByDay[it.to.toLocalDate()] ?: mutableListOf()
+                                    listTo.add(it)
+                                    eventsByDay[it.to.toLocalDate()] =
+                                        listTo.distinctBy { it.id }.toMutableList()
+
+                                    if (it.eventType == EventTypes.EVENT) {
+                                        var day = it.from.plusDays(1)
+                                        while (day.isBefore(it.to)) {
+                                            val list = eventsByDay[day.toLocalDate()]
+                                                ?: mutableListOf()
+                                            list.add(it)
+                                            eventsByDay[day.toLocalDate()] =
+                                                list.distinctBy { it.id }.toMutableList()
+                                            day = day.plusDays(1)
+                                        }
+                                    }
+                                }
+                                _state.value = currentState.copy(
+                                    groups = groups.map { group ->
+                                        selected.find { it.id == group.id } ?: GroupSelected(
+                                            group,
+                                            true
+                                        )
+                                    },
+                                    events = eventsResult.data,
+                                    eventsByDay = eventsByDay,
+                                )
                             }
-                        )
+                        }
                     }
                 }
             }
@@ -97,6 +151,7 @@ class CalendarViewModel(
             startTimestamp = start,
             endTimestamp = end
         )
+        loadData()
     }
 
     fun onSelectedChange(newGroups: List<GroupSelected>) {
@@ -109,5 +164,7 @@ class CalendarViewModel(
         val groups: List<GroupSelected>,
         val startTimestamp: Long,
         val endTimestamp: Long,
+        val events: List<EventModel>,
+        val eventsByDay: Map<LocalDate, List<EventModel>>
     )
 }

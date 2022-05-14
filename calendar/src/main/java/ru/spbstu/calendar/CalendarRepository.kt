@@ -1,15 +1,23 @@
 package ru.spbstu.calendar
 
 import android.graphics.Color
+import android.net.Uri
 import okhttp3.internal.toHexString
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.domain.model.Profile
 import ru.spbstu.common.di.prefs.PreferencesRepository
+import ru.spbstu.common.domain.EventTypes
+import ru.spbstu.common.domain.NotificationsTypes
+import ru.spbstu.common.domain.RepeatTypes
 import ru.spbstu.common.network.Api
 import ru.spbstu.common.network.EmptyResult
 import ru.spbstu.common.network.SharedPlannerResult
 import ru.spbstu.common.network.UnknownError
 import ru.spbstu.common.network.model.*
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 class CalendarRepository(
     private val api: Api,
@@ -120,6 +128,68 @@ class CalendarRepository(
             val body = response.body()!!
             SharedPlannerResult.Success(body.users
                 .map { Profile.fromNetworkModel(it) } to body.page)
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun createEvent(
+        groupId: Long,
+        eventTypes: EventTypes,
+        title: String,
+        description: String,
+        allDay: Boolean,
+        from: ZonedDateTime,
+        to: ZonedDateTime,
+        repeatTypes: RepeatTypes,
+        notificationsTypes: List<NotificationsTypes>,
+        files: List<Uri>
+    ): SharedPlannerResult<Any> {
+        val fromFormatted = from.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        val toFormatted = to.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        val response = api.createEvent(
+            CreateEventBody(
+                groupId,
+                eventTypes.ordinal,
+                title,
+                description,
+                allDay,
+                fromFormatted,
+                toFormatted,
+                repeatTypes.ordinal,
+                notificationsTypes.map { it.ordinal },
+                emptyList()
+            )
+        )
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(Any())
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun getEvents(
+        from: ZonedDateTime,
+        to: ZonedDateTime,
+        groups: List<Group>
+    ): SharedPlannerResult<List<EventModel>> {
+        val groupIds = groups.map { it.id }
+        val arrayGroups = LongArray(groupIds.size)
+        groupIds.forEachIndexed { index, l ->
+            arrayGroups[index] = l
+        }
+        val response = api.getEvents(
+            from.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), to.format(
+                DateTimeFormatter.ISO_OFFSET_DATE_TIME
+            ), *arrayGroups
+        )
+
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(response.body()!!.map { responseModel ->
+                EventModel.fromNetworkModel(
+                    responseModel,
+                    groups.first { it.id == responseModel.groupId })
+            })
         } else {
             SharedPlannerResult.Error(UnknownError)
         }

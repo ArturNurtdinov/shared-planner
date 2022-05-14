@@ -1,6 +1,7 @@
 package ru.spbstu.calendar
 
 import ru.spbstu.calendar.domain.model.Event
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Group
 
 interface CalendarRouter {
@@ -13,7 +14,7 @@ interface CalendarRouter {
     fun goToGroupCreateOrEdit(group: Group?)
     fun openSearch()
     fun openDayPage(date: Long)
-    fun openEventFragment(event: Event)
-    fun openCreateEventFragment(event: Event?)
+    fun openEventFragment(event: EventModel)
+    fun openCreateEventFragment(event: EventModel?)
     fun goToLogin()
 }

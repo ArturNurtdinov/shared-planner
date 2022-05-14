@@ -38,12 +38,25 @@
     <string name="every_month">Каждый месяц</string>
     <string name="every_year">Каждый год</string>
 
+    <string name="minutes_5">За 5 минут</string>
+    <string name="minutes_10">За 10 минут</string>
+    <string name="minutes_15">За 15 минут</string>
+    <string name="minutes_30">За 30 минут</string>
+    <string name="in_hour">За час</string>
+    <string name="in_day">За день</string>
+    <string name="notification">Уведомить за</string>
+
     <string name="repeat">Повторять</string>
     <string name="please_wait">Пожалуйста подождите</string>
     <string name="loading_is_in_progress">Идёт загрузка</string>
     <string name="auth_error">Ошибка входа</string>
     <string name="logout">Выйти</string>
     <string name="data_error">Ошибка при загрузке данных</string>
+    <string name="no_group_selected">Не выбрана группа</string>
+    <string name="wrong_time">Неправильно выбрано время</string>
+
+    <string name="file_error">Размер файла не может превышать 5MB</string>
+    <string name="empty_day">На этот день ничего не запланировано</string>
 
     <string-array name="months_array">
         <item>Январь</item>

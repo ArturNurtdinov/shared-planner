@@ -42,4 +42,13 @@ public interface Api {
         @Body updateGroupSettingsBody: UpdateGroupSettingsBody
     ): Response<Void>
 
+    @POST("/events")
+    suspend fun createEvent(@Body createEventBody: CreateEventBody): Response<Void>
+
+    @GET("/events")
+    suspend fun getEvents(
+        @Query("from") from: String,
+        @Query("to") to: String,
+        @Query("group_ids") vararg groupIds: Long
+    ): Response<List<EventResponse>>
 }

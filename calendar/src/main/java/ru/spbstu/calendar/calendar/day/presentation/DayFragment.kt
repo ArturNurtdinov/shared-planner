@@ -1,17 +1,19 @@
 package ru.spbstu.calendar.calendar.day.presentation
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.spbstu.calendar.databinding.DayFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.Event
-import ru.spbstu.calendar.domain.model.Group
+import ru.spbstu.common.R
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.text.SimpleDateFormat
@@ -49,7 +51,8 @@ class DayFragment : Fragment() {
 
         val dateFormat = SimpleDateFormat("EE, dd MMMM yyyy", Locale.getDefault())
         val date = requireArguments().getLong(DATE_KEY)
-        val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDate()
+        val localDate = Instant.ofEpochMilli(date).atZone(ZoneId.systemDefault()).toLocalDateTime()
+        viewModel.date = localDate
         binding.fragmentDayTitle.text = dateFormat.format(Date(date))
 
         binding.fragmentDayEvents.adapter = adapter
@@ -65,9 +68,29 @@ class DayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter.submitList(
-            listOf(Event(1, Date().time, Date().time, "Start work", Group(0, "Work", Color.WHITE,true, 25)))
-        )
+
+        viewModel.state
+            .onEach {
+                if (it.loading) {
+                    binding.fragmentDayShadow.isVisible = true
+                    binding.fragmentDayProgressBar.isVisible = true
+                } else {
+                    binding.fragmentDayShadow.isVisible = false
+                    binding.fragmentDayProgressBar.isVisible = false
+                    if (it.events.isEmpty() && it.error) {
+                        binding.fragmentDayEmpty.isVisible = true
+                        binding.fragmentDayEmpty.text = getString(R.string.data_error)
+                    } else if (it.events.isEmpty()) {
+                        binding.fragmentDayEmpty.isVisible = true
+                        binding.fragmentDayEmpty.text = getString(R.string.empty_day)
+                        adapter.submitList(it.events)
+                    } else {
+                        binding.fragmentDayEmpty.isVisible = false
+                        adapter.submitList(it.events)
+                    }
+                }
+            }
+            .launchIn(lifecycleScope)
     }
 
     override fun onDestroyView() {

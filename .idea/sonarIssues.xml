@@ -8,7 +8,17 @@
             <set />
           </value>
         </entry>
+        <entry key="/fragment.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="/fragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../BlogIn/diary/src/main/java/ru/spbstu/diary/post/presentation/PostViewModel.kt">
           <value>
             <set />
           </value>
@@ -359,6 +369,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/Event.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/calendar/src/main/java/ru/spbstu/calendar/domain/model/EventModel.kt">
           <value>
             <set />
           </value>
@@ -753,6 +768,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/domain/EventTypes.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/domain/NotificationsTypes.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/domain/RepeatTypes.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/errors/ErrorStringsProvider.kt">
           <value>
             <set />
@@ -804,6 +834,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/TokensResponseBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/CreateEventBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/EventResponse.kt">
           <value>
             <set />
           </value>

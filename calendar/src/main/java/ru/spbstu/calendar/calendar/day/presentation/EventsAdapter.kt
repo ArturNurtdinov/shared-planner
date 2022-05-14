@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.spbstu.calendar.databinding.EventItemBinding
-import ru.spbstu.calendar.domain.model.Event
+import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EventsAdapter(private val clickListener: (Event) -> Unit) :
-    ListAdapter<Event, EventsAdapter.EventViewHolder>(EventDiffUtil) {
+class EventsAdapter(private val clickListener: (EventModel) -> Unit) :
+    ListAdapter<EventModel, EventsAdapter.EventViewHolder>(EventDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         return EventViewHolder(
@@ -36,29 +36,34 @@ class EventsAdapter(private val clickListener: (Event) -> Unit) :
 
     class EventViewHolder(val binding: EventItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private val dateFormat = SimpleDateFormat("EE, dd MMMM HH:mm", Locale.getDefault())
-        fun bind(event: Event) {
-            if (event.endTime != null && event.endTime != 0L) {
+        fun bind(event: EventModel) {
+            if (event.from.isBefore(event.to)) {
                 binding.eventItemTime.text =
-                    "${dateFormat.format(event.startTime)} - ${dateFormat.format(event.endTime)}"
+                    "${
+                        dateFormat.format(
+                            event.from.toInstant().toEpochMilli()
+                        )
+                    } - ${dateFormat.format(event.to.toInstant().toEpochMilli())}"
             } else {
-                binding.eventItemTime.text = dateFormat.format(event.startTime)
+                binding.eventItemTime.text =
+                    dateFormat.format(event.from.toInstant().toEpochMilli())
             }
             binding.eventItemGroup.text = event.group.name
             binding.eventItemTitle.text = event.title
             binding.eventItemColor.background = GradientDrawable().apply {
                 shape = GradientDrawable.RECTANGLE
                 cornerRadius = 4.dp.toFloat()
-                setColor(Color.CYAN)
+                setColor(event.group.color)
             }
         }
     }
 
-    private object EventDiffUtil : DiffUtil.ItemCallback<Event>() {
-        override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
+    private object EventDiffUtil : DiffUtil.ItemCallback<EventModel>() {
+        override fun areItemsTheSame(oldItem: EventModel, newItem: EventModel): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
+        override fun areContentsTheSame(oldItem: EventModel, newItem: EventModel): Boolean {
             return oldItem == newItem
         }
     }
