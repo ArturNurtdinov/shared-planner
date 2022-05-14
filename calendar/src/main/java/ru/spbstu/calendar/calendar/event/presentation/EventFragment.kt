@@ -107,7 +107,8 @@ class EventFragment : Fragment() {
                             dateFormat.format(it.to.toInstant().toEpochMilli())
                     }
                 }
-                binding.fragmentEventDescription.isVisible = state.eventModel.eventType == EventTypes.EVENT
+                binding.fragmentEventDescription.isVisible =
+                    state.eventModel.eventType == EventTypes.EVENT && it.description.isNotEmpty()
                 binding.fragmentEventRepeat.isVisible = true
                 binding.fragmentEventRepeat.text = getRepeatTextFromItem(it.repeatType)
                 binding.fragmentEventDescription.text = it.description
