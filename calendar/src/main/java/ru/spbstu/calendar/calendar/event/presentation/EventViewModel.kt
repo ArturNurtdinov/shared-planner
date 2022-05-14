@@ -3,10 +3,14 @@ package ru.spbstu.calendar.calendar.event.presentation
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.domain.model.EventModel
 
-class EventViewModel(private val router: CalendarRouter) : ViewModel() {
+class EventViewModel(
+    private val router: CalendarRouter,
+    private val calendarRepository: CalendarRepository
+) : ViewModel() {
     var event: EventModel? = null
         set(value) {
             if (field != value) {

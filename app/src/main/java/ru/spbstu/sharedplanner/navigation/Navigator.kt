@@ -113,4 +113,8 @@ class Navigator : RootRouter, CalendarRouter, AuthRouter {
         }
         navController?.navigate(R.id.authFragment)
     }
+
+    override fun openCalendarFromEvent() {
+        navController?.navigate(R.id.action_createEventFragment_to_calendarFragment)
+    }
 }

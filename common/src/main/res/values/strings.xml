@@ -57,9 +57,11 @@
     <string name="data_error">Error data loading</string>>
     <string name="no_group_selected">No group selected</string>
     <string name="wrong_time">Time set wrong</string>
+    <string name="action_error">Could not proceed action</string>
 
     <string name="file_error">File size cannot be more than 5MB</string>
     <string name="empty_day">No events planned for this day</string>
+    <string name="description_restriction">Description can\'t be more than 250 characters</string>
 
     <string-array name="months_array">
         <item>January</item>

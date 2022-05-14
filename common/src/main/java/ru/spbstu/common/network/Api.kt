@@ -51,4 +51,10 @@ public interface Api {
         @Query("to") to: String,
         @Query("group_ids") vararg groupIds: Long
     ): Response<List<EventResponse>>
+
+    @PUT("/events/{id}")
+    suspend fun updateEvent(
+        @Path("id") id: String,
+        @Body updateEventBody: UpdateEventBody
+    ): Response<Void>
 }

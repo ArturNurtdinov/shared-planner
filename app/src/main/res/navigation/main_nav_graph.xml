@@ -171,6 +171,16 @@
     <fragment
         android:id="@+id/createEventFragment"
         android:name="ru.spbstu.calendar.calendar.event.edit.presentation.CreateEventFragment"
-        android:label="CreateEventFragment" />
+        android:label="CreateEventFragment">
+        <action
+            android:id="@+id/action_createEventFragment_to_calendarFragment"
+            app:destination="@id/calendarFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/calendarFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

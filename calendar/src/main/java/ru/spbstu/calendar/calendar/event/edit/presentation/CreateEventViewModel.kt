@@ -64,6 +64,7 @@ class CreateEventViewModel(
     val errorMessage = _errorMessage.receiveAsFlow()
 
     fun onBackClicked(): Boolean = router.pop()
+    private fun goToMainPage() = router.openCalendarFromEvent()
 
     private val _state = MutableStateFlow(
         State(
@@ -79,6 +80,7 @@ class CreateEventViewModel(
             null,
             emptyList(),
             emptyList(),
+            false
         )
     )
     val state = _state.asStateFlow()
@@ -111,7 +113,8 @@ class CreateEventViewModel(
             notificationsTypes = eventModel.notifications,
             selectedGroup = eventModel.group,
             pickedFiles = eventModel.attaches,
-            files = eventModel.attaches.mapNotNull { it.lastPathSegment },
+            files = eventModel.fileNames,
+            isEdit = true,
         )
     }
 
@@ -205,48 +208,92 @@ class CreateEventViewModel(
         )
     }
 
-    fun createEvent(title: String, description: String) {
-        if (mode != Mode.CreateEvent) return
-        viewModelScope.launch(Dispatchers.IO) {
-            val state = _state.value
-            val from = state.selectedDateFirst.atTime(
-                state.selectedTimeFirst.hour,
-                state.selectedTimeFirst.minute
-            )
+    fun onDoneAction(title: String, description: String) {
+        if (mode == Mode.CreateEvent) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val state = _state.value
+                val from = state.selectedDateFirst.atTime(
+                    state.selectedTimeFirst.hour,
+                    state.selectedTimeFirst.minute
+                )
 
-            val to = if (!state.isReminder) state.selectedDateSecond.atTime(
-                state.selectedTimeSecond.hour,
-                state.selectedTimeSecond.minute
-            ) else from
+                val to = if (!state.isReminder) state.selectedDateSecond.atTime(
+                    state.selectedTimeSecond.hour,
+                    state.selectedTimeSecond.minute
+                ) else from
 
-            if (from.isAfter(to) || state.selectedGroup == null) {
-                if (state.selectedGroup == null) {
-                    _errorMessage.send(errorStringsProvider.provideNoGroupSelectedError())
-                } else {
-                    _errorMessage.send(errorStringsProvider.provideWrongTimeError())
+                if (from.isAfter(to) || state.selectedGroup == null) {
+                    if (state.selectedGroup == null) {
+                        _errorMessage.send(errorStringsProvider.provideNoGroupSelectedError())
+                    } else {
+                        _errorMessage.send(errorStringsProvider.provideWrongTimeError())
+                    }
+                    return@launch
                 }
-                return@launch
+
+                val result = calendarRepository.createEvent(
+                    state.selectedGroup.id,
+                    if (state.isReminder) EventTypes.NOTIFICATION else EventTypes.EVENT,
+                    title,
+                    description,
+                    state.isAllDay,
+                    from.atZone(ZoneId.systemDefault()),
+                    to.atZone(ZoneId.systemDefault()),
+                    state.repeatItem,
+                    state.notificationsTypes,
+                    state.pickedFiles,
+                )
+
+                if (result is SharedPlannerResult.Success) {
+                    withContext(Dispatchers.Main) {
+                        onBackClicked()
+                    }
+                } else if (result is SharedPlannerResult.Error) {
+                    _errorMessage.send(errorStringsProvider.provideActionError())
+                }
             }
+        } else if (mode is Mode.EditEvent) {
+            viewModelScope.launch(Dispatchers.IO) {
+                val state = _state.value
+                val from = state.selectedDateFirst.atTime(
+                    state.selectedTimeFirst.hour,
+                    state.selectedTimeFirst.minute
+                )
 
-            val result = calendarRepository.createEvent(
-                state.selectedGroup.id,
-                if (state.isReminder) EventTypes.NOTIFICATION else EventTypes.EVENT,
-                title,
-                description,
-                state.isAllDay,
-                from.atZone(ZoneId.systemDefault()),
-                to.atZone(ZoneId.systemDefault()),
-                state.repeatItem,
-                state.notificationsTypes,
-                state.pickedFiles,
-            )
+                val to = if (!state.isReminder) state.selectedDateSecond.atTime(
+                    state.selectedTimeSecond.hour,
+                    state.selectedTimeSecond.minute
+                ) else from
 
-            if (result is SharedPlannerResult.Success) {
-                withContext(Dispatchers.Main) {
-                    onBackClicked()
+                if (from.isAfter(to) || state.selectedGroup == null) {
+                    if (state.selectedGroup == null) {
+                        _errorMessage.send(errorStringsProvider.provideNoGroupSelectedError())
+                    } else {
+                        _errorMessage.send(errorStringsProvider.provideWrongTimeError())
+                    }
+                    return@launch
                 }
-            } else if (result is SharedPlannerResult.Error) {
 
+                val mode = this@CreateEventViewModel.mode as Mode.EditEvent
+                val result = calendarRepository.updateEvent(
+                    mode.event!!.id,
+                    state.selectedGroup.id,
+                    if (state.isReminder) EventTypes.NOTIFICATION else EventTypes.EVENT,
+                    title,
+                    if (state.isReminder) "" else description,
+                    state.isAllDay,
+                    from.atZone(ZoneId.systemDefault()),
+                    if (state.isReminder) from.atZone(ZoneId.systemDefault()) else from.atZone(ZoneId.systemDefault()),
+                    state.notificationsTypes,
+                )
+
+                if (result is SharedPlannerResult.Success) {
+                    withContext(Dispatchers.Main) {
+                        goToMainPage()
+                    }
+                } else if (result is SharedPlannerResult.Error) {
+                    _errorMessage.send(errorStringsProvider.provideActionError())
+                }
             }
         }
     }
@@ -311,5 +358,6 @@ class CreateEventViewModel(
         val selectedGroup: Group?,
         val pickedFiles: List<Uri>,
         val files: List<String>,
+        val isEdit: Boolean,
     )
 }

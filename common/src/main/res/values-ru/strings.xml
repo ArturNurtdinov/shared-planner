@@ -54,9 +54,11 @@
     <string name="data_error">Ошибка при загрузке данных</string>
     <string name="no_group_selected">Не выбрана группа</string>
     <string name="wrong_time">Неправильно выбрано время</string>
+    <string name="action_error">Не удалось выполнить действие</string>
 
     <string name="file_error">Размер файла не может превышать 5MB</string>
     <string name="empty_day">На этот день ничего не запланировано</string>
+    <string name="description_restriction">Описание не должно превышать 250 символов</string>
 
     <string-array name="months_array">
         <item>Январь</item>

@@ -9,4 +9,5 @@ class ErrorStringsProvider(val appContext: Context) {
     fun provideFileSizeError(): String = appContext.getString(R.string.file_error)
     fun provideNoGroupSelectedError(): String = appContext.getString(R.string.no_group_selected)
     fun provideWrongTimeError(): String = appContext.getString(R.string.wrong_time)
+    fun provideActionError(): String = appContext.getString(R.string.action_error)
 }

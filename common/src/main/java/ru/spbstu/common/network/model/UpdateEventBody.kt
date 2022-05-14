@@ -2,9 +2,9 @@ package ru.spbstu.common.network.model
 
 import com.google.gson.annotations.SerializedName
 
-data class EventResponse(
-    @SerializedName("id")
-    val id: String,
+data class UpdateEventBody(
+    @SerializedName("only_update_instance")
+    val onlyUpdateInstance: Boolean,
     @SerializedName("group_id")
     val groupId: Long,
     @SerializedName("event_type")
@@ -19,10 +19,6 @@ data class EventResponse(
     val from: String,
     @SerializedName("to")
     val to: String,
-    @SerializedName("repeat_type")
-    val repeatType: Int,
     @SerializedName("notifications")
     val notifications: List<Int>,
-    @SerializedName("attachments")
-    val attaches: List<AttachResponse>,
 )

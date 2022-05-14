@@ -838,6 +838,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/AttachResponse.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/CreateEventBody.kt">
           <value>
             <set />
@@ -884,6 +889,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/TokensResponseBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/UpdateEventBody.kt">
           <value>
             <set />
           </value>

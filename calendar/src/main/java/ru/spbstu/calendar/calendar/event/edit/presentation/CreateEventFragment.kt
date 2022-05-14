@@ -26,7 +26,6 @@ import ru.spbstu.calendar.calendar.event.presentation.FilesAdapter
 import ru.spbstu.calendar.databinding.CreateEventFragmentBinding
 import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
-import ru.spbstu.calendar.domain.model.Event
 import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Notification
 import ru.spbstu.common.di.FeatureUtils
@@ -235,7 +234,15 @@ class CreateEventFragment : Fragment() {
             }
 
             val description = binding.fragmentCreateEventDescription.text?.toString() ?: ""
-            viewModel.createEvent(title, description)
+            if (description.length > 250) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.description_restriction),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setDebounceClickListener
+            }
+            viewModel.onDoneAction(title, description)
         }
 
         return binding.root
@@ -278,6 +285,8 @@ class CreateEventFragment : Fragment() {
                         ).toInstant().toEpochMilli()
                     )
 
+                binding.fragmentCreateEventRepeatText.isClickable = !it.isEdit
+
                 binding.fragmentCreateEventAllDaySwitch.isChecked = it.isAllDay
 
                 binding.fragmentCreateEventFirstTime.isVisible = !it.isAllDay
@@ -313,15 +322,17 @@ class CreateEventFragment : Fragment() {
                     FileUi.FileUiItem(it)
                 }.toMutableList()
 
+                binding.fragmentCreateEventFilesIcon.isVisible = !it.isEdit
                 filesAdapter.submitList(
                     mutableListOf<FileUi?>().apply {
                         addAll(files)
-                        if (files.size < 3) {
+                        if (files.size < 3 && !it.isEdit) {
                             add(FileUi.AddFileItem)
                         }
                     }
                 )
 
+                binding.fragmentCreateEventSpinner.selectItemByIndex(if (it.isReminder) 0 else 1)
             }
             .launchIn(lifecycleScope)
     }

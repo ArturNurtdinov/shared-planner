@@ -25,6 +25,7 @@ data class EventModel(
     val repeatType: RepeatTypes,
     val notifications: List<NotificationsTypes>,
     val attaches: List<Uri>,
+    val fileNames: List<String>,
 ) : Parcelable {
 
     companion object {
@@ -40,7 +41,8 @@ data class EventModel(
                 ZonedDateTime.parse(eventResponse.to, DateTimeFormatter.ISO_OFFSET_DATE_TIME),
                 RepeatTypes.fromInt(eventResponse.repeatType),
                 eventResponse.notifications.map { NotificationsTypes.fromInt(it) },
-                eventResponse.attaches.map { Uri.parse(BuildConfig.ENDPOINT + it) }
+                eventResponse.attaches.map { Uri.parse(BuildConfig.ENDPOINT + it.path) },
+                eventResponse.attaches.map { it.name }
             )
     }
 }

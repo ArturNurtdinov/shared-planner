@@ -133,6 +133,40 @@ class CalendarRepository(
         }
     }
 
+    suspend fun updateEvent(
+        id: String,
+        groupId: Long,
+        eventTypes: EventTypes,
+        title: String,
+        description: String,
+        allDay: Boolean,
+        from: ZonedDateTime,
+        to: ZonedDateTime,
+        notificationsTypes: List<NotificationsTypes>,
+    ): SharedPlannerResult<Any> {
+        val fromFormatted = from.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        val toFormatted = to.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        val response = api.updateEvent(
+            id,
+            UpdateEventBody(
+                true,
+                groupId,
+                eventTypes.ordinal,
+                title,
+                description,
+                allDay,
+                fromFormatted,
+                toFormatted,
+                notificationsTypes.map { it.ordinal },
+            )
+        )
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(Any())
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
     suspend fun createEvent(
         groupId: Long,
         eventTypes: EventTypes,
