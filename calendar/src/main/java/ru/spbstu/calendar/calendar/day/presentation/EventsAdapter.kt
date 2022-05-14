@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.spbstu.calendar.databinding.EventItemBinding
 import ru.spbstu.calendar.domain.model.EventModel
+import ru.spbstu.common.R
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.text.SimpleDateFormat
@@ -37,16 +38,20 @@ class EventsAdapter(private val clickListener: (EventModel) -> Unit) :
     class EventViewHolder(val binding: EventItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private val dateFormat = SimpleDateFormat("EE, dd MMMM HH:mm", Locale.getDefault())
         fun bind(event: EventModel) {
-            if (event.from.isBefore(event.to)) {
-                binding.eventItemTime.text =
-                    "${
-                        dateFormat.format(
-                            event.from.toInstant().toEpochMilli()
-                        )
-                    } - ${dateFormat.format(event.to.toInstant().toEpochMilli())}"
+            if (event.allDay) {
+                binding.eventItemTime.text = itemView.context.getString(R.string.all_day)
             } else {
-                binding.eventItemTime.text =
-                    dateFormat.format(event.from.toInstant().toEpochMilli())
+                if (event.from.isBefore(event.to)) {
+                    binding.eventItemTime.text =
+                        "${
+                            dateFormat.format(
+                                event.from.toInstant().toEpochMilli()
+                            )
+                        } - ${dateFormat.format(event.to.toInstant().toEpochMilli())}"
+                } else {
+                    binding.eventItemTime.text =
+                        dateFormat.format(event.from.toInstant().toEpochMilli())
+                }
             }
             binding.eventItemGroup.text = event.group.name
             binding.eventItemTitle.text = event.title
