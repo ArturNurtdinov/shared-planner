@@ -245,8 +245,10 @@ class CreateEventViewModel(
                     title,
                     description,
                     state.isAllDay,
-                    from.atZone(ZoneId.systemDefault()),
-                    to.atZone(ZoneId.systemDefault()),
+                    if (state.isAllDay) from.withHour(0).withMinute(0)
+                        .atZone(ZoneId.systemDefault()) else from.atZone(ZoneId.systemDefault()),
+                    if (state.isAllDay) to.withHour(0).withMinute(0)
+                        .atZone(ZoneId.systemDefault()) else to.atZone(ZoneId.systemDefault()),
                     state.repeatItem,
                     state.notificationsTypes,
                     state.pickedFiles,
@@ -291,7 +293,9 @@ class CreateEventViewModel(
                     if (state.isReminder) "" else description,
                     state.isAllDay,
                     from.atZone(ZoneId.systemDefault()),
-                    if (state.isReminder) from.atZone(ZoneId.systemDefault()) else from.atZone(ZoneId.systemDefault()),
+                    if (state.isReminder) from.atZone(ZoneId.systemDefault()) else from.atZone(
+                        ZoneId.systemDefault()
+                    ),
                     state.notificationsTypes,
                 )
 

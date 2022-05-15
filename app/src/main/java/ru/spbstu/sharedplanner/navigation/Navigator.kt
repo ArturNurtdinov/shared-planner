@@ -8,7 +8,6 @@ import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.day.presentation.DayFragment
 import ru.spbstu.calendar.calendar.event.edit.presentation.CreateEventFragment
 import ru.spbstu.calendar.calendar.event.presentation.EventFragment
-import ru.spbstu.calendar.domain.model.Event
 import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Group
 import ru.spbstu.calendar.settings.groups.edit.presentation.CreateGroupFragment
@@ -24,9 +23,10 @@ class Navigator : RootRouter, CalendarRouter, AuthRouter {
         this.activity = activity
     }
 
-    fun detach() {
+    fun detach(activity: AppCompatActivity) {
+        if (activity != this.activity) return
         navController = null
-        activity = null
+        this.activity = null
     }
 
     override fun goToAuthPage() {

@@ -38,6 +38,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/di/app/NavigationModule.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/ru/spbstu/sharedplanner/navigation/Navigator.kt">
           <value>
             <set />

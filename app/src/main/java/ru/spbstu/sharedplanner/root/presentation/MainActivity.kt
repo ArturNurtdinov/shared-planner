@@ -6,17 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import ru.ok.android.sdk.OkAuthActivity
 import ru.ok.android.sdk.Shared
 import ru.spbstu.auth.auth.presentation.AuthFragment
 import ru.spbstu.common.di.FeatureUtils
@@ -61,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        navigator.detach()
+        navigator.detach(this)
         EventBus.getDefault().unregister(this)
     }
 
