@@ -13,6 +13,7 @@ import ru.spbstu.common.R
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
 
 class EventsAdapter(private val clickListener: (EventModel) -> Unit) :
@@ -45,12 +46,12 @@ class EventsAdapter(private val clickListener: (EventModel) -> Unit) :
                     binding.eventItemTime.text =
                         "${
                             dateFormat.format(
-                                event.from.toInstant().toEpochMilli()
+                                event.from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
                             )
-                        } - ${dateFormat.format(event.to.toInstant().toEpochMilli())}"
+                        } - ${dateFormat.format(event.to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())}"
                 } else {
                     binding.eventItemTime.text =
-                        dateFormat.format(event.from.toInstant().toEpochMilli())
+                        dateFormat.format(event.from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                 }
             }
             binding.eventItemGroup.text = event.group.name

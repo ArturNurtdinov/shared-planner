@@ -8,6 +8,7 @@ import ru.spbstu.common.domain.EventTypes
 import ru.spbstu.common.domain.NotificationsTypes
 import ru.spbstu.common.domain.RepeatTypes
 import ru.spbstu.common.network.model.EventResponse
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -20,8 +21,8 @@ data class EventModel(
     val title: String,
     val description: String,
     val allDay: Boolean,
-    val from: ZonedDateTime,
-    val to: ZonedDateTime,
+    val from: LocalDateTime,
+    val to: LocalDateTime,
     val repeatType: RepeatTypes,
     val notifications: List<NotificationsTypes>,
     val attaches: List<Uri>,
@@ -37,8 +38,14 @@ data class EventModel(
                 eventResponse.title,
                 eventResponse.description,
                 eventResponse.allDay,
-                ZonedDateTime.parse(eventResponse.from, DateTimeFormatter.ISO_OFFSET_DATE_TIME),
-                ZonedDateTime.parse(eventResponse.to, DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                ZonedDateTime.parse(eventResponse.from, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                    .withZoneSameInstant(
+                        ZoneId.systemDefault()
+                    ).toLocalDateTime(),
+                ZonedDateTime.parse(eventResponse.to, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+                    .withZoneSameInstant(
+                        ZoneId.systemDefault()
+                    ).toLocalDateTime(),
                 RepeatTypes.fromInt(eventResponse.repeatType),
                 eventResponse.notifications.map { NotificationsTypes.fromInt(it) },
                 eventResponse.attaches.map { Uri.parse(BuildConfig.ENDPOINT + it.path) },

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import ru.ok.android.sdk.OkAuthActivity
 import ru.ok.android.sdk.Shared
 import ru.spbstu.auth.auth.presentation.AuthFragment
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         super.onNewIntent(intent)
     }
 
-    @Subscribe()
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onEvent(event: AuthEvent) {
         lifecycleScope.launch(Dispatchers.Main) {
             navigator.goToLogin()

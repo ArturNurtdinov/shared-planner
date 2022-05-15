@@ -107,8 +107,8 @@ class CreateEventViewModel(
         _state.value = _state.value.copy(
             selectedDateFirst = eventModel.from.toLocalDate(),
             selectedDateSecond = eventModel.to.toLocalDate(),
-            selectedTimeFirst = eventModel.from.toLocalDateTime(),
-            selectedTimeSecond = eventModel.to.toLocalDateTime(),
+            selectedTimeFirst = eventModel.from,
+            selectedTimeSecond = eventModel.to,
             isAllDay = eventModel.allDay,
             isReminder = eventModel.eventType == EventTypes.NOTIFICATION,
             repeatItem = eventModel.repeatType,

@@ -31,6 +31,7 @@ import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
 import java.io.File
 import java.text.SimpleDateFormat
+import java.time.ZoneId
 import java.util.*
 import javax.inject.Inject
 
@@ -151,11 +152,11 @@ class EventFragment : Fragment() {
                 } else {
                     if (it.from.isBefore(it.to)) {
                         binding.fragmentEventTime.text =
-                            "${dateFormat.format(it.from.toInstant().toEpochMilli())} - " +
-                                    "${dateFormat.format(it.to.toInstant().toEpochMilli())}"
+                            "${dateFormat.format(it.from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())} - " +
+                                    "${dateFormat.format(it.to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())}"
                     } else {
                         binding.fragmentEventTime.text =
-                            dateFormat.format(it.to.toInstant().toEpochMilli())
+                            dateFormat.format(it.to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
                     }
                 }
                 binding.fragmentEventDescription.isVisible =

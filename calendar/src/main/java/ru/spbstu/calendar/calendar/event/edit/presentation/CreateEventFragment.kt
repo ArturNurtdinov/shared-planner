@@ -317,8 +317,8 @@ class CreateEventFragment : Fragment() {
 
                 binding.fragmentCreateEventRepeatText.text = getRepeatTextFromItem(it.repeatItem)
 
-                binding.fragmentCreateEventFiles.isVisible = !it.isReminder
-                binding.fragmentCreateEventFilesIcon.isVisible = !it.isReminder
+                binding.fragmentCreateEventFiles.isVisible = !it.isReminder && !it.isEdit
+                binding.fragmentCreateEventFilesIcon.isVisible = !it.isReminder && !it.isEdit
                 binding.fragmentCreateEventDivider7.isVisible = !it.isReminder
                 binding.fragmentCreateEventDescriptionLayout.isVisible = !it.isReminder
 
@@ -344,7 +344,6 @@ class CreateEventFragment : Fragment() {
                     list.add(FileUi.FileUiItem(value, it.pickedFiles[index]))
                 }
 
-                binding.fragmentCreateEventFilesIcon.isVisible = !it.isEdit
                 filesAdapter.submitList(
                     mutableListOf<FileUi?>().apply {
                         addAll(list)
