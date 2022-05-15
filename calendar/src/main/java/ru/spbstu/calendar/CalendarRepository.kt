@@ -85,6 +85,10 @@ class CalendarRepository(
         }
     }
 
+    suspend fun pushFcmToken(token: String) {
+        api.pushToken(PushTokenBody(token))
+    }
+
     suspend fun changeGroupNotificationsState(id: Long, newNotify: Boolean, color: Int) {
         val processedColor = color.toHexString().uppercase()
         api.updateGroupSettings(

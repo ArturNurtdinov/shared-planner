@@ -31,10 +31,12 @@ class NotificationsGroupsAdapter(private val onNewCheckboxValueListener: (Boolea
         fun bind(group: Group) {
             binding.layoutNotificationTitle.text = group.name
             binding.layoutNotificationSwitch.isChecked = group.notificationsEnabled
+            binding.layoutNotificationSwitch.setOnCheckedChangeListener { _, isChecked ->
+                onNewCheckboxValueListener.invoke(isChecked, group)
+            }
             binding.root.setDebounceClickListener {
                 val newValue = !binding.layoutNotificationSwitch.isChecked
                 binding.layoutNotificationSwitch.isChecked = newValue
-                onNewCheckboxValueListener.invoke(newValue, group)
             }
         }
     }

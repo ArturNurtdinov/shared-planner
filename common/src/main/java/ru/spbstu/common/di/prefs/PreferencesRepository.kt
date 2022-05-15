@@ -16,6 +16,12 @@ interface PreferencesRepository {
     val selfId: Long?
     fun setSelfId(selfId: Long)
 
+    val notifsEnabled: Boolean
+    fun setNotifsEnabled(value: Boolean)
+
+    fun getNotifsEnabledForGroupId(groupId: Long): Boolean
+    fun setNotifsEnabledForGroupId(groupId: Long, value: Boolean)
+
     fun clearTokens()
 
     @Parcelize

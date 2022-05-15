@@ -68,4 +68,7 @@ public interface Api {
         @Path("id") id: String,
         @Body onlyDeleteInstanceBody: OnlyDeleteInstanceBody
     ): Response<Void>
+
+    @PUT("/user/push_token")
+    suspend fun pushToken(@Body pushTokenBody: PushTokenBody): Response<Void>
 }

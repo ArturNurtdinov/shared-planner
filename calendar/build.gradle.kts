@@ -46,4 +46,7 @@ dependencies {
     kapt(Deps.daggerKapt)
     testImplementation(Deps.testLibraries)
     androidTestImplementation(Deps.androidTestLibraries)
+    implementation(platform("com.google.firebase:firebase-bom:30.0.0"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging:23.0.4")
 }

@@ -883,6 +883,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/PushTokenBody().kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/PushTokenBody.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/common/src/main/java/ru/spbstu/common/network/model/RefreshTokenBody.kt">
           <value>
             <set />

@@ -59,7 +59,10 @@ class NotificationsFragment : Fragment() {
             val newValue =
                 !binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked
             binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked = newValue
-            viewModel.onNotificationsStateChanged(newValue)
+        }
+
+        binding.fragmentNotificationsNotifications.layoutNotificationSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.onNotificationsStateChanged(isChecked)
         }
 
         binding.fragmentNotificationsGroups.adapter = adapter
@@ -75,6 +78,8 @@ class NotificationsFragment : Fragment() {
                 adapter.submitList(it.groups) {
                     binding.fragmentNotificationsEmptyTitle.isVisible = it.groups.isEmpty()
                 }
+                binding.fragmentNotificationsNotifications.layoutNotificationSwitch.isChecked =
+                    it.notificationsEnabled
             }
             .launchIn(lifecycleScope)
     }

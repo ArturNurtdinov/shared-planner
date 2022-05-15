@@ -2,6 +2,7 @@
 <resources>
     <string name="default_notification_channel_id" translatable="false">32109</string>
     <integer name="com_vk_sdk_AppId">8139048</integer>
+    <string name="notification_channel_name">Notifications</string>
     <string name="app_name">Shared Planner</string>
     <string name="auth_with">Sign in with:</string>
     <string name="auth_failed">Auth failed</string>
@@ -48,6 +49,13 @@
     <string name="in_hour">In hour</string>
     <string name="in_day">In day</string>
     <string name="notification">Notification in</string>
+
+    <string name="notif_minutes_5">In 5 minutes</string>
+    <string name="notif_minutes_10">In 10 minutes</string>
+    <string name="notif_minutes_15">In 15 minutes</string>
+    <string name="notif_minutes_30">In 30 minutes</string>
+    <string name="notif_in_hour">In hour</string>
+    <string name="notif_in_day">In day</string>
 
     <string name="repeat">Repeat</string>
     <string name="please_wait">Please wait</string>

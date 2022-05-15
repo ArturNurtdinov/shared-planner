@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="notification_channel_name">Уведомления</string>
     <string name="auth_with">Войти с помощью:</string>
     <string name="auth_failed">Ошибка входа</string>
     <string name="settings">Настройки</string>
@@ -45,6 +46,13 @@
     <string name="in_hour">За час</string>
     <string name="in_day">За день</string>
     <string name="notification">Уведомить за</string>
+
+    <string name="notif_minutes_5">Через 5 минут</string>
+    <string name="notif_minutes_10">Через 10 минут</string>
+    <string name="notif_minutes_15">Через 15 минут</string>
+    <string name="notif_minutes_30">Через 30 минут</string>
+    <string name="notif_in_hour">Через час</string>
+    <string name="notif_in_day">Через день</string>
 
     <string name="repeat">Повторять</string>
     <string name="please_wait">Пожалуйста подождите</string>

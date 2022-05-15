@@ -11,18 +11,20 @@ import ru.spbstu.calendar.CalendarRepository
 import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.presentation.dialog.model.GroupSelected
 import ru.spbstu.calendar.domain.model.Group
+import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.network.SharedPlannerResult
 
 class NotificationsViewModel(
     private val router: CalendarRouter,
-    private val calendarRepository: CalendarRepository
+    private val calendarRepository: CalendarRepository,
+    private val preferencesRepository: PreferencesRepository,
 ) : ViewModel() {
 
     init {
         loadData()
     }
 
-    private val _state = MutableStateFlow(State(emptyList()))
+    private val _state = MutableStateFlow(State(emptyList(), preferencesRepository.notifsEnabled))
     val state = _state.asStateFlow()
 
     private fun loadData() {
@@ -34,7 +36,10 @@ class NotificationsViewModel(
                 is SharedPlannerResult.Success -> {
                     val groups = groupsResult.data
                     withContext(Dispatchers.Main) {
-                        _state.value = _state.value.copy(groups = groups)
+                        _state.value = _state.value.copy(
+                            groups = groups,
+                            notificationsEnabled = preferencesRepository.notifsEnabled
+                        )
                     }
                 }
             }
@@ -42,10 +47,11 @@ class NotificationsViewModel(
     }
 
     fun onNotificationsStateChanged(newValue: Boolean) {
-
+        preferencesRepository.setNotifsEnabled(newValue)
     }
 
     fun onNotificationsStateChanged(newValue: Boolean, group: Group) {
+        preferencesRepository.setNotifsEnabledForGroupId(group.id, newValue)
         viewModelScope.launch(Dispatchers.IO) {
             calendarRepository.changeGroupNotificationsState(group.id, newValue, group.color)
             loadData()
@@ -54,5 +60,5 @@ class NotificationsViewModel(
 
     fun onBackClicked(): Boolean = router.pop()
 
-    data class State(val groups: List<Group>)
+    data class State(val groups: List<Group>, val notificationsEnabled: Boolean)
 }

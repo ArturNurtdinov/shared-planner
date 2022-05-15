@@ -2,6 +2,7 @@ package ru.spbstu.calendar.calendar.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.domain.EventTypes
 import ru.spbstu.common.network.SharedPlannerResult
+import timber.log.Timber
 import java.time.*
 
 class CalendarViewModel(
@@ -46,6 +48,19 @@ class CalendarViewModel(
     var shouldScrollOnCreate: Boolean = true
 
     init {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.tag(TAG).e("Fetching FCM registration token failed: ${task.exception}")
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Timber.tag(TAG).d("newToken on start: $token")
+            viewModelScope.launch(Dispatchers.IO) {
+                calendarRepository.pushFcmToken(token)
+            }
+        }
         viewModelScope.launch(Dispatchers.IO) {
             val currentUser = calendarRepository.getUser()
             if (currentUser is SharedPlannerResult.Success) {
@@ -73,6 +88,12 @@ class CalendarViewModel(
                 is SharedPlannerResult.Success -> {
                     val selected = currentState.groups
                     val groups = groupsResult.data
+                    groups.forEach {
+                        preferencesRepository.setNotifsEnabledForGroupId(
+                            it.id,
+                            it.notificationsEnabled
+                        )
+                    }
                     val eventsResult = calendarRepository.getEvents(
                         ZonedDateTime.ofInstant(
                             Instant.ofEpochMilli(currentState.startTimestamp),
@@ -167,4 +188,8 @@ class CalendarViewModel(
         val events: List<EventModel>,
         val eventsByDay: Map<LocalDate, List<EventModel>>
     )
+
+    companion object {
+        val TAG = CalendarViewModel::class.simpleName!!
+    }
 }
