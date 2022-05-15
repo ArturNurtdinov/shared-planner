@@ -29,4 +29,6 @@ object Versions {
     const val colorPicker = "0.2.2"
     const val paging3 = "3.1.1"
     const val recycler = "1.2.1"
+    const val firebaseBom = "30.0.0"
+    const val firebaseMessaging = "23.0.4"
 }

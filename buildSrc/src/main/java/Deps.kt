@@ -41,6 +41,9 @@ object Deps {
     private val colorPicker by lazy { "me.jfenn.ColorPickerDialog:base:${Versions.colorPicker}" }
     private val paging by lazy { "androidx.paging:paging-runtime:${Versions.paging3}" }
     private val recycler by lazy { "androidx.recyclerview:recyclerview:${Versions.recycler}" }
+    val firebaseBom by lazy { "com.google.firebase:firebase-bom:${Versions.firebaseBom}" }
+    private val firebaseMessaging by lazy { "com.google.firebase:firebase-messaging:${Versions.firebaseMessaging}" }
+    private val firebaseAnalytics by lazy { "com.google.firebase:firebase-analytics-ktx" }
 
     val appLibraries = arrayListOf<String>().apply {
         add(kotlinStdLib)
@@ -67,6 +70,11 @@ object Deps {
         add(colorPicker)
         add(paging)
         add(recycler)
+    }
+
+    val firebase = arrayListOf<String>().apply {
+        add(firebaseAnalytics)
+        add(firebaseMessaging)
     }
 
     val network = arrayListOf<String>().apply {
