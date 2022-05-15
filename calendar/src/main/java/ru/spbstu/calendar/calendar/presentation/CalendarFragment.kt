@@ -281,10 +281,10 @@ class CalendarFragment : Fragment() {
                 val eventsForThisDay = state.eventsByDay[day.date] ?: emptyList()
                 val size = eventsForThisDay.size
                 container.circles.forEachIndexed { index, view ->
-                    view.isVisible = false
+                    view.visibility = View.INVISIBLE
                     if (index < size) {
-                        view.isVisible = viewModel.state.value.groups.filter { it.isSelected }
-                            .any { it.id == eventsForThisDay[index].group.id }
+                        view.visibility = if (viewModel.state.value.groups.filter { it.isSelected }
+                            .any { it.id == eventsForThisDay[index].group.id }) View.VISIBLE else View.INVISIBLE
                         val color = eventsForThisDay[index].group.color
                         view.background = GradientDrawable().apply {
                             shape = GradientDrawable.RECTANGLE

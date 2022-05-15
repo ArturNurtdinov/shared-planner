@@ -1,9 +1,11 @@
 package ru.spbstu.calendar.calendar.event.presentation
 
+import android.net.Uri
+
 sealed class FileUi {
     abstract val viewType: Int
 
-    data class FileUiItem(val name: String) : FileUi() {
+    data class FileUiItem(val name: String, val uri: Uri) : FileUi() {
         override val viewType: Int = FILE_UI_ITEM_VIEW_TYPE
     }
 

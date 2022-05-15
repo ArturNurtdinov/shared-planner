@@ -25,5 +25,5 @@ data class CreateEventBody(
     @SerializedName("notifications")
     val notificationsType: List<Int>,
     @SerializedName("attachments")
-    val attachments: List<String>,
+    val attachments: List<AttachResponse>,
 )

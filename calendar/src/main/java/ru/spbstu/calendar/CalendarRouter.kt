@@ -18,4 +18,5 @@ interface CalendarRouter {
     fun openCreateEventFragment(event: EventModel?)
     fun goToLogin()
     fun openCalendarFromEvent()
+    fun goToMainPageFromEventPage()
 }

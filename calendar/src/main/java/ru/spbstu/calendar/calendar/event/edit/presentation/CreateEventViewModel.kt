@@ -85,6 +85,8 @@ class CreateEventViewModel(
     )
     val state = _state.asStateFlow()
 
+    private val downloadsMap: MutableMap<Long, Uri> = mutableMapOf()
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val result = calendarRepository.getGroups()
@@ -163,7 +165,7 @@ class CreateEventViewModel(
                     _state.value = current.copy(
                         pickedFiles = mutableListOf<Uri>().apply {
                             addAll(current.pickedFiles)
-                            Uri.fromFile(file)
+                            add(Uri.fromFile(file))
                         },
                         files = mutableListOf<String>().apply {
                             addAll(current.files)
@@ -174,6 +176,12 @@ class CreateEventViewModel(
             }
         }
     }
+
+    fun onNewDownloadStarted(id: Long, uri: Uri) {
+        downloadsMap[id] = uri
+    }
+
+    fun getUriForId(id: Long): Uri? = downloadsMap[id]
 
     private fun getFileName(uri: Uri): String? {
         var result: String? = null

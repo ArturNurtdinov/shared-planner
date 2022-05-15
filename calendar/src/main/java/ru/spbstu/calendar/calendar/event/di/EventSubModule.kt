@@ -11,6 +11,7 @@ import ru.spbstu.calendar.CalendarRouter
 import ru.spbstu.calendar.calendar.event.presentation.EventViewModel
 import ru.spbstu.common.di.viewmodel.ViewModelKey
 import ru.spbstu.common.di.viewmodel.ViewModelModule
+import ru.spbstu.common.errors.ErrorStringsProvider
 
 @Module(
     includes = [
@@ -23,9 +24,10 @@ class EventSubModule {
     @ViewModelKey(EventViewModel::class)
     fun provideViewModel(
         router: CalendarRouter,
-        calendarRepository: CalendarRepository
+        calendarRepository: CalendarRepository,
+        errorStringsProvider: ErrorStringsProvider
     ): ViewModel {
-        return EventViewModel(router, calendarRepository)
+        return EventViewModel(router, calendarRepository, errorStringsProvider)
     }
 
     @Provides

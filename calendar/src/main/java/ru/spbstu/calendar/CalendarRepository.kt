@@ -2,6 +2,9 @@ package ru.spbstu.calendar
 
 import android.graphics.Color
 import android.net.Uri
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.internal.toHexString
 import ru.spbstu.calendar.domain.model.EventModel
 import ru.spbstu.calendar.domain.model.Group
@@ -15,6 +18,7 @@ import ru.spbstu.common.network.EmptyResult
 import ru.spbstu.common.network.SharedPlannerResult
 import ru.spbstu.common.network.UnknownError
 import ru.spbstu.common.network.model.*
+import java.io.File
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -181,6 +185,10 @@ class CalendarRepository(
     ): SharedPlannerResult<Any> {
         val fromFormatted = from.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
         val toFormatted = to.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+        val filesResponse = files.mapNotNull { if (it.path == null) null else uploadFile(File(it.path!!)) }
+        val successFiles = filesResponse.filterIsInstance<SharedPlannerResult.Success<AttachResponse>>()
+
         val response = api.createEvent(
             CreateEventBody(
                 groupId,
@@ -192,11 +200,27 @@ class CalendarRepository(
                 toFormatted,
                 repeatTypes.ordinal,
                 notificationsTypes.map { it.ordinal },
-                emptyList()
+                successFiles.map { it.data }
             )
         )
         return if (response.isSuccessful) {
             SharedPlannerResult.Success(Any())
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    private suspend fun uploadFile(file: File): SharedPlannerResult<AttachResponse> {
+        val body = MultipartBody.Part.createFormData(
+            "file",
+            file.name,
+            file.asRequestBody("image/*".toMediaTypeOrNull())
+        )
+
+        val response = api.uploadFile(body)
+        response.isSuccessful
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(response.body()!!)
         } else {
             SharedPlannerResult.Error(UnknownError)
         }
@@ -224,6 +248,15 @@ class CalendarRepository(
                     responseModel,
                     groups.first { it.id == responseModel.groupId })
             })
+        } else {
+            SharedPlannerResult.Error(UnknownError)
+        }
+    }
+
+    suspend fun deleteEvent(id: String): SharedPlannerResult<Any> {
+        val response = api.deleteEvent(id, OnlyDeleteInstanceBody((false)))
+        return if (response.isSuccessful) {
+            SharedPlannerResult.Success(EmptyResult)
         } else {
             SharedPlannerResult.Error(UnknownError)
         }

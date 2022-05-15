@@ -1,12 +1,19 @@
 package ru.spbstu.calendar.calendar.event.presentation
 
-import android.graphics.Color
+import android.app.Activity
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.GradientDrawable
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -19,10 +26,10 @@ import ru.spbstu.calendar.di.CalendarApi
 import ru.spbstu.calendar.di.CalendarComponent
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.domain.EventTypes
-import ru.spbstu.common.domain.NotificationsTypes
 import ru.spbstu.common.domain.RepeatTypes
 import ru.spbstu.common.extensions.dp
 import ru.spbstu.common.extensions.setDebounceClickListener
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -39,10 +46,40 @@ class EventFragment : Fragment() {
     private val adapter = FilesAdapter {
         when (it) {
             is FileUi.FileUiItem -> {
-                // download and open intent
+                val dir = requireContext().externalCacheDir ?: requireContext().externalCacheDirs[0]
+                dir.mkdirs()
+                val destination = File(dir, it.name + System.currentTimeMillis().toString())
+                val request = DownloadManager.Request(it.uri).apply {
+                    setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    setDestinationUri(Uri.fromFile(destination))
+                }
+
+                val dm =
+                    requireContext().getSystemService(Activity.DOWNLOAD_SERVICE) as DownloadManager
+                val id = dm.enqueue(request)
+                viewModel.onNewDownloadStarted(id, Uri.fromFile(destination))
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.download_started),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
             is FileUi.AddFileItem -> {
                 // not used
+            }
+        }
+    }
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1) ?: return
+            if (id != -1L) {
+                /*viewModel.getUriForId(id)?.let { uri ->
+                    requireContext().startActivity(Intent(Intent.ACTION_VIEW).apply {
+                        setData(uri)
+                    })
+                }*/
             }
         }
     }
@@ -77,12 +114,26 @@ class EventFragment : Fragment() {
             viewModel.editEvent()
         }
 
+        binding.fragmentEventDelete.setDebounceClickListener {
+            viewModel.deleteEvent()
+        }
+
+        requireActivity().registerReceiver(
+            receiver,
+            IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+        )
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.errorMessage
+            .onEach {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+            .launchIn(lifecycleScope)
 
         viewModel.state
             .filterNotNull()
@@ -114,9 +165,11 @@ class EventFragment : Fragment() {
                 binding.fragmentEventDescription.text = it.description
 
                 binding.fragmentEventFilesLabel.isVisible = it.attaches.isNotEmpty()
-                adapter.submitList(it.fileNames.map {
-                    FileUi.FileUiItem(it)
-                })
+                val list = mutableListOf<FileUi>()
+                it.fileNames.forEachIndexed { index, value ->
+                    list.add(FileUi.FileUiItem(value, it.attaches[index]))
+                }
+                adapter.submitList(list)
             }
             .launchIn(lifecycleScope)
     }
@@ -134,6 +187,7 @@ class EventFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        requireActivity().unregisterReceiver(receiver)
         _binding = null
     }
 

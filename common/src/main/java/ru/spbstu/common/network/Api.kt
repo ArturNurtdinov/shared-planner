@@ -1,5 +1,6 @@
 package ru.spbstu.common.network
 
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.spbstu.common.network.model.*
@@ -56,5 +57,15 @@ public interface Api {
     suspend fun updateEvent(
         @Path("id") id: String,
         @Body updateEventBody: UpdateEventBody
+    ): Response<Void>
+
+    @Multipart
+    @POST("/files")
+    suspend fun uploadFile(@Part file: MultipartBody.Part): Response<AttachResponse>
+
+    @HTTP(method = "DELETE", path = "/events/{id}", hasBody = true)
+    suspend fun deleteEvent(
+        @Path("id") id: String,
+        @Body onlyDeleteInstanceBody: OnlyDeleteInstanceBody
     ): Response<Void>
 }

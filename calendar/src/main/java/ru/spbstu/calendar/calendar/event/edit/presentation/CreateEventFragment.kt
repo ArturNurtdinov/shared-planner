@@ -1,6 +1,8 @@
 package ru.spbstu.calendar.calendar.event.edit.presentation
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.DownloadManager
 import android.app.TimePickerDialog
 import android.graphics.Color
 import android.net.Uri
@@ -32,6 +34,7 @@ import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.domain.NotificationsTypes
 import ru.spbstu.common.domain.RepeatTypes
 import ru.spbstu.common.extensions.setDebounceClickListener
+import java.io.File
 import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.util.*
@@ -72,7 +75,26 @@ class CreateEventFragment : Fragment() {
         if (it == FileUi.AddFileItem) {
             getContent.launch("*/*")
         } else if (it is FileUi.FileUiItem) {
+            kotlin.runCatching {
+                val dir = requireContext().externalCacheDir ?: requireContext().externalCacheDirs[0]
+                dir.mkdirs()
+                val destination = File(dir, it.name + System.currentTimeMillis().toString())
+                val request = DownloadManager.Request(it.uri).apply {
+                    setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
+                    setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    setDestinationUri(Uri.fromFile(destination))
+                }
 
+                val dm =
+                    requireContext().getSystemService(Activity.DOWNLOAD_SERVICE) as DownloadManager
+                val id = dm.enqueue(request)
+                viewModel.onNewDownloadStarted(id, Uri.fromFile(destination))
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.download_started),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
@@ -317,16 +339,16 @@ class CreateEventFragment : Fragment() {
 
                 binding.fragmentCreateEventPickGroup.text =
                     if (it.selectedGroup != null) it.selectedGroup.name else getString(R.string.pick_group)
-
-                val files = it.files.map {
-                    FileUi.FileUiItem(it)
-                }.toMutableList()
+                val list = mutableListOf<FileUi>()
+                it.files.forEachIndexed { index, value ->
+                    list.add(FileUi.FileUiItem(value, it.pickedFiles[index]))
+                }
 
                 binding.fragmentCreateEventFilesIcon.isVisible = !it.isEdit
                 filesAdapter.submitList(
                     mutableListOf<FileUi?>().apply {
-                        addAll(files)
-                        if (files.size < 3 && !it.isEdit) {
+                        addAll(list)
+                        if (list.size < 3 && !it.isEdit) {
                             add(FileUi.AddFileItem)
                         }
                     }

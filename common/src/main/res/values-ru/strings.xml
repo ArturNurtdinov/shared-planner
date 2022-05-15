@@ -59,6 +59,7 @@
     <string name="file_error">Размер файла не может превышать 5MB</string>
     <string name="empty_day">На этот день ничего не запланировано</string>
     <string name="description_restriction">Описание не должно превышать 250 символов</string>
+    <string name="download_started">Загрузка началась</string>
 
     <string-array name="months_array">
         <item>Январь</item>
