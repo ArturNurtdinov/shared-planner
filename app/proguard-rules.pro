@@ -34,4 +34,8 @@
 }
 # End Network region
 
+# Google services region
+-keep class com.google.googlesignin.** { *; }
+# End Google services region
+
 
