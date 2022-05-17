@@ -101,6 +101,7 @@ class CreateGroupFragment : Fragment() {
         binding.fragmentCreateGroupColorPicker.setDebounceClickListener {
             val color = viewModel.state.value.color ?: Color.BLUE
             ColorPickerDialog()
+                .withTitle(getString(R.string.pick_color))
                 .withColor(color) // the default / initial color
                 .withAlphaEnabled(false)
                 .withListener { dialog, colorNew ->

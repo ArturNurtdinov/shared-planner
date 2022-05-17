@@ -72,6 +72,7 @@
     <string name="description_restriction">Description can\'t be more than 250 characters</string>
     <string name="download_started">Download started</string>
 
+    <string name="pick_color">Pick color</string>
     <string-array name="months_array">
         <item>January</item>
         <item>February</item>

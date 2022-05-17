@@ -28,8 +28,8 @@ object Deps {
     private val gson by lazy { "com.google.code.gson:gson:${Versions.gson}" }
     private val okhttp by lazy { "com.squareup.okhttp3:okhttp:${Versions.okhttp}" }
     private val retrofit by lazy { "com.squareup.retrofit2:retrofit:${Versions.retrofit}" }
-    private val eventBus by lazy { "org.greenrobot:eventbus:${Versions.eventBus}" }
     private val gsonConverter by lazy { "com.squareup.retrofit2:converter-gson:${Versions.retrofit}" }
+    private val eventBus by lazy { "org.greenrobot:eventbus:${Versions.eventBus}" }
     private val security by lazy { "androidx.security:security-crypto:${Versions.security}" }
     private val rxKotlin by lazy { "io.reactivex.rxjava3:rxkotlin:${Versions.rxKotlin}" }
     private val calendarView by lazy { "com.github.kizitonwose:CalendarView:${Versions.calendarView}" }
