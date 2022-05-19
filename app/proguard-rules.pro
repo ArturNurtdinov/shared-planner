@@ -38,4 +38,13 @@
 -keep class com.google.googlesignin.** { *; }
 # End Google services region
 
+# Timber region
+-assumenosideeffects class timber.log.Timber* {
+    public static *** v(...);
+    public static *** d(...);
+    public static *** i(...);
+    public static *** e(...);
+    public static *** w(...);
+}
+# End Timber region
 

@@ -1,6 +1,7 @@
 package ru.spbstu.sharedplanner.log
 
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class ReleaseTree: Timber.Tree() {
@@ -9,7 +10,9 @@ class ReleaseTree: Timber.Tree() {
             return
         }
 
-        // TODO report crashes to firebase crashlytics
+        if (priority == Log.ERROR) {
+            FirebaseCrashlytics.getInstance().log("error: message = $message, tag=$tag, throwable=$t")
+        }
     }
 
 }

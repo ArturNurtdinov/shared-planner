@@ -44,6 +44,7 @@ object Deps {
     val firebaseBom by lazy { "com.google.firebase:firebase-bom:${Versions.firebaseBom}" }
     private val firebaseMessaging by lazy { "com.google.firebase:firebase-messaging:${Versions.firebaseMessaging}" }
     private val firebaseAnalytics by lazy { "com.google.firebase:firebase-analytics-ktx" }
+    private val firebaseCrashlytics by lazy { "com.google.firebase:firebase-crashlytics" }
 
     val appLibraries = arrayListOf<String>().apply {
         add(kotlinStdLib)
@@ -74,6 +75,7 @@ object Deps {
 
     val firebase = arrayListOf<String>().apply {
         add(firebaseAnalytics)
+        add(firebaseCrashlytics)
         add(firebaseMessaging)
     }
 
