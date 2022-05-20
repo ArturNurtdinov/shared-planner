@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "798055097549-8halidliv4d8hab91rst57vvu7h3u6kp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.spbstu.sharedplanner",
+            "certificate_hash": "3e290cc5b22137b51890df70974f889383e9b0d0"
+          }
+        },
+        {
           "client_id": "798055097549-l5q7g1qgfmikoh9s5hkn757u099g120h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
