@@ -35,7 +35,15 @@
 # End Network region
 
 # Google services region
+-keep class com.google.* {*;}
+-keep class com.google.impl.* {*;}
+-keep class com.google.firebase.* {*;}
 -keep class com.google.googlesignin.** { *; }
+-keepnames class com.google.googlesignin.* { *; }
+-keep class com.google.gms.** {*;}
+-keep class com.google.android.gms.auth.** { *; }
+-keep class com.google.android.* {*;}
+-keep class com.google.unity.* {*;}
 # End Google services region
 
 # Timber region
