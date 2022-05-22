@@ -4,10 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.greenrobot.eventbus.EventBus
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,11 +14,11 @@ import ru.spbstu.common.BuildConfig
 import ru.spbstu.common.di.prefs.PreferencesRepository
 import ru.spbstu.common.di.scope.ApplicationScope
 import ru.spbstu.common.events.AuthEvent
+import ru.spbstu.common.events.NoConnectionToInternetEvent
 import ru.spbstu.common.network.Api
 import ru.spbstu.common.network.model.RefreshTokenBody
 import ru.spbstu.common.network.model.TokensResponseBody
 import timber.log.Timber
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 
@@ -52,7 +51,13 @@ class NetworkModule {
             }
             val request = requestBuilder.build()
             var response = kotlin.runCatching { chain.proceed(request) }.getOrElse {
-                throw IOException("Couldn't procees request. Probably no Internet connection")
+                // SocketTimeoutException, UnknownHostException, ConnectionShutdownException
+                EventBus.getDefault().post(NoConnectionToInternetEvent())
+                return@Interceptor Response.Builder().request(request)
+                    .protocol(Protocol.HTTP_2)
+                    .body("No internet connection".toResponseBody())
+                    .message("No internet connection")
+                    .code(400).build()
             }
             Timber.tag(TAG).i("Processed request(no tokens)=$original, response=$response")
             val code = response.code
@@ -107,9 +112,9 @@ class NetworkModule {
     @Named("refresh")
     fun provideOkHttpClientForRefresh(): OkHttpClient {
         val builder = OkHttpClient.Builder()
-            .readTimeout(10, TimeUnit.DAYS)
-            .connectTimeout(10, TimeUnit.DAYS)
-            .callTimeout(10, TimeUnit.DAYS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
         return builder.build()
     }
 

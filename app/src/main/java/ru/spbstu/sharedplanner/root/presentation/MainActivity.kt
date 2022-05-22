@@ -18,6 +18,7 @@ import ru.ok.android.sdk.Shared
 import ru.spbstu.auth.auth.presentation.AuthFragment
 import ru.spbstu.common.di.FeatureUtils
 import ru.spbstu.common.events.AuthEvent
+import ru.spbstu.common.events.NoConnectionToInternetEvent
 import ru.spbstu.sharedplanner.R
 import ru.spbstu.sharedplanner.databinding.ActivityMainBinding
 import ru.spbstu.sharedplanner.navigation.Navigator
@@ -70,6 +71,13 @@ class MainActivity : AppCompatActivity() {
     fun onEvent(event: AuthEvent) {
         lifecycleScope.launch(Dispatchers.Main) {
             navigator.goToLogin()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEvent(event: NoConnectionToInternetEvent) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            Toast.makeText(applicationContext, getString(R.string.no_internet_connection), Toast.LENGTH_LONG).show()
         }
     }
 

@@ -70,6 +70,7 @@
     <string name="download_started">Загрузка началась</string>
 
     <string name="pick_color">Выберите цвет</string>
+    <string name="no_internet_connection">Нет подключения к интернету</string>
     <string-array name="months_array">
         <item>Январь</item>
         <item>Февраль</item>
